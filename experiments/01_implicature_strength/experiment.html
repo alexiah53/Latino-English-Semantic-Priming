@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>
+      Language Experiment
+    </title><!--JS-->
+    <!-- external general utilities -->
+    <script src="shared/js/jquery-1.11.1.min.js"></script>
+    <script src="shared/full-projects/jquery-ui/jquery-ui.min.js"></script>
+    <script src="shared/js/underscore-min.js"></script>
+    
+    <!-- experiment logic -->
+    <script src="shared/js/exp-V2.js"></script>
+    <script src="shared/js/stream-V2.js"></script>
+
+    <!-- utilities to submit data to proliferate -->
+    <script src="https://proliferate.alps.science/static/js/proliferate.js"></script>
+
+    <!-- general utilities -->
+    <script src="shared/js/browserCheck.js"></script>
+    <script src="shared/js/utils.js"></script>
+    <link href="shared/full-projects/jquery-ui/jquery-ui.min.css" rel="stylesheet" type="text/css">
+    <link href="shared/css/cocolab-style.css" rel="stylesheet" type="text/css">
+    <link href="css/local-style.css" rel="stylesheet" type="text/css">
+
+    <!-- experiment file -->
+    <script src="js/experiment.js"></script>
+
+    <!-- stimulus file -->
+    <script src="js/stimuli.js"></script>
+  </head>
+
+  <body onload="init()">
+    <noscript>This task requires JavaScript.</noscript>
+    
+    <!-- initial slide -->
+    <div class="slide" id="i0">
+      <p class="left">
+        You will read some sentences. These are sentneces from transcriptions of real conversations real poeple had over the phone. <strong>Your task is to answer a question about the red sentence to the best of your ability.</strong><br>
+        <br>
+        The experiment will take approximately 10 minutes. Let's start with two examples!
+      </p><button id="start_button" type="button">Start experiment</button>
+      <p class="left legal">
+        <strong><br>
+        <br>
+        <br>
+        LEGAL INFORMATION</strong>:<br>
+        <br>
+        IF APPLICABLE, MAKE SURE TO INCLUDE YOUR IRB CONSENT FORM HERE.
+      </p>
+    </div>
+
+    <!-- first example slide -->
+    <div class="slide" id="example1">
+      <h3>
+        Example 1
+      </h3>
+      <p class="originalSen">
+        I had some of the banana yogurt.
+      </p>
+      <p class="targetSen">
+        I had <b>some, but not all</b> of the banana yogurt
+      </p>
+      <div class="instruction">
+        <i>How similar is the statement in blue (with 'but not all') to the statement in red (without 'but not all')?</i>
+      </div>
+      <table class="likertscale">
+        <tr>
+          <td>
+            very different meaning
+          </td>
+          <td>
+            <input type="radio" name="number" value="1">
+          </td>
+          <td>
+            <input type="radio" name="number" value="2">
+          </td>
+          <td>
+            <input type="radio" name="number" value="3">
+          </td>
+          <td>
+            <input type="radio" name="number" value="4">
+          </td>
+          <td>
+            <input type="radio" name="number" value="5">
+          </td>
+          <td>
+            <input type="radio" name="number" value="6">
+          </td>
+          <td>
+            <input type="radio" name="number" value="7">
+          </td>
+          <td>
+            same meaning
+          </td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>
+            1
+          </td>
+          <td>
+            2
+          </td>
+          <td>
+            3
+          </td>
+          <td>
+            4
+          </td>
+          <td>
+            5
+          </td>
+          <td>
+            6
+          </td>
+          <td>
+            7
+          </td>
+          <td></td>
+        </tr>
+      </table><br>
+      <br>
+      <div class="center">
+        <button class="continueButton" onclick="_s.button()">Continue</button>
+      </div>
+      <div class="err">
+        <p>
+          In your rating, consider whether the sentence 'some, but not all' expresses the same thing as the red sentence. In this example the two sentences are very similar.
+        </p>
+      </div>
+    </div>
+
+    <!-- second example slide -->
+    <div class="slide" id="example2">
+      <h3>
+        Example 2
+      </h3>
+      <p class="originalSen">
+        There's probably some peanuts in the pantry.
+      </p>
+      <p class="targetSen">
+        There's probably <b>some, but not all</b> peanuts in the pantry.
+      </p>
+      <div class="instruction">
+        <i>How similar is the statement in blue (with 'but not all') to the statement in red (without 'but not all')?</i>
+      </div>
+      <table class="likertscale">
+        <tr>
+          <td>
+            very different meaning
+          </td>
+          <td>
+            <input type="radio" name="number" value="1">
+          </td>
+          <td>
+            <input type="radio" name="number" value="2">
+          </td>
+          <td>
+            <input type="radio" name="number" value="3">
+          </td>
+          <td>
+            <input type="radio" name="number" value="4">
+          </td>
+          <td>
+            <input type="radio" name="number" value="5">
+          </td>
+          <td>
+            <input type="radio" name="number" value="6">
+          </td>
+          <td>
+            <input type="radio" name="number" value="7">
+          </td>
+          <td>
+            same meaning
+          </td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>
+            1
+          </td>
+          <td>
+            2
+          </td>
+          <td>
+            3
+          </td>
+          <td>
+            4
+          </td>
+          <td>
+            5
+          </td>
+          <td>
+            6
+          </td>
+          <td>
+            7
+          </td>
+          <td></td>
+        </tr>
+      </table><br>
+      <br>
+      <div class="center">
+        <button class="continueButton" onclick="_s.button()">Continue</button>
+      </div>
+      <div class="err">
+        <br>
+        <p>
+          In your rating, consider whether the sentence 'some, but not all' expresses the same thing as the red sentence. In this example the two sentences are very different.
+        </p>
+      </div>
+    </div>
+
+    <!-- main instructions slide -->
+    <div class="slide" id="startExp">
+      <br>
+      <br>
+      <p id="instruct-text" class="left">
+        Great! Now we can start the real experiment. You will now read 20 sentences. Your task is to rate how similar the red sentence is to the blue sentence where the word 'some' is replaced with 'some, but not all'. Sometimes, the blue sentence will sound strange. In this case, give a rating to the best of your ability, but also click the checkbox next to "The blue sentence sounds strange".
+      </p>
+      <div class="center">
+        <button class="continueButton" onclick="_s.button()">Continue</button>
+      </div>
+    </div>
+
+    <!-- trial slide -->
+    <div class="slide" id="trial">
+
+      <!-- placeholders for contexts -->
+      <!-- <p class="case" style="text-align: left;"></p> -->
+      
+      <!-- placeholders for stimuli -->
+      <p class="originalSen" id="trial-originalSen">
+        {{original sentence}}
+      </p>
+      <p class="targetSen" id="trial-targetSen">
+        {{target sentence}}
+      </p>
+      <div class="instruction">
+        <i>How similar is the statement in blue (with 'but not all') to the statement in red (without 'but not all')?</i>
+      </div>
+      <table class="likertscale">
+        <tr>
+          <td>
+            very different meaning
+          </td>
+          <td>
+            <input type="radio" name="number" value="1">
+          </td>
+          <td>
+            <input type="radio" name="number" value="2">
+          </td>
+          <td>
+            <input type="radio" name="number" value="3">
+          </td>
+          <td>
+            <input type="radio" name="number" value="4">
+          </td>
+          <td>
+            <input type="radio" name="number" value="5">
+          </td>
+          <td>
+            <input type="radio" name="number" value="6">
+          </td>
+          <td>
+            <input type="radio" name="number" value="7">
+          </td>
+          <td>
+            same meaning
+          </td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>
+            1
+          </td>
+          <td>
+            2
+          </td>
+          <td>
+            3
+          </td>
+          <td>
+            4
+          </td>
+          <td>
+            5
+          </td>
+          <td>
+            6
+          </td>
+          <td>
+            7
+          </td>
+          <td></td>
+        </tr>
+      </table><br>
+      <br>
+      The blue sentence sounds strange: <input type="checkbox" id="check-strange"><br>
+      <br>
+      <div class="center">
+        <button class="continueButton" onclick="_s.button()">Continue</button>
+      </div>
+      <div class="err">
+        <br>
+        <p>
+          Make sure you selected a radio button before clicking 'Continue'
+        </p>
+      </div>
+    </div>
+
+    <!-- subject information slide -->
+    <div class="slide" id="subj_info">
+      <div class="long_form">
+        <div class="subj_info_title">
+          Additional information
+        </div>
+        <p class="info">
+          Answering these questions is optional, but will help us understand your answers.
+        </p>
+        <p>
+          Did you read the instructions and do you think you did the HIT correctly?
+        </p><label><input type="radio" name="assess" value="No">No</label> <label><input type="radio" name="assess" value="Yes">Yes</label> <label><input type="radio" name="assess" value="Confused">I was confused</label>
+        <p>
+          Gender: <select id="gender">
+            <option value="">
+            </option>
+            <option value="Male">
+              male
+            </option>
+            <option value="Female">
+              female
+            </option>
+            <option value="Other">
+              other
+            </option>
+          </select>
+        </p>
+        <p>
+          Age: <input type="text" id="age">
+        </p>
+        <p>
+          Level of education: <select id="education">
+            <option value="-1">
+            </option>
+            <option value="0">
+              Some high school
+            </option>
+            <option value="1">
+              Graduated high school
+            </option>
+            <option value="2">
+              Some college
+            </option>
+            <option value="3">
+              Graduated college
+            </option>
+            <option value="4">
+              Hold a higher degree
+            </option>
+          </select>
+        </p>
+        <p>
+          Native language: <input type="text" id="language">
+        </p><label>(the language(s) spoken at home when you were a child)</label>
+        <p>
+          Do you think the payment was fair?
+        </p><select id="fairprice">
+          <option value="-1">
+          </option>
+          <option value="0">
+            The payment was too low
+          </option>
+          <option value="1">
+            The payment was fair
+          </option>
+        </select>
+        <p>
+          Did you enjoy the experiment?
+        </p><select id="enjoyment">
+          <option value="-1">
+          </option>
+          <option value="0">
+            Worse than the average experiment
+          </option>
+          <option value="1">
+            An average experiment
+          </option>
+          <option value="2">
+            Better than average experiment
+          </option>
+        </select>
+        <p>
+          We would be interested in any comments you have about this experiment. Please type them here:
+        </p>
+        <textarea id="comments" rows="3" cols="50"></textarea><br>
+        <button onclick="_s.submit()">Submit</button>
+      </div>
+    </div>
+
+    <!-- final slide -->
+    <div id="thanks" class="slide js">
+      <p class="big">
+        Thanks for your time!
+      </p>
+    </div>
+
+    <!-- progress bar -->
+    <div class="progress">
+      <span>Progress:</span>
+      <div class="bar-wrapper">
+        <div class="bar" style="width: 0%"></div>
+      </div>
+    </div>
+  </body>
+</html>
