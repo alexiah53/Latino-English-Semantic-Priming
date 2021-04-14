@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>
+      Language Experiment
+    </title><!--JS-->
+    <!-- external general utilities -->
+    <script src="shared/js/jquery-1.11.1.min.js"></script>
+    <script src="shared/full-projects/jquery-ui/jquery-ui.min.js"></script>
+    <script src="shared/js/underscore-min.js"></script>
+    
+    <!-- experiment logic -->
+    <script src="shared/js/exp-V2.js"></script>
+    <script src="shared/js/stream-V2.js"></script>
+
+    <!-- utilities to submit data to proliferate -->
+    <script src="https://proliferate.alps.science/static/js/proliferate.js"></script>
+
+    <!-- general utilities -->
+    <script src="shared/js/browserCheck.js"></script>
+    <script src="shared/js/utils.js"></script>
+    <link href="shared/full-projects/jquery-ui/jquery-ui.min.css" rel="stylesheet" type="text/css">
+    <link href="shared/css/cocolab-style.css" rel="stylesheet" type="text/css">
+    <link href="css/local-style.css" rel="stylesheet" type="text/css">
+
+    <!-- experiment file -->
+    <script src="js/experiment.js"></script>
+
+    <!-- stimulus file -->
+    <script src="js/stimuli.js"></script>
+  </head>
+
+  <body onload="init()">
+    <noscript>This task requires JavaScript.</noscript>
+    
+    <!-- initial slide -->
+    <div class="slide" id="i0">
+      <!-- <p class="left"> -->
+		  <p class="center">
+        You will listen to some word pairs. One speaker will say the first word in the pair and another speaker will say the second word in the pair.<br>
+        <br>  <strong> Your task is to decide whether the second word in the pair is a real word or a made up word. </strong><br>
+        <br>
+        The experiment will take approximately 30 minutes.
+      </p><button id="start_button" type="button">Start experiment</button>
+      <p class="left legal">
+        <strong><br>
+        <br>
+        <br>
+        LEGAL INFORMATION</strong>:<br>
+        <br>
+        IF APPLICABLE, MAKE SURE TO INCLUDE YOUR IRB CONSENT FORM HERE.
+      </p>
+    </div>
+	
+	<!-- sound test slide -->
+	<div class="slide" id="sound_test">
+		<div class="text-center">
+			<br>
+			Press the play button to make sure you can hear the audio and adjust the volume as necessary. You won't be
+			able to complete the task if you can't hear the audio.
+			<br><br>
+			In the task, the audio will play automatically and you'll only hear each word once so listen carefully!
+			<br><br>
+			<audio id="soundtest" controls src='soundtest.mp3'> </audio>
+			<br><br>
+			<button id="soundtest_OK" onclick="_s.soundtest_OK()"> Click here if you can hear the audio clearly. </button>
+		</p>
+	</div>
+</div>
+
+    <!-- main instructions slide -->
+    <div class="slide" id="startExp">
+      <br>
+      <br>
+      <p id="instruct-text" class="center">
+        Great! Now we can start the real experiment. You will listen to 320 word pairs. <br><br> Your task is to decide whether the second word in the pair is a real word or a made up word. <br><br> Press the F key if the second word is made up. Press the J key if the second word is a real word.
+      </p>
+      <div class="center">
+        <button class="continueButton" onclick="_s.button()">Continue</button>
+      </div>
+    </div>
+
+    <!-- trial slide -->
+    <div class="slide" id="trial">
+
+		<p class="center">
+		<br><br><br><br><br><br>
+		F = Made Up Word &emsp; &emsp; &emsp; J = Real Word	
+		
+   <audio id="prime_stim"> 
+	   <source id="wav_src" src="" type="audio/wav"> Your browser does not support the audio element. 
+   </audio>
+   
+   <audio id="target_stim"> 
+	   <source id="wav_src" src="" type="audio/wav"> Your browser does not support the audio element. 
+   </audio>
+     
+	  <div class="center">
+        <button class="continueButton" onclick="_s.button()">Continue</button>
+      </div>
+      <div class="err">
+        <br>
+        <p>
+          Make sure you selected a radio button before clicking 'Continue'
+        </p>
+      </div>
+    </div>
+
+    <!-- subject information slide -->
+    <div class="slide" id="subj_info">
+      <div class="long_form">
+        <div class="subj_info_title">
+          Additional Information
+        </div>
+        <p class="info">
+          Answering these questions is optional, but will help us understand your answers.
+        </p>
+        <p>
+          Did you understand the task?
+        </p><label>
+			<input type="radio" name="assess" value="Yes">Yes</label> <label>
+				<input type="radio" name="assess" value="No">No</label> <label>
+				<input type="radio" name="assess" value="Confused">I was confused</label>
+        <p>
+          Gender: <select id="gender">
+            <option value="">
+            </option>
+            <option value="Male">
+              Male
+            </option>
+            <option value="Female">
+              Female
+            </option>
+            <option value="Other">
+              Other
+            </option>
+          </select>
+        </p>
+        <p>
+          Age: <input type="text" id="age">
+        </p>
+        <p>
+          Level of Education: <select id="education">
+            <option value="-1">
+            </option>
+            <option value="0">
+              Some high school
+            </option>
+            <option value="1">
+              Graduated high school
+            </option>
+            <option value="2">
+              Some college
+            </option>
+            <option value="3">
+              Graduated college
+            </option>
+            <option value="4">
+              Hold a higher degree
+            </option>
+          </select>
+        </p>
+		   <!-- added questions -->
+        <p>
+          Race/Ethnicity: <select id="race">
+            <option value="-1">
+            </option>
+            <option value="0">
+              White or Caucasian
+            </option>
+            <option value="1">
+              Black or African American
+            </option>
+            <option value="2">
+              Native American or Alaskan Native
+            </option>
+            <option value="3">
+              Asian or Pacific Islander
+            </option>
+            <option value="4">
+              Prefer not to say
+            </option>
+          </select>
+        </p>
+        <p>
+          Current City, State: <input type="text" id="current_region">
+        </p>
+        <p>
+          Other Cities, States Lived In: <input type="text" id="other_regions">
+        </p>		
+        <p>
+          Native Language: <input type="text" id="first_language">
+        </p>
+    <p>
+      Other Language(s) Spoken: <input type="text" id="other_languages">
+    </p>		
+    <p>
+      Parents' Native Language(s): <input type="text" id="parent_languages">
+    </p>
+    <p>
+      Exposure to Hispanic/ Latinx Population: <select id="exposure">
+        <option value="-1">
+        </option>
+        <option value="0">
+          None
+        </option>
+        <option value="1">
+          A little
+        </option>
+        <option value="2">
+          A moderate amount
+        </option>
+        <option value="3">
+          A lot
+        </option>
+        <option value="4">
+          Constant
+        </option>
+      </select>
+    </p>	
+		<!--
+		<p>
+          Do you think the payment was fair?
+        </p><select id="fairprice">
+          <option value="-1">
+          </option>
+          <option value="0">
+            The payment was too low
+          </option>
+          <option value="1">
+            The payment was fair
+          </option>
+        </select>
+        <p>
+          Did you enjoy the experiment?
+        </p><select id="enjoyment">
+          <option value="-1">
+          </option>
+          <option value="0">
+            Worse than the average experiment
+          </option>
+          <option value="1">
+            An average experiment
+          </option>
+          <option value="2">
+            Better than average experiment
+          </option>
+        </select>
+			-->
+        <p>
+          Please leave any comments you have about this experiment here:
+        </p>
+        <textarea id="comments" rows="3" cols="50"></textarea><br>
+        <button onclick="_s.submit()">Submit</button>
+      </div>
+    </div>
+
+    <!-- final slide -->
+    <div id="thanks" class="slide js">
+      <p class="big">
+        Thanks for your time!
+      </p>
+    </div>
+
+    <!-- progress bar -->
+    <div class="progress">
+      <span>Progress:</span>
+      <div class="bar-wrapper">
+        <div class="bar" style="width: 0%"></div>
+      </div>
+    </div>
+  </body>
+</html>
