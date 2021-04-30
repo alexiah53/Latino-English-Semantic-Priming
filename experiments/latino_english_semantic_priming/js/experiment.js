@@ -10,18 +10,31 @@ function make_slides(f) {
     }
   });
 
-// sound check
+// SOUND CHECK
+  
   slides.sound_test = slide({
      name: "sound_test",
+	  start: function(){
+	  	$('.err').hide();
+	  },
      soundtest_OK : function(e){
        exp.trial_no = 0;
-       exp.go();
+	   
+	   var sound_test = $(".sound_test").val();
+	   sound_test = sound_test.toLowerCase();
+	   
+	   if (sound_test == "ready") {
+	   	 exp.go();
+	   } else {
+	   	$('.err').show();
+	   }
      }
    });
-
-  // set up slide with instructions for main experiment
-  slides.startExp = slide({
-    name: "startExp",
+   
+  // INSTRUCTIONS FOR PRACTICE TRIALS
+   
+  slides.practice_instructions = slide({
+    name: "practice_instructions",
     start: function() {
     },
     button: function() {
@@ -29,15 +42,200 @@ function make_slides(f) {
     },
   });
 
+   // PRACTICE TRIAL 1
+  
+  slides.practice_trial_1 = slide({
+    name: "practice_trial_1",
+
+    // To rotate through stimulus list
+    start : function()
+	 { 
+		$('.err').hide();
+		$('.correct').hide();
+		exp.allow_key_press = 0;
+		exp.response = "";
+	  
+// this connects to html file
+var prime_aud = document.getElementById("prime_stim"); 
+
+// this indexes to the prime file name
+prime_aud.src = "audio/doctor.wav"; 
+prime_aud.load();
+prime_aud.play();
+
+
+// this connects to html file
+var target_aud = document.getElementById("target_stim"); 
+
+// this indexes to the target file name
+target_aud.src = "audio/nurse.wav"; 
+target_aud.load();
+
+prime_aud.onended = function() { 
+	console.log("audio ended");
+	setTimeout(function(){ 
+		console.log("waiting to play target");
+		target_aud.play(); 
+		exp.allow_key_press = 1;
+	 }, 500);
+	 
+	 document.onkeydown = checkKey; 
+	 function checkKey(e) { 
+		 e = e || window.event;
+		 if (e.keyCode == 76 && exp.allow_key_press == 1) {
+		 	 console.log("L pressed");
+			 exp.response = "real";
+			 $('.err').hide();
+			 $('.correct').show();
+		 	setTimeout(function(){ 
+				// WHEN I ADD NEW PRACTICE THIS TURNS INTO EXP.GO()
+				 exp.go();
+		 	 }, 2000);
+		 } if (e.keyCode == 83 && exp.allow_key_press == 1) {
+		 	console.log("S pressed");
+			exp.response = "pseudo";
+			$('.err').show();
+		 }	   
+	 }
+
+ };
+     },
+
+     // handle click on "Continue" button
+     button: function() {
+         this.log_responses();
+     },
+		
+     // save response
+     log_responses: function() {
+       exp.data_trials.push({
+		  
+ 	"Response_Time": 0,
+ 	"Response": "",
+    "Pair_Number": "",
+ 	"List": "", 
+	"Prime": "doctor",
+    "Target": "nurse",
+	"Semantically": "related",
+ 	"Trial_Type": "practice",
+ 	"Target_Word_Type": "real",
+ 	"Prime_Voice": "",
+	"Target_Voice": "",
+	"slide_number_in_experiment": exp.phase
+		   
+       });
+     },
+   });
+
+    // PRACTICE TRIAL 2
+  
+   slides.practice_trial_2 = slide({
+     name: "practice_trial_2",
+
+     // To rotate through stimulus list
+     start : function()
+ 	 { 
+		 // IS THIS RIGHT
+		$('#stimuli').show();
+		$('.err').hide();
+ 		$('.correct').hide();
+ 		exp.allow_key_press = 0;
+ 		exp.response = "";
+	  
+ // this connects to html file
+ var prime_aud = document.getElementById("prime_stim"); 
+
+ // this indexes to the prime file name
+ prime_aud.src = "audio/doctor.wav"; 
+ prime_aud.load();
+ prime_aud.play();
+
+
+ // this connects to html file
+ var target_aud = document.getElementById("target_stim"); 
+
+ // this indexes to the target file name
+ target_aud.src = "audio/wug.wav"; 
+ target_aud.load();
+
+ prime_aud.onended = function() { 
+ 	console.log("audio ended");
+ 	setTimeout(function(){ 
+ 		console.log("waiting to play target");
+ 		target_aud.play(); 
+ 		exp.allow_key_press = 1;
+ 	 }, 500);
+	 
+ 	 document.onkeydown = checkKey; 
+ 	 function checkKey(e) { 
+ 		 e = e || window.event;
+ 		 if (e.keyCode == 76 && exp.allow_key_press == 1) {
+ 		 	 console.log("L pressed");
+ 			 exp.response = "real";
+ 			 $('.err').show();
+ 		 } if (e.keyCode == 83 && exp.allow_key_press == 1) {
+ 		 	console.log("S pressed");
+ 			exp.response = "pseudo";
+ 			$('.err').hide();
+			$('.correct').show();
+ 		 	setTimeout(function(){ 
+				exp.go();
+ 		 	 }, 2000);
+ 		 }	   
+ 	 }
+
+  };
+      },
+	  
+      // handle click on "Continue" button
+      button: function() {
+          this.log_responses();
+          // exp.go(); //use exp.go() if and only if there is no "present"ed data, ie no list of stimuli.
+      },
+		
+      // save response
+      log_responses: function() {
+        exp.data_trials.push({
+		  
+  	"Response_Time": 0,
+  	"Response": "",
+     "Pair_Number": "",
+  	"List": "", 
+ 	"Prime": "doctor",
+     "Target": "wug",
+ 	"Semantically": "unrelated",
+  	"Trial_Type": "practice",
+  	"Target_Word_Type": "pseudo",
+  	"Prime_Voice": "",
+ 	"Target_Voice": "",
+ 	"slide_number_in_experiment": exp.phase
+		 
+        });
+      },
+    });
+
+   // set up slide with instructions for main experiment
+   slides.startExp = slide({
+     name: "startExp",
+     start: function() {
+     },
+     button: function() {
+       exp.go(); //use exp.go() if and only if there is no "present" data.
+     },
+   });
+
+// MAIN TRIAL
+
   slides.trial = slide({
     name: "trial",
 
     // To rotate through stimulus list, comment out the above 7 lines and  uncomment the following 2:
     present: exp.stimuli,
-    present_handle : function(stim) {
-
-allow_key_press = 0
-
+    present_handle : function(stim)
+	 { 
+		exp.allow_key_press = 0;
+		exp.response = "";
+		
       // store stimulus data
       this.stim = stim;
 	  
@@ -62,69 +260,190 @@ target_aud.src = "audio/" + target_source + ".wav";
 target_aud.load();
 
 prime_aud.onended = function() { 
-	console.log("audio ended");
+	console.log("prime audio ended");
 	setTimeout(function(){ 
 		console.log("waiting to play target");
 		target_aud.play(); 
-		allow_key_press = 1;
+		exp.startTime = Date.now();
+		exp.allow_key_press = 1;
 	 }, 500);
+	 
+	 target_aud.onended = function() { 
+	 	console.log("target audio ended");
+	 	setTimeout(function(){
+ 		 		// console.log("waiting to play next pair");
+ 		 		// move to next trial
+				
+				//
+// 				if (exp.response != ""){
+// 					break}
+// 					else {
+//
+// console.log("No response");
+// 					 				exp.response_time = Date.now() - exp.startTime
+// 					 				exp.response = "skip";
+// 					 				_s.button();
+// 					 				console.log("should skip to next trial")
+//
+// 				}
+//
+//
+//
+ 		 	 }, 5000);
+
+	 }
 	 
 	 document.onkeydown = checkKey; 
 	 function checkKey(e) { 
 		 e = e || window.event;
-		 if (e.keyCode == 74 && allow_key_press == 1)
-			  console.log("j pressed");
-		 if (e.keyCode == 70 && allow_key_press == 1)
-			  console.log("f pressed");	  
+		 if (e.keyCode == 76 && exp.allow_key_press == 1) {
+		 	 console.log("L pressed");
+			 exp.response_time = Date.now() - exp.startTime
+			 exp.response = "real";
+			 setTimeout(function(){ 
+			 	_s.button();
+		 	}, 1000);
+		 } if (e.keyCode == 83 && exp.allow_key_press == 1) {
+		 	console.log("S pressed");
+			exp.response_time = Date.now() - exp.startTime	
+			exp.response = "pseudo";
+		 	setTimeout(function(){ 
+				_s.button();
+	 	   }, 1000);
+		 }	   
 	 }
-	 
+
 };
-	
-
       $(".err").hide();
-
     },
 
     // handle click on "Continue" button
     button: function() {
+		// exp.prime_source = "";
+		// exp.target_source = "";
         this.log_responses();
-        // exp.go(); //use exp.go() if and only if there is no "present"ed data, ie no list of stimuli.
         _stream.apply(this); //use _stream.apply(this) if there is a list of "present" stimuli to rotate through
-    
+		$('#stimuli').show();
+        // exp.go(); //use exp.go() if and only if there is no "present"ed data, ie no list of stimuli.
+		// $('#stimuli').hide();
+		// $('#landing_page').show();
     },
-
+		
     // save response
     log_responses: function() {
       exp.data_trials.push({
 		  
+	"Response_Time": exp.response_time,
+	"Response": exp.response,
     "Pair_Number": this.stim.Pair_Number,
 	"List": this.stim.List,	  
     "Prime": this.stim.Prime,
     "Target": this.stim.Target,
     "Semantically":this.stim.Semantically,
 	"Trial_Type": this.stim.Trial_Type,
-	"Target_Word": this.stim.Target_Word,
+	"Target_Word_Type": this.stim.Target_Word_Type,
 	"Prime_Voice": this.stim.Prime_Voice,
-	"Target_Voice": this.stim.Target_Voice
+	"Target_Voice": this.stim.Target_Voice,
+	"slide_number_in_experiment": exp.phase
+	
       });
     },
+  });
+  
+  slides.follow_up = slide({
+  	  name: "follow_up",
+      start: function() {
+		  exp.allow_key_press = 0;
+		  console.log("exp.allow_key_press", exp.allow_key_press)
+      },
+
+      // handle click on "Continue" button
+      button_follow_up: function() {
+		  
+		  if  (!$("#speaker_1_reaction_1").val() | 
+			  !$("#speaker_1_reaction_2").val() | 
+			  !$("#speaker_1_reaction_3").val() | 
+		  	  !$("#speaker_1_reaction_4").val() | 
+			  !$("#speaker_1_reaction_5").val() | 
+			  !$("#speaker_2_reaction_1").val() | 
+			  !$("#speaker_2_reaction_2").val() | 
+			  !$("#speaker_2_reaction_3").val() | 
+		  	  !$("#speaker_2_reaction_4").val() | 
+		 	  !$("#speaker_2_reaction_5").val()) {
+			  
+		  	$(".err").show();
+		}
+			else {
+	            this.log_responses();
+	            exp.go(); //use exp.go() if and only if there is no "present"ed data, ie no list of stimuli.
+			}
+      },
+
+      // save response
+      log_responses: function() {
+        exp.data_trials.push({			
+      	  	"speaker_1_reaction_1":$("#speaker_1_reaction_1").val(),
+			"speaker_1_reaction_2":$("#speaker_1_reaction_2").val(),
+			"speaker_1_reaction_3":$("#speaker_1_reaction_3").val(),
+			"speaker_1_reaction_4":$("#speaker_1_reaction_4").val(),
+			"speaker_1_reaction_5":$("#speaker_1_reaction_5").val(),
+			"speaker_2_reaction_1":$("#speaker_2_reaction_1").val(),
+			"speaker_2_reaction_2":$("#speaker_2_reaction_2").val(),
+  			"speaker_2_reaction_3":$("#speaker_2_reaction_3").val(),
+			"speaker_2_reaction_4":$("#speaker_2_reaction_4").val(),
+			"speaker_2_reaction_5":$("#speaker_2_reaction_5").val(),
+        });
+  	  }
   });
 
   // slide to collect subject information
   slides.subj_info = slide({
     name: "subj_info",
     submit: function(e) {
+		
+		
+	  if  (
+		  !$("#current_region").val() | 
+		  !$("#first_language").val() | 
+		  !$("#parent_languages").val() | 
+	  	  !$("#exposure").val()) {
+		  
+	  	$(".err").show();
+	}
+	else {
+		
+		var races = document.querySelectorAll('[name="race"]:checked');
+		console.log("race:", races.length);
+		
+		var race_list = [];
+		
+		for (var i = 0; i < races.length; i++) {
+			
+			if (races[i].type=="checkbox" && races[i].checked == true){
+				race_list += races[i].value+", \n";
+			}
+		}
+		
+		console.log("list:", race_list);
+		
       exp.subj_data = {
-        language: $("#language").val(),
-        enjoyment: $("#enjoyment").val(),
         asses: $('input[name="assess"]:checked').val(),
         age: $("#age").val(),
         gender: $("#gender").val(),
         education: $("#education").val(),
-        fairprice: $("#fairprice").val(),
-        comments: $("#comments").val()
+        comments: $("#comments").val(),
+		race: race_list,   
+		current_region: $("#current_region").val(),
+		other_regions: $("#other_regions").val(),
+		first_language: $("#first_language").val(),
+		other_languages: $("#other_languages").val(),
+		parent_languages: $("#parent_languages").val(),
+		exposure: $("#exposure").val() 
       };
-      exp.go(); //use exp.go() if and only if there is no "present" data.
+	 
+      exp.go();
+	  
+}
     }
   });
 
@@ -140,7 +459,7 @@ prime_aud.onended = function() {
         "subject_information": exp.subj_data,
         "time_in_minutes": (Date.now() - exp.startT) / 60000
       };
-      proliferate.submit(exp.data);
+      turk.submit(exp.data);
     }
   });
 
@@ -150,26 +469,26 @@ prime_aud.onended = function() {
 /// initialize experiment
 function init() {
 
-  exp.trials = [];
-  exp.catch_trials = [];
-  exp.conditions = _.shuffle(["1_ME","1_CE","1_GE","2_ME","2_CE","2_GE"]);
-  exp.participant_condition = exp.conditions.pop()
+  // exp.trials = [];
+  // exp.catch_trials = [];
+  // exp.conditions = _.shuffle(["1_ME","1_CE","1_GE","2_ME","2_CE","2_GE"]);
+  // exp.participant_condition = exp.conditions.pop()
+  //
+  // if (exp.participant_condition == "1_ME") {
+  // 	var stimuli = all_stims_1_ME
+  // } else if (exp.participant_condition == "1_CE") {
+  // 	var stimuli = all_stims_1_CE
+  // } else if (exp.participant_condition == "1_GE") {
+  // 	var stimuli = all_stims_1_GE
+  // } else if (exp.participant_condition == "2_ME") {
+  // 	var stimuli = all_stims_2_ME
+  // } else if (exp.participant_condition == "2_CE") {
+  // 	var stimuli = all_stims_2_CE
+  // } else {
+  // 	var stimuli = all_stims_2_GE
+  // }
   
-  if (exp.participant_condition == "1_ME") {
-  	var stimuli = all_stims_1_ME
-  } else if (exp.participant_condition == "1_CE") {
-  	var stimuli = all_stims_1_CE
-  } else if (exp.participant_condition == "1_GE") {
-  	var stimuli = all_stims_1_GE
-  } else if (exp.participant_condition == "2_ME") {
-  	var stimuli = all_stims_2_ME
-  } else if (exp.participant_condition == "2_CE") {
-  	var stimuli = all_stims_2_CE
-  } else {
-  	var stimuli = all_stims_2_GE
-  }
-  
-  // var stimuli = all_stims;
+  var stimuli = all_stims;
 
   exp.stimuli = _.shuffle(stimuli); //call _.shuffle(stimuli) to randomize the order;
   
@@ -193,8 +512,12 @@ function init() {
   exp.structure = [
     "i0",
 	"sound_test",
+	"practice_instructions",
+	"practice_trial_1",
+	"practice_trial_2",
     "startExp",
     "trial",
+	"follow_up",
     "subj_info",
     "thanks"
   ];
@@ -210,8 +533,19 @@ function init() {
 
   $('.slide').hide(); //hide everything
 
+// this is for prolific
+  // $("#start_button").click(function() {
+  //   exp.go();
+  // });
+  
+  // this is for mturk
   $("#start_button").click(function() {
-    exp.go();
+    if (turk.previewMode) {
+      $("#mustaccept").show();
+    } else {
+      $("#start_button").click(function() {$("#mustaccept").show();});
+      exp.go();
+    }
   });
 
   exp.go(); //show first slide
