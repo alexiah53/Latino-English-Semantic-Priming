@@ -11,7 +11,7 @@ function make_slides(f) {
   });
 
 // SOUND CHECK
-  
+
   slides.sound_test = slide({
      name: "sound_test",
 	  start: function(){
@@ -19,10 +19,10 @@ function make_slides(f) {
 	  },
      soundtest_OK : function(e){
        exp.trial_no = 0;
-	   
+
 	   var sound_test = $(".sound_test").val();
 	   sound_test = sound_test.toLowerCase();
-	   
+
 	   if (sound_test == "ready") {
 	   	 exp.go();
 	   } else {
@@ -30,9 +30,9 @@ function make_slides(f) {
 	   }
      }
    });
-   
+
   // INSTRUCTIONS FOR PRACTICE TRIALS
-   
+
   slides.practice_instructions = slide({
     name: "practice_instructions",
     start: function() {
@@ -43,51 +43,51 @@ function make_slides(f) {
   });
 
    // PRACTICE TRIAL 1
-  
+
   slides.practice_trial_1 = slide({
     name: "practice_trial_1",
 
     // To rotate through stimulus list
     start : function()
-	 { 
+	 {
 		$('.err').hide();
 		$('.correct').hide();
 		exp.allow_key_press = 0;
 		exp.response = "";
-	  
+
 // this connects to html file
-var prime_aud = document.getElementById("prime_stim"); 
+var prime_aud = document.getElementById("prime_stim");
 
 // this indexes to the prime file name
-prime_aud.src = "audio/doctor.wav"; 
+prime_aud.src = "audio/doctor.wav";
 prime_aud.load();
 prime_aud.play();
 
 
 // this connects to html file
-var target_aud = document.getElementById("target_stim"); 
+var target_aud = document.getElementById("target_stim");
 
 // this indexes to the target file name
-target_aud.src = "audio/nurse.wav"; 
+target_aud.src = "audio/nurse.wav";
 target_aud.load();
 
-prime_aud.onended = function() { 
+prime_aud.onended = function() {
 	console.log("audio ended");
-	setTimeout(function(){ 
+	setTimeout(function(){
 		console.log("waiting to play target");
-		target_aud.play(); 
+		target_aud.play();
 		exp.allow_key_press = 1;
 	 }, 500);
-	 
-	 document.onkeydown = checkKey; 
-	 function checkKey(e) { 
+
+	 document.onkeydown = checkKey;
+	 function checkKey(e) {
 		 e = e || window.event;
 		 if (e.keyCode == 76 && exp.allow_key_press == 1) {
 		 	 console.log("L pressed");
 			 exp.response = "real";
 			 $('.err').hide();
 			 $('.correct').show();
-		 	setTimeout(function(){ 
+		 	setTimeout(function(){
 				// WHEN I ADD NEW PRACTICE THIS TURNS INTO EXP.GO()
 				 exp.go();
 		 	 }, 2000);
@@ -95,7 +95,7 @@ prime_aud.onended = function() {
 		 	console.log("S pressed");
 			exp.response = "pseudo";
 			$('.err').show();
-		 }	   
+		 }
 	 }
 
  };
@@ -105,15 +105,15 @@ prime_aud.onended = function() {
      button: function() {
          this.log_responses();
      },
-		
+
      // save response
      log_responses: function() {
        exp.data_trials.push({
-		  
+
  	"Response_Time": 0,
  	"Response": "",
     "Pair_Number": "",
- 	"List": "", 
+ 	"List": "",
 	"Prime": "doctor",
     "Target": "nurse",
 	"Semantically": "related",
@@ -122,52 +122,52 @@ prime_aud.onended = function() {
  	"Prime_Voice": "",
 	"Target_Voice": "",
 	"slide_number_in_experiment": exp.phase
-		   
+
        });
      },
    });
 
     // PRACTICE TRIAL 2
-  
+
    slides.practice_trial_2 = slide({
      name: "practice_trial_2",
 
      // To rotate through stimulus list
      start : function()
- 	 { 
+ 	 {
 		 // IS THIS RIGHT
 		$('#stimuli').show();
 		$('.err').hide();
  		$('.correct').hide();
  		exp.allow_key_press = 0;
  		exp.response = "";
-	  
+
  // this connects to html file
- var prime_aud = document.getElementById("prime_stim"); 
+ var prime_aud = document.getElementById("prime_stim");
 
  // this indexes to the prime file name
- prime_aud.src = "audio/doctor.wav"; 
+ prime_aud.src = "audio/doctor.wav";
  prime_aud.load();
  prime_aud.play();
 
 
  // this connects to html file
- var target_aud = document.getElementById("target_stim"); 
+ var target_aud = document.getElementById("target_stim");
 
  // this indexes to the target file name
- target_aud.src = "audio/wug.wav"; 
+ target_aud.src = "audio/wug.wav";
  target_aud.load();
 
- prime_aud.onended = function() { 
+ prime_aud.onended = function() {
  	console.log("audio ended");
- 	setTimeout(function(){ 
+ 	setTimeout(function(){
  		console.log("waiting to play target");
- 		target_aud.play(); 
+ 		target_aud.play();
  		exp.allow_key_press = 1;
  	 }, 500);
-	 
- 	 document.onkeydown = checkKey; 
- 	 function checkKey(e) { 
+
+ 	 document.onkeydown = checkKey;
+ 	 function checkKey(e) {
  		 e = e || window.event;
  		 if (e.keyCode == 76 && exp.allow_key_press == 1) {
  		 	 console.log("L pressed");
@@ -178,29 +178,29 @@ prime_aud.onended = function() {
  			exp.response = "pseudo";
  			$('.err').hide();
 			$('.correct').show();
- 		 	setTimeout(function(){ 
+ 		 	setTimeout(function(){
 				exp.go();
  		 	 }, 2000);
- 		 }	   
+ 		 }
  	 }
 
   };
       },
-	  
+
       // handle click on "Continue" button
       button: function() {
           this.log_responses();
           // exp.go(); //use exp.go() if and only if there is no "present"ed data, ie no list of stimuli.
       },
-		
+
       // save response
       log_responses: function() {
         exp.data_trials.push({
-		  
+
   	"Response_Time": 0,
   	"Response": "",
      "Pair_Number": "",
-  	"List": "", 
+  	"List": "",
  	"Prime": "doctor",
      "Target": "wug",
  	"Semantically": "unrelated",
@@ -209,7 +209,7 @@ prime_aud.onended = function() {
   	"Prime_Voice": "",
  	"Target_Voice": "",
  	"slide_number_in_experiment": exp.phase
-		 
+
         });
       },
     });
@@ -232,86 +232,80 @@ prime_aud.onended = function() {
     // To rotate through stimulus list, comment out the above 7 lines and  uncomment the following 2:
     present: exp.stimuli,
     present_handle : function(stim)
-	 { 
+	 {
 		exp.allow_key_press = 0;
-		exp.response = "";
-		
+		exp.response = null;
+
       // store stimulus data
       this.stim = stim;
-	  
+
 // this connects to html file
-var prime_aud = document.getElementById("prime_stim"); 
+var prime_aud = document.getElementById("prime_stim");
 
 // this indexes to the prime file name
 var prime_source = stim.Prime_Voice + "_" + stim.Prime
 console.log(prime_source);
-prime_aud.src = "audio/" + prime_source + ".wav"; 
+prime_aud.src = "audio/" + prime_source + ".wav";
 prime_aud.load();
 prime_aud.play();
 
 
 // this connects to html file
-var target_aud = document.getElementById("target_stim"); 
+var target_aud = document.getElementById("target_stim");
 
 // this indexes to the target file name
 var target_source = stim.Target_Voice + "_" + stim.Target
 console.log(target_source);
-target_aud.src = "audio/" + target_source + ".wav"; 
+target_aud.src = "audio/" + target_source + ".wav";
 target_aud.load();
 
-prime_aud.onended = function() { 
+prime_aud.onended = function() {
 	console.log("prime audio ended");
-	setTimeout(function(){ 
+	my_time = setTimeout(function(){
 		console.log("waiting to play target");
-		target_aud.play(); 
+		target_aud.play();
 		exp.startTime = Date.now();
 		exp.allow_key_press = 1;
 	 }, 500);
-	 
-	 target_aud.onended = function() { 
-	 	console.log("target audio ended");
-	 	setTimeout(function(){
- 		 		// console.log("waiting to play next pair");
- 		 		// move to next trial
-				
-				//
-// 				if (exp.response != ""){
-// 					break}
-// 					else {
-//
-// console.log("No response");
-// 					 				exp.response_time = Date.now() - exp.startTime
-// 					 				exp.response = "skip";
-// 					 				_s.button();
-// 					 				console.log("should skip to next trial")
-//
-// 				}
-//
-//
-//
- 		 	 }, 5000);
 
-	 }
-	 
-	 document.onkeydown = checkKey; 
-	 function checkKey(e) { 
-		 e = e || window.event;
-		 if (e.keyCode == 76 && exp.allow_key_press == 1) {
-		 	 console.log("L pressed");
-			 exp.response_time = Date.now() - exp.startTime
-			 exp.response = "real";
-			 setTimeout(function(){ 
-			 	_s.button();
-		 	}, 1000);
-		 } if (e.keyCode == 83 && exp.allow_key_press == 1) {
-		 	console.log("S pressed");
-			exp.response_time = Date.now() - exp.startTime	
-			exp.response = "pseudo";
-		 	setTimeout(function(){ 
-				_s.button();
-	 	   }, 1000);
-		 }	   
-	 }
+   var my_time;
+
+   	 target_aud.onended = function() {
+   	 	console.log("target audio ended");
+   	 	my_time = setTimeout(function(){
+    		 		console.log("waiting to play next pair");
+    		 		// move to next trial
+           if (exp.response == null) {
+               console.log("No response");
+   					 	exp.response_time = Date.now() - exp.startTime
+   					 	exp.response = "skip";
+   					 	_s.button();
+   					 	console.log("should skip to next trial")
+   				}
+         }, 3000);
+   	 },
+
+   	 document.onkeydown = checkKey;
+   	 function checkKey(e) {
+   		 e = e || window.event;
+   		 if (e.keyCode == 76 && exp.allow_key_press == 1) {
+   		 	 console.log("L pressed");
+   			 exp.response_time = Date.now() - exp.startTime
+   			 exp.response = "real";
+   			 setTimeout(function(){
+            clearTimeout(my_time);
+   			 	_s.button();
+   		 	}, 1000);
+   		 } if (e.keyCode == 83 && exp.allow_key_press == 1) {
+   		 	console.log("S pressed");
+   			exp.response_time = Date.now() - exp.startTime
+   			exp.response = "pseudo";
+   		 	setTimeout(function(){
+           clearTimeout(my_time);
+   				_s.button();
+   	 	   }, 1000);
+   		 }
+   	 }
 
 };
       $(".err").hide();
@@ -328,15 +322,15 @@ prime_aud.onended = function() {
 		// $('#stimuli').hide();
 		// $('#landing_page').show();
     },
-		
+
     // save response
     log_responses: function() {
       exp.data_trials.push({
-		  
+
 	"Response_Time": exp.response_time,
 	"Response": exp.response,
     "Pair_Number": this.stim.Pair_Number,
-	"List": this.stim.List,	  
+	"List": this.stim.List,
     "Prime": this.stim.Prime,
     "Target": this.stim.Target,
     "Semantically":this.stim.Semantically,
@@ -345,11 +339,11 @@ prime_aud.onended = function() {
 	"Prime_Voice": this.stim.Prime_Voice,
 	"Target_Voice": this.stim.Target_Voice,
 	"slide_number_in_experiment": exp.phase
-	
+
       });
     },
   });
-  
+
   slides.follow_up = slide({
   	  name: "follow_up",
       start: function() {
@@ -359,18 +353,18 @@ prime_aud.onended = function() {
 
       // handle click on "Continue" button
       button_follow_up: function() {
-		  
-		  if  (!$("#speaker_1_reaction_1").val() | 
-			  !$("#speaker_1_reaction_2").val() | 
-			  !$("#speaker_1_reaction_3").val() | 
-		  	  !$("#speaker_1_reaction_4").val() | 
-			  !$("#speaker_1_reaction_5").val() | 
-			  !$("#speaker_2_reaction_1").val() | 
-			  !$("#speaker_2_reaction_2").val() | 
-			  !$("#speaker_2_reaction_3").val() | 
-		  	  !$("#speaker_2_reaction_4").val() | 
+
+		  if  (!$("#speaker_1_reaction_1").val() |
+			  !$("#speaker_1_reaction_2").val() |
+			  !$("#speaker_1_reaction_3").val() |
+		  	  !$("#speaker_1_reaction_4").val() |
+			  !$("#speaker_1_reaction_5").val() |
+			  !$("#speaker_2_reaction_1").val() |
+			  !$("#speaker_2_reaction_2").val() |
+			  !$("#speaker_2_reaction_3").val() |
+		  	  !$("#speaker_2_reaction_4").val() |
 		 	  !$("#speaker_2_reaction_5").val()) {
-			  
+
 		  	$(".err").show();
 		}
 			else {
@@ -381,7 +375,7 @@ prime_aud.onended = function() {
 
       // save response
       log_responses: function() {
-        exp.data_trials.push({			
+        exp.data_trials.push({
       	  	"speaker_1_reaction_1":$("#speaker_1_reaction_1").val(),
 			"speaker_1_reaction_2":$("#speaker_1_reaction_2").val(),
 			"speaker_1_reaction_3":$("#speaker_1_reaction_3").val(),
@@ -400,54 +394,54 @@ prime_aud.onended = function() {
   slides.subj_info = slide({
     name: "subj_info",
     submit: function(e) {
-		
-		
+
+
 	  if  (
-		  !$("#current_region").val() | 
-		  !$("#first_language").val() | 
-		  !$("#parent_languages").val() | 
+		  !$("#current_region").val() |
+		  !$("#first_language").val() |
+		  !$("#parent_languages").val() |
 	  	  !$("#exposure").val()) {
-		  
+
 	  	$(".err").show();
 	}
 	else {
-		
+
 		var races = document.querySelectorAll('[name="race"]:checked');
 		console.log("race:", races.length);
-		
+
 		var race_list = [];
-		
+
 		for (var i = 0; i < races.length; i++) {
-			
+
 			if (races[i].type=="checkbox" && races[i].checked == true){
 				race_list += races[i].value+", \n";
 			}
 		}
-		
+
 		console.log("list:", race_list);
-		
+
       exp.subj_data = {
         asses: $('input[name="assess"]:checked').val(),
         age: $("#age").val(),
         gender: $("#gender").val(),
         education: $("#education").val(),
         comments: $("#comments").val(),
-		race: race_list,   
+		race: race_list,
 		current_region: $("#current_region").val(),
 		other_regions: $("#other_regions").val(),
 		first_language: $("#first_language").val(),
 		other_languages: $("#other_languages").val(),
 		parent_languages: $("#parent_languages").val(),
-		exposure: $("#exposure").val() 
+		exposure: $("#exposure").val()
       };
-	 
+
       exp.go();
-	  
+
 }
     }
   });
 
-  // 
+  //
   slides.thanks = slide({
     name: "thanks",
     start: function() {
@@ -487,18 +481,18 @@ function init() {
   // } else {
   // 	var stimuli = all_stims_2_GE
   // }
-  
+
   var stimuli = all_stims;
 
   exp.stimuli = _.shuffle(stimuli); //call _.shuffle(stimuli) to randomize the order;
-  
+
   console.log(exp.stimuli)
   exp.n_trials = exp.stimuli.length;
 
 
 
   // exp.condition = _.sample(["context", "no-context"]); //can randomize between subjects conditions here
-  
+
   exp.system = {
     Browser: BrowserDetect.browser,
     OS: BrowserDetect.OS,
@@ -537,7 +531,7 @@ function init() {
   // $("#start_button").click(function() {
   //   exp.go();
   // });
-  
+
   // this is for mturk
   $("#start_button").click(function() {
     if (turk.previewMode) {
