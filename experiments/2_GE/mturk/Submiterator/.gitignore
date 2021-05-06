@@ -1,8 +1,0 @@
-*.tsv
-*.results
-*.input
-*.properties
-*.success
-*.question
-*.RData
-*.Rhistory

@@ -292,6 +292,9 @@ prime_aud.onended = function() {
    		 	 console.log("L pressed");
    			 exp.response_time = Date.now() - exp.startTime
    			 exp.response = "real";
+ 			var real_text_var = document.getElementById("real_text");
+ 			real_text_var.classList.add("active_bold");
+ 			console.log('check:', real_text_var.className);
    			 setTimeout(function(){
             clearTimeout(my_time);
    			 	_s.button();
@@ -300,6 +303,9 @@ prime_aud.onended = function() {
    		 	console.log("S pressed");
    			exp.response_time = Date.now() - exp.startTime
    			exp.response = "pseudo";
+			var pseudo_text_var = document.getElementById("pseudo_text");
+			pseudo_text_var.classList.add("active_bold");
+			console.log('check:', pseudo_text_var.className);
    		 	setTimeout(function(){
            clearTimeout(my_time);
    				_s.button();
@@ -316,6 +322,10 @@ prime_aud.onended = function() {
 		// exp.prime_source = "";
 		// exp.target_source = "";
         this.log_responses();
+		var pseudo_text_var = document.getElementById("pseudo_text");
+		var real_text_var = document.getElementById("real_text");
+		pseudo_text_var.classList.remove("active_bold");
+		real_text_var.classList.remove("active_bold");
         _stream.apply(this); //use _stream.apply(this) if there is a list of "present" stimuli to rotate through
 		$('#stimuli').show();
         // exp.go(); //use exp.go() if and only if there is no "present"ed data, ie no list of stimuli.
