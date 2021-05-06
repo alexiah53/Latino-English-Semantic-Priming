@@ -141,3 +141,7 @@ td:nth-child(9) {
 .slide {
 /*	border: 1px solid #666;*/
 }
+
+.active_bold {
+	font-weight: bold;
+}
