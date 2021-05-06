@@ -145,3 +145,9 @@ td:nth-child(9) {
 .active_bold {
 	font-weight: bold;
 }
+
+.race { display: inline-block; 
+	text-align: left; 
+	margin-bottom: 10px; 
+	padding-top: '20px' 
+}
