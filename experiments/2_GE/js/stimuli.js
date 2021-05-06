@@ -3362,7 +3362,7 @@ var all_stims =
     {
         "Pair_Number": "306",
         "List": "2_GE",
-        "Prime": "pattypan",
+        "Prime": "pattyman",
         "Target": "sreaper",
         "Semantically": "unrelated",
         "Trial_Type": "filler",
