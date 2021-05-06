@@ -174,3 +174,9 @@ textarea {
     width:0px;
     background-color:#000000
 }
+
+.race { display: inline-block; 
+	text-align: left; 
+	margin-bottom: 10px; 
+	padding-top: '20px' 
+}
