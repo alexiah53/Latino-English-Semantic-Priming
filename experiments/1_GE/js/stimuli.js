@@ -1282,7 +1282,7 @@ var all_stims =
     {
         "Pair_Number": "117",
         "List": "1_GE",
-        "Prime": "clIpboard",
+        "Prime": "clipboard",
         "Target": "straw",
         "Semantically": "unrelated",
         "Trial_Type": "filler",
