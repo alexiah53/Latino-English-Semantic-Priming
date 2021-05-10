@@ -463,7 +463,9 @@ prime_aud.onended = function() {
         "subject_information": exp.subj_data,
         "time_in_minutes": (Date.now() - exp.startT) / 60000
       };
-      turk.submit(exp.data);
+	  setTimeout(function (){
+	  	turk.submit(exp.data);
+	  }, 1000);
     }
   });
 
