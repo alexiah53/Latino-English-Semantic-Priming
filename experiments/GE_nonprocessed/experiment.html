@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+   <!-- non_processed for writing scripts -->
 <html>
   <head>
     <title>
@@ -31,6 +32,28 @@
     <!-- stimulus file -->
     <!-- <script src="js/stimuli.js"></script> -->
 	<script src="js/stimuli.js"></script>
+	
+	<!-- unique turker -->  
+
+	    <script type="text/JavaScript">
+
+	      $(document).ready(function(){
+
+			  var ut_id = "c1a690fd3e769b6855af4d4fdb92dda3";
+
+	      var ut_response = UTWorkerLimitReached(ut_id);
+
+	      console.log("Unique turker response" +  ut_response);
+
+	      if (ut_response) {
+
+	        $(".slide").hide();
+
+	        $("body").html("You have already completed the maximum number of HITs allowed by this requester. Please click 'Return HIT' to avoid any impact on your approval rating.");
+
+	    }});
+
+	    </script>
 	
   </head>
 
