@@ -1,0 +1,73 @@
+---
+title: "Latino English Semantic Priming"
+output:
+  rmarkdown::github_document
+  # pdf_document: default
+  # html_document:
+  #   df_print: paged
+---
+
+```{r message=FALSE, warning=FALSE, include=FALSE}
+#Loading everything
+library(tidyverse)
+# library(lme4)
+# library(lmerTest)
+source("helpers.R")
+
+#removes gray boxes from plots
+theme_set(theme_bw())
+
+# color-blind-friendly palette
+cbPalette <- c("#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7") 
+
+# load the main data
+d = read_csv("../data/nonprocessed_test-trials.csv") 
+# load information about contextual features and merge into dataset
+subject_info = read_csv("../data/nonprocessed_test-subject_information.csv")
+
+d = d %>%
+  mutate(id = row_number())
+```
+## Exclusions
+### Native Language - 
+Excluding English L2
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+lang_exclude = subject_info %>% 
+  select(workerid, first_language) %>% 
+  filter(str_detect(first_language,regex("english", ignore_case=TRUE),negate=TRUE)) %>%
+  select(workerid, first_language) 
+lang_exclude
+#d = d[!(d$workerid %in% lang_exclude$workerid),]
+```
+
+### Accuracy - 
+Excluding participants with accuracy rates lower than 90%
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+accuracy_d = d %>%
+  filter(Trial_Type == "critical") %>%
+  mutate(correct=ifelse(Response==Target_Word_Type,1,0)) %>% 
+  group_by(workerid) %>%
+  summarise(Mean=mean(correct),CILow=ci.low(correct),CIHigh=ci.high(correct)) %>%
+  ungroup() %>%
+  mutate(YMin=Mean-CILow,YMax=Mean+CIHigh) %>%
+  mutate(lowacc=ifelse(Mean<0.90,"1","0"))
+
+h=0.90
+ggplot(accuracy_d, aes(x=reorder(workerid,Mean), y=Mean, fill=lowacc)) +
+  geom_bar(stat="identity") +
+  geom_hline(yintercept=h) +
+  geom_text(aes(0, h, label=h, vjust=-1, hjust=-0.3)) +
+  scale_fill_manual(values = cbPalette) +
+  xlab("Worker ID")
+
+exclude = accuracy_d %>%
+  filter(lowacc==1)
+exclude
+#d = d[!(d$workerid %in% exclude$workerid),]
+```
+
+
+
+
+
+
