@@ -28,8 +28,9 @@ subject_info = read_csv("../data/nonprocessed_test-subject_information.csv")
 d = d %>%
   mutate(id = row_number())
 ```
+
 ## Exclusions
-### Native Language - 
+### Native Language  
 Excluding English L2
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 lang_exclude = subject_info %>% 
@@ -40,7 +41,7 @@ lang_exclude
 #d = d[!(d$workerid %in% lang_exclude$workerid),]
 ```
 
-### Accuracy - 
+### Accuracy 
 Excluding participants with accuracy rates lower than 90%
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 accuracy_d = d %>%
@@ -66,8 +67,91 @@ exclude
 #d = d[!(d$workerid %in% exclude$workerid),]
 ```
 
+### Duration
+Excluding participants who take more than 2.5 SDs from mean completion time
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+exp_time_d = d %>%
+  mutate(Mean=mean(Answer.time_in_minutes),SD=sd(Answer.time_in_minutes)) %>%
+  mutate(Ulimit=Mean+2.5*SD,Llimit=Mean-2.5*SD) %>%
+  mutate(slow=ifelse(Answer.time_in_minutes>Ulimit,"1","0")) %>%
+  mutate(fast=ifelse(Answer.time_in_minutes<Llimit,"1","0")) %>%
+  select(workerid,id,Answer.time_in_minutes,slow,fast,Mean,SD,Llimit,Ulimit) %>%
+  filter(slow==1 | fast == 1)
+exp_time_d
+#View(exp_time_d)
+#d = d[!(d$workerid %in% exp_time_d$workerid),]
+```
 
+### Individual Responses
+Excluding individual responses that are faster than 500ms or more than 3 SDs from mean RT
 
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+d_trials = d %>%
+  filter(!is.na(Trial_Type))
+exclude_sd = d_trials %>%
+  mutate(Mean=mean(Response_Time),SD=sd(Response_Time),count=n()) %>%
+  mutate(Ulimit=Mean+3*SD,Llimit=Mean-3*SD) %>%
+  mutate(slow=ifelse(Response_Time>Ulimit,"1","0")) %>%
+  mutate(fast=ifelse(Response_Time<Llimit,"1","0")) %>%
+  # excludes individual responses <500ms
+  mutate(toofast=ifelse(Response_Time<500, "1", "0")) %>%
+  select(workerid,id,Response_Time,slow,fast,toofast,Mean,SD,Llimit,Ulimit) %>%
+  filter(slow==1 | fast == 1 | toofast == 1)
+exclude_sd
+#View(exclude_sd)
+#d = d[!(d$id %in% exclude_sd$id),]
+#View(d)
+```
 
+## Plots
+### Raw RT Histogram
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+critical_rt = d %>%
+  filter(Trial_Type == "control" | Trial_Type == "critical") %>%
+  group_by(List, Trial_Type)
+ggplot(critical_rt, aes(x=Response_Time,fill=List)) +
+  geom_density(alpha=.5) +
+  xlab("Raw RT") +
+  ylab("Density")
+```
 
+### Log Transformed RT Histogram
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+# Log RT Density Plot
+ggplot(critical_rt, aes(x=log(Response_Time),fill=List)) +
+  geom_density(alpha=.5) +
+  xlab("Log RT") +
+  ylab("Density")
+```
 
+### All Conditions RT Bar Plot
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+critical_rt = d %>%
+  filter(Trial_Type == "control" | Trial_Type == "critical") %>%
+  group_by(Trial_Type) %>%
+  summarize(MeanRT = mean(Response_Time), CI.Low = ci.low(Response_Time), CI.High = ci.high(Response_Time)) %>%
+  mutate(YMin = MeanRT - CI.Low, YMax = MeanRT + CI.High)
+
+ggplot(data = critical_rt, aes(x =Trial_Type, y=MeanRT,)) +
+  geom_bar(stat="identity")  +
+  xlab("Prime Condition") +
+  ylab("Raw RT") +
+  geom_errorbar(aes(ymin=YMin,ymax=YMax),width=.25) 
+```
+
+### Split Condition RT Bar Plot
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+#THIS NEEDS TO BE COLLAPSED BY CONDITION EVENTUALLY
+critical_rt = d %>%
+  filter(Trial_Type == "control" | Trial_Type == "critical") %>%
+  group_by(List, Trial_Type) %>%
+  summarize(MeanRT = mean(Response_Time), CI.Low = ci.low(Response_Time), CI.High = ci.high(Response_Time)) %>%
+  mutate(YMin = MeanRT - CI.Low, YMax = MeanRT + CI.High)
+
+ggplot(data = critical_rt, aes(x =Trial_Type, y=MeanRT,)) +
+  geom_bar(stat="identity")  +
+  xlab("Prime Condition") +
+  ylab("Raw RT") +
+  geom_errorbar(aes(ymin=YMin,ymax=YMax),width=.25) +
+  facet_wrap(~List)
+```

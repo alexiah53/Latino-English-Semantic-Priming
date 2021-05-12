@@ -1,7 +1,7 @@
 library(tidyverse)
 library(lme4)
 library(lmerTest)
-
+library(languageR)
 setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
 source("helpers.R")
 
@@ -30,13 +30,6 @@ lang_exclude = subject_info %>%
 
 #this excludes worker ids for English L2 speakers from df
 d = d[!(d$workerid %in% lang_exclude$workerid),]
-
-#excludes participants who don't complete study
-trial_number = d %>%
-  group_by(workerid) %>%
-  count()
-View(trial_number)
-View(subject_info)
 
 #exclude NAs from data analysis (follow up Qs, etc.)
 d_trials = d %>%
@@ -67,7 +60,7 @@ ggplot(d, aes(x=Response_Time)) +
 #include only critical trials
 d_criticals = d %>%
   filter(Trial_Type == "critical")
-View(d_criticals)
+#View(d_criticals)
 
 
 #if response == target word type, assign 1 as correct
@@ -139,7 +132,58 @@ d = d[!(d$workerid %in% exp_time_d$workerid),]
 
 
 
+#plot RT vs. prime condition
+ggplot(data = d, aes(x =Trial_Type, y=Response_Time,)) +
+  geom_bar(stat="identity")  +
+  xlab("Prime Condition") +
+  ylab("Raw RT") 
+  geom_errorbar(aes(ymin=YMin,ymax=YMax),width=.25) 
 
+filter(Trial_Type == "control" | "critical")
+
+
+
+
+critical_rt = d %>%
+  filter(Trial_Type == "control" | Trial_Type == "critical") %>%
+  group_by(Trial_Type) %>%
+  summarize(MeanRT = mean(Response_Time), CI.Low = ci.low(Response_Time), CI.High = ci.high(Response_Time)) %>%
+  mutate(YMin = MeanRT - CI.Low, YMax = MeanRT + CI.High)
+
+ggplot(data = critical_rt, aes(x =Trial_Type, y=MeanRT,)) +
+  geom_bar(stat="identity")  +
+  xlab("Prime Condition") +
+  ylab("Raw RT") +
+  geom_errorbar(aes(ymin=YMin,ymax=YMax),width=.25) 
+
+
+
+
+
+lexdec$rawRT = exp(lexdec$RT)
+agr = lexdec %>%
+  group_by(NativeLanguage) %>%
+  summarize(MeanRT = mean(rawRT), CI.Low = ci.low(rawRT), CI.High = ci.high(rawRT)) %>%
+  mutate(YMin = MeanRT - CI.Low, YMax = MeanRT + CI.High)
+
+agr_subj = lexdec %>%
+  group_by(NativeLanguage, Subject) %>%
+  summarize(MeanRT = mean(rawRT))
+
+
+ggplot(agr, aes(x=NativeLanguage,y=MeanRT)) +
+  geom_bar(stat="identity",color="black",fill="gray60") +
+  geom_jitter(data=lexdec,aes(y=rawRT),alpha=.2,color="lightblue") +
+  geom_errorbar(aes(ymin=YMin,ymax=YMax),width=.25) 
+
+
+
+#faceting by list
+ggplot(subset(data = d, aes(x =Trial_Type, y=Response_Time,))) +
+  geom_bar(stat="identity")  +
+  xlab("Prime Condition") +
+  ylab("Raw RT") +
+  facet_wrap(~List)
 
 
 
