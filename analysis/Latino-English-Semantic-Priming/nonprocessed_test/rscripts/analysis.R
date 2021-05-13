@@ -13,7 +13,7 @@ cbPalette <- c("#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00",
 
 # load the main data
 d = read_csv("../data/nonprocessed_test-trials.csv") 
-#View(d)
+View(d)
 
 d = d %>%
   mutate(id = row_number())
@@ -128,62 +128,75 @@ exp_time_d = d %>%
 
 d = d[!(d$workerid %in% exp_time_d$workerid),]
 
-
-
-
-
-#plot RT vs. prime condition
-ggplot(data = d, aes(x =Trial_Type, y=Response_Time,)) +
-  geom_bar(stat="identity")  +
-  xlab("Prime Condition") +
-  ylab("Raw RT") 
-  geom_errorbar(aes(ymin=YMin,ymax=YMax),width=.25) 
-
-filter(Trial_Type == "control" | "critical")
-
-
-
-
-critical_rt = d %>%
+# All Conditions RT for control vs critical
+d %>%
   filter(Trial_Type == "control" | Trial_Type == "critical") %>%
   group_by(Trial_Type) %>%
   summarize(MeanRT = mean(Response_Time), CI.Low = ci.low(Response_Time), CI.High = ci.high(Response_Time)) %>%
-  mutate(YMin = MeanRT - CI.Low, YMax = MeanRT + CI.High)
-
-ggplot(data = critical_rt, aes(x =Trial_Type, y=MeanRT,)) +
+  mutate(YMin = MeanRT - CI.Low, YMax = MeanRT + CI.High) %>%
+  ggplot(aes(x =Trial_Type, y=MeanRT,)) +
   geom_bar(stat="identity")  +
   xlab("Prime Condition") +
   ylab("Raw RT") +
   geom_errorbar(aes(ymin=YMin,ymax=YMax),width=.25) 
 
 
-
-
-
-lexdec$rawRT = exp(lexdec$RT)
-agr = lexdec %>%
-  group_by(NativeLanguage) %>%
-  summarize(MeanRT = mean(rawRT), CI.Low = ci.low(rawRT), CI.High = ci.high(rawRT)) %>%
-  mutate(YMin = MeanRT - CI.Low, YMax = MeanRT + CI.High)
-
-agr_subj = lexdec %>%
-  group_by(NativeLanguage, Subject) %>%
-  summarize(MeanRT = mean(rawRT))
-
-
-ggplot(agr, aes(x=NativeLanguage,y=MeanRT)) +
-  geom_bar(stat="identity",color="black",fill="gray60") +
-  geom_jitter(data=lexdec,aes(y=rawRT),alpha=.2,color="lightblue") +
-  geom_errorbar(aes(ymin=YMin,ymax=YMax),width=.25) 
-
-
-
-#faceting by list
-ggplot(subset(data = d, aes(x =Trial_Type, y=Response_Time,))) +
+# Split Conditions RT for control vs critical
+d %>%
+  filter(Trial_Type == "control" | Trial_Type == "critical") %>%
+  mutate(talker_identity = ifelse(List=='1_GE' | List == '2_GE','GE','Other')) %>%
+  group_by(talker_identity, Trial_Type) %>%
+  summarize(MeanRT = mean(Response_Time), CI.Low = ci.low(Response_Time), CI.High = ci.high(Response_Time)) %>%
+  mutate(YMin = MeanRT - CI.Low, YMax = MeanRT + CI.High) %>%
+  ggplot(aes(x =Trial_Type, y=MeanRT,)) +
   geom_bar(stat="identity")  +
   xlab("Prime Condition") +
   ylab("Raw RT") +
-  facet_wrap(~List)
+  geom_errorbar(aes(ymin=YMin,ymax=YMax),width=.25) +
+  facet_wrap(~talker_identity)
+
+
+# Raw RT Density Plot
+d %>%
+  filter(Trial_Type == "control" | Trial_Type == "critical") %>%
+  mutate(talker_condition = ifelse(List=='1_GE' | List == '2_GE','GE','Other')) %>%
+  group_by(talker_condition, Trial_Type) %>%
+  ggplot(aes(x=Response_Time,fill=talker_condition)) +
+  geom_density(alpha=.5) +
+  xlab("Raw RT") +
+  ylab("Density")
+
+
+# Log RT Density Plot
+ggplot(critical_rt, aes(x=log(Response_Time),fill=talker_identity)) +
+  geom_density(alpha=.5) +
+  xlab("Log RT") +
+  ylab("Density")
+
+
+# The prime_condition variable/ semantic relatedness variable will be mean centered for ease of interpretation (+.5 for semantically related targets and -.5 for semantically unrelated targets as oppose to 1 for semantically related targets and 0 for semantically unrelated targets)
+
+# THIS IS THE MODEL TO RUN WITH MULTIPLE TALKER CONDITIONS
+# RT ~ talker_condition * prime_condition + 
+#(1+prime_condition|subject) + 
+ # (1+prime_condition+talker_condition|item)
+
+new_data <- d %>%
+  filter(Trial_Type == "control" | Trial_Type == "critical") %>%
+  mutate(Trial_Type = as.factor(Trial_Type)) %>%
+  mutate(centered_trial_type = as.numeric(Trial_Type) - mean(as.numeric(Trial_Type))) %>%
+  mutate(RT = log(Response_Time)) %>%
+  mutate(talker_condition = ifelse(List=='1_GE' | List == '2_GE','GE','Other'))
+
+#View(new_data)
+#table(new_data$Trial_Type)
+
+lmer(RT ~ talker_condition*Trial_Type + (1+Trial_Type|workerid) + (1+Trial_Type+talker_condition|Target),data = new_data)
+
+#this is the one for just one talker condition
+lmer(RT ~ Trial_Type + (1+Trial_Type|workerid) + (1+Trial_Type|Target),data = new_data)
+
+
 
 
 

@@ -5,6 +5,9 @@ output:
   # pdf_document: default
   # html_document:
   #   df_print: paged
+  
+  
+  #EVENTUALLY I'M GOING TO HAVE TO EXCLUDE THE ENGLISH L2 SPEAKERS FROM GRAPHS
 ---
 
 ```{r message=FALSE, warning=FALSE, include=FALSE}
@@ -51,19 +54,21 @@ accuracy_d = d %>%
   summarise(Mean=mean(correct),CILow=ci.low(correct),CIHigh=ci.high(correct)) %>%
   ungroup() %>%
   mutate(YMin=Mean-CILow,YMax=Mean+CIHigh) %>%
-  mutate(lowacc=ifelse(Mean<0.90,"1","0"))
+  mutate(Participant_Accuracy=ifelse(Mean<0.90,"Participants with Low Accuracy - Excluded","Participants with High Accuracy - Included"))
+#View(accuracy_d)
 
 h=0.90
-ggplot(accuracy_d, aes(x=reorder(workerid,Mean), y=Mean, fill=lowacc)) +
+ggplot(accuracy_d, aes(x=reorder(workerid,Mean), y=Mean, fill=Participant_Accuracy)) +
   geom_bar(stat="identity") +
   geom_hline(yintercept=h) +
   geom_text(aes(0, h, label=h, vjust=-1, hjust=-0.3)) +
   scale_fill_manual(values = cbPalette) +
-  xlab("Worker ID")
+  xlab("Worker ID") +
+  theme(legend.title = element_blank())
 
 exclude = accuracy_d %>%
-  filter(lowacc==1)
-exclude
+  filter(Participant_Accuracy==1)
+#exclude
 #d = d[!(d$workerid %in% exclude$workerid),]
 ```
 
@@ -106,10 +111,11 @@ exclude_sd
 ## Plots
 ### Raw RT Histogram
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
-critical_rt = d %>%
+d %>%
   filter(Trial_Type == "control" | Trial_Type == "critical") %>%
-  group_by(List, Trial_Type)
-ggplot(critical_rt, aes(x=Response_Time,fill=List)) +
+  mutate(talker_condition = ifelse(List=='1_GE' | List == '2_GE','GE','Other')) %>%
+  group_by(talker_condition, Trial_Type) %>%
+  ggplot(aes(x=Response_Time,fill=talker_condition)) +
   geom_density(alpha=.5) +
   xlab("Raw RT") +
   ylab("Density")
@@ -117,41 +123,78 @@ ggplot(critical_rt, aes(x=Response_Time,fill=List)) +
 
 ### Log Transformed RT Histogram
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
-# Log RT Density Plot
-ggplot(critical_rt, aes(x=log(Response_Time),fill=List)) +
+d %>%
+  filter(Trial_Type == "control" | Trial_Type == "critical") %>%
+  mutate(talker_condition = ifelse(List=='1_GE' | List == '2_GE','GE','Other')) %>%
+  group_by(talker_condition, Trial_Type) %>%
+  ggplot(aes(x=log(Response_Time),fill=talker_condition)) +
   geom_density(alpha=.5) +
-  xlab("Log RT") +
+  xlab("Log Transformed RT") +
   ylab("Density")
 ```
 
 ### All Conditions RT Bar Plot
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
-critical_rt = d %>%
+d %>%
   filter(Trial_Type == "control" | Trial_Type == "critical") %>%
+  mutate(Trial_Type = fct_recode(Trial_Type, "Semantically Unrelated Target" = "control", "Semantically Related Target" = "critical")) %>%
   group_by(Trial_Type) %>%
   summarize(MeanRT = mean(Response_Time), CI.Low = ci.low(Response_Time), CI.High = ci.high(Response_Time)) %>%
-  mutate(YMin = MeanRT - CI.Low, YMax = MeanRT + CI.High)
-
-ggplot(data = critical_rt, aes(x =Trial_Type, y=MeanRT,)) +
+  mutate(YMin = MeanRT - CI.Low, YMax = MeanRT + CI.High) %>%
+  ggplot(aes(x =Trial_Type, y=MeanRT, fill = Trial_Type)) +
   geom_bar(stat="identity")  +
   xlab("Prime Condition") +
-  ylab("Raw RT") +
-  geom_errorbar(aes(ymin=YMin,ymax=YMax),width=.25) 
+  ylab("Mean RT (ms)") +
+  scale_fill_manual(values = cbPalette) +
+  geom_errorbar(aes(ymin=YMin,ymax=YMax),width=.25) +
+  theme(legend.position="None")
 ```
 
 ### Split Condition RT Bar Plot
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
-#THIS NEEDS TO BE COLLAPSED BY CONDITION EVENTUALLY
-critical_rt = d %>%
+# lists are collapsed into conditions
+d %>%
   filter(Trial_Type == "control" | Trial_Type == "critical") %>%
-  group_by(List, Trial_Type) %>%
+    mutate(Trial_Type = fct_recode(Trial_Type, "Semantically Unrelated Target" = "control", "Semantically Related Target" = "critical")) %>%
+  mutate(talker_identity = ifelse(List=='1_GE' | List == '2_GE','GE','Other')) %>%
+  group_by(talker_identity, Trial_Type) %>%
   summarize(MeanRT = mean(Response_Time), CI.Low = ci.low(Response_Time), CI.High = ci.high(Response_Time)) %>%
-  mutate(YMin = MeanRT - CI.Low, YMax = MeanRT + CI.High)
-
-ggplot(data = critical_rt, aes(x =Trial_Type, y=MeanRT,)) +
-  geom_bar(stat="identity")  +
+  mutate(YMin = MeanRT - CI.Low, YMax = MeanRT + CI.High) %>%
+  ggplot(aes(x =Trial_Type, y=MeanRT, fill = Trial_Type)) +
+  geom_bar(stat="identity")  + 
   xlab("Prime Condition") +
-  ylab("Raw RT") +
+  ylab("Mean RT (ms)") +
+  scale_fill_manual(values = cbPalette) +
   geom_errorbar(aes(ymin=YMin,ymax=YMax),width=.25) +
-  facet_wrap(~List)
+  facet_wrap(~talker_identity) + 
+  theme(legend.position="None")
+```
+
+### Linear Mixed Model for Northeastern White American Talker Condition
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+# Trial type is centered around 0
+GE_data <- d %>%
+  filter(Trial_Type == "control" | Trial_Type == "critical") %>%
+  mutate(Trial_Type = as.factor(Trial_Type)) %>%
+  mutate(centered_trial_type = as.numeric(Trial_Type) - mean(as.numeric(Trial_Type))) %>%
+  mutate(RT = log(Response_Time)) %>%
+  mutate(talker_condition = ifelse(List=='1_GE' | List == '2_GE','GE','Other'))
+lmer(RT ~ Trial_Type + (1+Trial_Type|workerid) + (1+Trial_Type|Target),data = GE_data)
+```
+
+### Linear Mixed Model for Miami Cuban American Talker Condition
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+# Trial type is centered around 0
+GE_data <- d %>%
+  filter(Trial_Type == "control" | Trial_Type == "critical") %>%
+  mutate(Trial_Type = as.factor(Trial_Type)) %>%
+  mutate(centered_trial_type = as.numeric(Trial_Type) - mean(as.numeric(Trial_Type))) %>%
+  mutate(RT = log(Response_Time)) %>%
+  mutate(talker_condition = ifelse(List=='1_CE' | List == '2_CE','CE','Other'))
+lmer(RT ~ Trial_Type + (1+Trial_Type|workerid) + (1+Trial_Type|Target),data = GE_data)
+```
+
+### Linear Mixed Model for All Talker Conditions
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+lmer(RT ~ talker_condition*Trial_Type + (1+Trial_Type|workerid) + (1+Trial_Type+talker_condition|Target),data = new_data)
 ```
