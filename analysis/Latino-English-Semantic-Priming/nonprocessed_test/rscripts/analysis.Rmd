@@ -13,8 +13,8 @@ output:
 ```{r message=FALSE, warning=FALSE, include=FALSE}
 #Loading everything
 library(tidyverse)
-# library(lme4)
 # library(lmerTest)
+library(lme4)
 source("helpers.R")
 
 #removes gray boxes from plots
@@ -58,7 +58,7 @@ accuracy_d = d %>%
 #View(accuracy_d)
 
 h=0.90
-ggplot(accuracy_d, aes(x=reorder(workerid,Mean), y=Mean, fill=Participant_Accuracy)) +
+ggplot(accuracy_d, aes(x=reorder(workerid, Mean), y=Mean, fill=Participant_Accuracy)) +
   geom_bar(stat="identity") +
   geom_hline(yintercept=h) +
   geom_text(aes(0, h, label=h, vjust=-1, hjust=-0.3)) +
@@ -113,31 +113,33 @@ exclude_sd
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 d %>%
   filter(Trial_Type == "control" | Trial_Type == "critical") %>%
-  mutate(talker_condition = ifelse(List=='1_GE' | List == '2_GE','GE','Other')) %>%
+  mutate(talker_condition = ifelse(List=='1_GE' | List == '2_GE','GE', ifelse(List=='1_CE' | List == '2_CE','CE', ifelse(List=='1_ME' | List == '2_ME','ME', NA)))) %>%
   group_by(talker_condition, Trial_Type) %>%
   ggplot(aes(x=Response_Time,fill=talker_condition)) +
   geom_density(alpha=.5) +
   xlab("Raw RT") +
-  ylab("Density")
+  ylab("Density") +
+  labs(fill = "Talker Condition")
 ```
 
 ### Log Transformed RT Histogram
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 d %>%
   filter(Trial_Type == "control" | Trial_Type == "critical") %>%
-  mutate(talker_condition = ifelse(List=='1_GE' | List == '2_GE','GE','Other')) %>%
+  mutate(talker_condition = ifelse(List=='1_GE' | List == '2_GE','GE', ifelse(List=='1_CE' | List == '2_CE','CE', ifelse(List=='1_ME' | List == '2_ME','ME', NA)))) %>%
   group_by(talker_condition, Trial_Type) %>%
   ggplot(aes(x=log(Response_Time),fill=talker_condition)) +
   geom_density(alpha=.5) +
   xlab("Log Transformed RT") +
-  ylab("Density")
+  ylab("Density") +
+  labs(fill = "Talker Condition")
 ```
 
 ### All Conditions RT Bar Plot
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 d %>%
   filter(Trial_Type == "control" | Trial_Type == "critical") %>%
-  mutate(Trial_Type = fct_recode(Trial_Type, "Semantically Unrelated Target" = "control", "Semantically Related Target" = "critical")) %>%
+  mutate(Trial_Type = fct_recode(Trial_Type, "Semantically Unrelated \n Target" = "control", "Semantically Related \n Target" = "critical")) %>%
   group_by(Trial_Type) %>%
   summarize(MeanRT = mean(Response_Time), CI.Low = ci.low(Response_Time), CI.High = ci.high(Response_Time)) %>%
   mutate(YMin = MeanRT - CI.Low, YMax = MeanRT + CI.High) %>%
@@ -148,6 +150,7 @@ d %>%
   scale_fill_manual(values = cbPalette) +
   geom_errorbar(aes(ymin=YMin,ymax=YMax),width=.25) +
   theme(legend.position="None")
+  #ggsave(file="../graphs/all_conditions_rt_barplot.png",width=5,height=4)
 ```
 
 ### Split Condition RT Bar Plot
@@ -155,9 +158,9 @@ d %>%
 # lists are collapsed into conditions
 d %>%
   filter(Trial_Type == "control" | Trial_Type == "critical") %>%
-    mutate(Trial_Type = fct_recode(Trial_Type, "Semantically Unrelated Target" = "control", "Semantically Related Target" = "critical")) %>%
-  mutate(talker_identity = ifelse(List=='1_GE' | List == '2_GE','GE','Other')) %>%
-  group_by(talker_identity, Trial_Type) %>%
+    mutate(Trial_Type = fct_recode(Trial_Type, "Semantically Unrelated \n Target" = "control", "Semantically Related \n Target" = "critical")) %>%
+    mutate(talker_condition = ifelse(List=='1_GE' | List == '2_GE','GE', ifelse(List=='1_CE' | List == '2_CE','CE', ifelse(List=='1_ME' | List == '2_ME','ME', NA)))) %>%
+  group_by(talker_condition, Trial_Type) %>%
   summarize(MeanRT = mean(Response_Time), CI.Low = ci.low(Response_Time), CI.High = ci.high(Response_Time)) %>%
   mutate(YMin = MeanRT - CI.Low, YMax = MeanRT + CI.High) %>%
   ggplot(aes(x =Trial_Type, y=MeanRT, fill = Trial_Type)) +
@@ -166,8 +169,9 @@ d %>%
   ylab("Mean RT (ms)") +
   scale_fill_manual(values = cbPalette) +
   geom_errorbar(aes(ymin=YMin,ymax=YMax),width=.25) +
-  facet_wrap(~talker_identity) + 
-  theme(legend.position="None")
+  facet_wrap(~talker_condition) + 
+  theme(legend.position="None") 
+  #ggsave(file="../graphs/split_conditions_rt_barplot.png",width=7,height=4)
 ```
 
 ### Linear Mixed Model for Northeastern White American Talker Condition
@@ -185,16 +189,36 @@ lmer(RT ~ Trial_Type + (1+Trial_Type|workerid) + (1+Trial_Type|Target),data = GE
 ### Linear Mixed Model for Miami Cuban American Talker Condition
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 # Trial type is centered around 0
-GE_data <- d %>%
+CE_data <- d %>%
   filter(Trial_Type == "control" | Trial_Type == "critical") %>%
   mutate(Trial_Type = as.factor(Trial_Type)) %>%
   mutate(centered_trial_type = as.numeric(Trial_Type) - mean(as.numeric(Trial_Type))) %>%
   mutate(RT = log(Response_Time)) %>%
   mutate(talker_condition = ifelse(List=='1_CE' | List == '2_CE','CE','Other'))
-lmer(RT ~ Trial_Type + (1+Trial_Type|workerid) + (1+Trial_Type|Target),data = GE_data)
+lmer(RT ~ Trial_Type + (1+Trial_Type|workerid) + (1+Trial_Type|Target),data = CE_data)
+```
+
+### Linear Mixed Model for LA Mexican American Talker Condition
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+# Trial type is centered around 0
+ME_data <- d %>%
+  filter(Trial_Type == "control" | Trial_Type == "critical") %>%
+  mutate(Trial_Type = as.factor(Trial_Type)) %>%
+  mutate(centered_trial_type = as.numeric(Trial_Type) - mean(as.numeric(Trial_Type))) %>%
+  mutate(RT = log(Response_Time)) %>%
+  mutate(talker_condition = ifelse(List=='1_ME' | List == '2_ME','ME','Other'))
+lmer(RT ~ Trial_Type + (1+Trial_Type|workerid) + (1+Trial_Type|Target),data = ME_data)
 ```
 
 ### Linear Mixed Model for All Talker Conditions
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
-lmer(RT ~ talker_condition*Trial_Type + (1+Trial_Type|workerid) + (1+Trial_Type+talker_condition|Target),data = new_data)
+all_data <- d %>%
+  filter(Trial_Type == "control" | Trial_Type == "critical") %>%
+  mutate(Trial_Type = as.factor(Trial_Type)) %>%
+  mutate(centered_trial_type = as.numeric(Trial_Type) - mean(as.numeric(Trial_Type))) %>%
+  mutate(RT = log(Response_Time)) %>%
+  mutate(talker_condition = ifelse(List=='1_GE' | List == '2_GE','GE', ifelse(List=='1_CE' | List == '2_CE','CE', ifelse(List=='1_ME' | List == '2_ME','ME', NA))))
+#View(all_data)
+
+lmer(RT ~ talker_condition*Trial_Type + (1+Trial_Type|workerid) + (1+Trial_Type+talker_condition|Target),data = all_data)
 ```
