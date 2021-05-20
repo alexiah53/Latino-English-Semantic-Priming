@@ -30,10 +30,99 @@ function make_slides(f) {
 	   }
      }
    });
+   
+ // WORDS SLIDE
+   slides.words = slide({
+   	  name: "words",
+       start: function() {
+ 		  exp.allow_key_press = 0;
+ 		  console.log("exp.allow_key_press", exp.allow_key_press)
+ 		  $(".err").hide();
+       },
 
-// MAIN SLIDE
-  slides.follow_up = slide({
-  	  name: "follow_up",
+       // handle click on "Continue" button
+       button_follow_up: function() {
+		  
+ 		  var check_words_race1 = document.querySelectorAll('[name="words_race_speaker1"]:checked');
+ 		  var check_words_race2 = document.querySelectorAll('[name="words_race_speaker2"]:checked');
+
+
+ 		  if  (!$("#speaker_1_reaction_1").val() |
+ 			  !$("#speaker_1_reaction_2").val() |
+ 			  !$("#speaker_1_reaction_3").val() |
+ 		  	  !$("#speaker_1_reaction_4").val() |
+ 			  !$("#speaker_1_reaction_5").val() |
+ 			  !$("#speaker_2_reaction_1").val() |
+ 			  !$("#speaker_2_reaction_2").val() |
+ 			  !$("#speaker_2_reaction_3").val() |
+ 		  	  !$("#speaker_2_reaction_4").val() |
+ 		 	  !$("#speaker_2_reaction_5").val() |
+ 			  !$("#accentedness_speaker1").val() |
+ 		  !$("#accentedness_speaker2").val() |
+ 			  check_words_race1.length < 1 |
+ 		  check_words_race2.length < 1 ) {
+
+ 		  	$(".err").show();
+ 		}
+ 			// else {
+ 			// 	            this.log_responses();
+ 			// 	            exp.go(); //use exp.go() if and only if there is no "present"ed data, ie no list of stimuli.
+ 			// }
+ 			//       },
+	  
+	  
+ 			else {
+				
+ 				var words_race_speaker1 = document.querySelectorAll('[name="words_race_speaker1"]:checked');
+ 				exp.words_race_speaker1_list = [];
+ 				for (var i = 0; i < words_race_speaker1.length; i++) {
+ 					if (words_race_speaker1[i].type=="checkbox" && words_race_speaker1[i].checked == true){
+ 						exp.words_race_speaker1_list += words_race_speaker1[i].value+", \n";
+ 					}
+ 				}
+					
+ 				var words_race_speaker2 = document.querySelectorAll('[name="words_race_speaker2"]:checked');
+ 				exp.words_race_speaker2_list = [];
+ 				for (var i = 0; i < words_race_speaker2.length; i++) {
+ 					if (words_race_speaker2[i].type=="checkbox" && words_race_speaker2[i].checked == true){
+ 							exp.words_race_speaker2_list += words_race_speaker2[i].value+", \n";
+ 						}		
+ 				}
+ 				this.log_responses();
+ 				exp.go();
+ 			}
+			
+ 				},
+	  
+       // save response
+       log_responses: function() {
+         exp.data_trials.push({
+      	  	
+ 			speaker_1_accentedness: $("#accentedness_speaker1").val(),
+ 			speaker_2_accentedness:$("#accentedness_speaker2").val(),
+ 			speaker_1_reaction_1:$("#speaker_1_reaction_1").val(),
+ 			speaker_1_reaction_2:$("#speaker_1_reaction_2").val(),
+ 			speaker_1_reaction_3:$("#speaker_1_reaction_3").val(),
+ 			speaker_1_reaction_4:$("#speaker_1_reaction_4").val(),
+ 			speaker_1_reaction_5:$("#speaker_1_reaction_5").val(),
+ 			speaker_2_reaction_1:$("#speaker_2_reaction_1").val(),
+ 			speaker_2_reaction_2:$("#speaker_2_reaction_2").val(),
+   			speaker_2_reaction_3:$("#speaker_2_reaction_3").val(),
+ 			speaker_2_reaction_4:$("#speaker_2_reaction_4").val(),
+ 			speaker_2_reaction_5:$("#speaker_2_reaction_5").val(),
+ 			speaker_1_race_words: exp.words_race_speaker1_list,
+ 			speaker_2_race_words: exp.words_race_speaker2_list
+			
+         });
+   	  }
+   });
+   
+   
+   
+
+// SENTENCES SLIDE
+  slides.sentences = slide({
+  	  name: "sentences",
       start: function() {
 		  exp.allow_key_press = 0;
 		  console.log("exp.allow_key_press", exp.allow_key_press)
@@ -42,6 +131,10 @@ function make_slides(f) {
 
       // handle click on "Continue" button
       button_follow_up: function() {
+		  
+		  var check_senteces_race1 = document.querySelectorAll('[name="sentences_race_speaker1"]:checked');
+		  var check_senteces_race2 = document.querySelectorAll('[name="sentences_race_speaker2"]:checked');
+
 
 		  if  (!$("#speaker_1_reaction_1").val() |
 			  !$("#speaker_1_reaction_2").val() |
@@ -54,7 +147,9 @@ function make_slides(f) {
 		  	  !$("#speaker_2_reaction_4").val() |
 		 	  !$("#speaker_2_reaction_5").val() |
 			  !$("#accentedness_speaker1").val() |
-		  !$("#accentedness_speaker2").val()) {
+		  !$("#accentedness_speaker2").val() |
+			  check_senteces_race1.length < 1 |
+		  check_senteces_race2.length < 1 ) {
 
 		  	$(".err").show();
 		}
@@ -67,19 +162,19 @@ function make_slides(f) {
 	  
 			else {
 				
-				var race_speaker1 = document.querySelectorAll('[name="race_speaker1"]:checked');
-				var race_speaker1_list = [];
-				for (var i = 0; i < race_speaker1.length; i++) {
-					if (race_speaker1[i].type=="checkbox" && race_speaker1[i].checked == true){
-						race_speaker1_list += race_speaker1[i].value+", \n";
+				var senteces_race_speaker1 = document.querySelectorAll('[name="sentences_race_speaker1"]:checked');
+				exp.senteces_race_speaker1_list = [];
+				for (var i = 0; i < senteces_race_speaker1.length; i++) {
+					if (senteces_race_speaker1[i].type=="checkbox" && senteces_race_speaker1[i].checked == true){
+						exp.senteces_race_speaker1_list += senteces_race_speaker1[i].value+", \n";
 					}
 				}
 					
-				var race_speaker2 = document.querySelectorAll('[name="race_speaker2"]:checked');
-				var race_speaker2_list = [];
-				for (var i = 0; i < race_speaker1.length; i++) {
-					if (race_speaker2[i].type=="checkbox" && race_speaker2[i].checked == true){
-							race_speaker2_list += race_speaker2[i].value+", \n";
+				var senteces_race_speaker2 = document.querySelectorAll('[name="sentences_race_speaker2"]:checked');
+				exp.sentences_race_speaker2_list = [];
+				for (var i = 0; i < senteces_race_speaker2.length; i++) {
+					if (senteces_race_speaker2[i].type=="checkbox" && senteces_race_speaker2[i].checked == true){
+							exp.senteces_race_speaker2_list += senteces_race_speaker2[i].value+", \n";
 						}		
 				}
 				this.log_responses();
@@ -94,18 +189,18 @@ function make_slides(f) {
       	  	
 			speaker_1_accentedness: $("#accentedness_speaker1").val(),
 			speaker_2_accentedness:$("#accentedness_speaker2").val(),
-			"speaker_1_reaction_1":$("#speaker_1_reaction_1").val(),
-			"speaker_1_reaction_2":$("#speaker_1_reaction_2").val(),
-			"speaker_1_reaction_3":$("#speaker_1_reaction_3").val(),
-			"speaker_1_reaction_4":$("#speaker_1_reaction_4").val(),
-			"speaker_1_reaction_5":$("#speaker_1_reaction_5").val(),
-			"speaker_2_reaction_1":$("#speaker_2_reaction_1").val(),
-			"speaker_2_reaction_2":$("#speaker_2_reaction_2").val(),
-  			"speaker_2_reaction_3":$("#speaker_2_reaction_3").val(),
-			"speaker_2_reaction_4":$("#speaker_2_reaction_4").val(),
-			"speaker_2_reaction_5":$("#speaker_2_reaction_5").val(),
-			speaker_1_race: race_speaker1_list,
-			speaker_1_race: race_speaker2_list
+			speaker_1_reaction_1:$("#speaker_1_reaction_1").val(),
+			speaker_1_reaction_2:$("#speaker_1_reaction_2").val(),
+			speaker_1_reaction_3:$("#speaker_1_reaction_3").val(),
+			speaker_1_reaction_4:$("#speaker_1_reaction_4").val(),
+			speaker_1_reaction_5:$("#speaker_1_reaction_5").val(),
+			speaker_2_reaction_1:$("#speaker_2_reaction_1").val(),
+			speaker_2_reaction_2:$("#speaker_2_reaction_2").val(),
+  			speaker_2_reaction_3:$("#speaker_2_reaction_3").val(),
+			speaker_2_reaction_4:$("#speaker_2_reaction_4").val(),
+			speaker_2_reaction_5:$("#speaker_2_reaction_5").val(),
+			speaker_1_race_sentences: exp.senteces_race_speaker1_list,
+			speaker_2_race_sentences: exp.senteces_race_speaker2_list
 			
         });
   	  }
@@ -211,7 +306,8 @@ function init() {
   exp.structure = [
     "i0",
 	"sound_test",
-	"follow_up",
+	"words",
+	"sentences",
     "subj_info",
     "thanks"
   ];

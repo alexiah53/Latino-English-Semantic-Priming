@@ -444,7 +444,8 @@ prime_aud.onended = function() {
 		first_language: $("#first_language").val(),
 		other_languages: $("#other_languages").val(),
 		parent_languages: $("#parent_languages").val(),
-		exposure: $("#exposure").val()
+		exposure: $("#exposure").val(),
+		email: $("#email").val()
       };
 
       exp.go();
@@ -543,7 +544,7 @@ function init() {
 
   $('.slide').hide(); //hide everything
 
-this is for prolific
+// this is for prolific
   $("#start_button").click(function() {
     exp.go();
   });
