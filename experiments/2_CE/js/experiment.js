@@ -438,7 +438,7 @@ prime_aud.onended = function() {
         education: $("#education").val(),
         comments: $("#comments").val(),
 		race: race_list,
-		 heritage_country: $("#heritage_country").val(),
+		heritage_country: $("#heritage_country").val(),
 		current_region: $("#current_region").val(),
 		other_regions: $("#other_regions").val(),
 		first_language: $("#first_language").val(),

@@ -1,21 +1,205 @@
 library(tidyverse)
 library(lme4)
 library(lmerTest)
-
+library(languageR)
 setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
 source("helpers.R")
+
+#removes gray boxes from plots
+theme_set(theme_bw())
 
 # color-blind-friendly palette
 cbPalette <- c("#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7") 
 
 # load the main data
-d = read_csv("../../../data/01_implicature_strength/exp-merged.csv")
+d = read_csv("../data/nonprocessed_test-trials.csv") 
 View(d)
 
-# load information about contextual features and merge into dataset
-context = read_csv("../../../data/01_implicature_strength/context.csv")
 d = d %>%
-  left_join(context,by=c("id"))
+  mutate(id = row_number())
+
+# load information about contextual features and merge into dataset
+subject_info = read_csv("../data/nonprocessed_test-subject_information.csv")
+#View(subject_info)
+
+#excluding English L2 speakers from workerids to analyze
+lang_exclude = subject_info %>% 
+  select(workerid, first_language) %>% 
+  filter(str_detect(first_language,regex("english", ignore_case=TRUE),negate=TRUE)) %>%
+  select(workerid) 
+
+#this excludes worker ids for English L2 speakers from df
+d = d[!(d$workerid %in% lang_exclude$workerid),]
+
+#exclude NAs from data analysis (follow up Qs, etc.)
+d_trials = d %>%
+  filter(!is.na(Trial_Type))
+
+#View(d_trials)
+
+# exclude individual responses with RTs that are 3 SDs away from  mean
+exclude_sd = d_trials %>%
+  mutate(Mean=mean(Response_Time),SD=sd(Response_Time),count=n()) %>%
+  mutate(Ulimit=Mean+3*SD,Llimit=Mean-3*SD) %>%
+  mutate(slow=ifelse(Response_Time>Ulimit,"1","0")) %>%
+  mutate(fast=ifelse(Response_Time<Llimit,"1","0")) %>%
+  select(workerid,id,Response_Time,slow,fast,Mean,SD,Llimit,Ulimit) %>%
+  filter(slow==1 | fast == 1)
+
+View(exclude_sd)
+
+d = d[!(d$id %in% exclude_sd$id),]
+View(d)
+
+ggplot(d, aes(x=Response_Time)) +
+  geom_histogram(fill="lightblue")
+
+
+
+
+#include only critical trials
+d_criticals = d %>%
+  filter(Trial_Type == "critical")
+#View(d_criticals)
+
+
+#if response == target word type, assign 1 as correct
+d_criticals = d_criticals %>%
+  mutate(correct=ifelse(Response==Target_Word_Type,1,0))
+
+  
+#Participants with accuracy lower than 90% are excluded 
+accuracy_d =  d_criticals %>%
+  group_by(workerid) %>%
+  summarise(Mean=mean(correct),CILow=ci.low(correct),CIHigh=ci.high(correct)) %>%
+  ungroup() %>%
+  mutate(YMin=Mean-CILow,YMax=Mean+CIHigh) %>%
+  # this assigns 1 to people with low accuracy rates. 1s will be excluded
+  mutate(lowacc=ifelse(Mean<0.90,"1","0"))
+
+View(accuracy_d)
+
+#value of horizontal line
+h=0.90
+ggplot(accuracy_d, aes(x=reorder(workerid,Mean), y=Mean, fill=lowacc)) +
+  geom_bar(stat="identity") +
+  geom_hline(yintercept=h) +
+  geom_text(aes(0, h, label=h, vjust=-1, hjust=-0.3)) +
+  scale_fill_manual(values = cbPalette)
+
+#this excludes participants who have 10% error rate or more from full set
+exclude = accuracy_d %>%
+  filter(lowacc==1)
+exclude
+d = d[!(d$workerid %in% exclude$workerid),]
+
+  
+
+
+
+# exclude individual responses with RTs that are 3 SDs away from  mean
+exclude_sd = d_trials %>%
+  mutate(Mean=mean(Response_Time),SD=sd(Response_Time),count=n()) %>%
+  mutate(Ulimit=Mean+3*SD,Llimit=Mean-3*SD) %>%
+  mutate(slow=ifelse(Response_Time>Ulimit,"1","0")) %>%
+  mutate(fast=ifelse(Response_Time<Llimit,"1","0")) %>%
+  # excludes individual responses <500ms
+  mutate(toofast=ifelse(Response_Time<500, "1", "0")) %>%
+  select(workerid,id,Response_Time,slow,fast,toofast,Mean,SD,Llimit,Ulimit) %>%
+  filter(slow==1 | fast == 1 | toofast == 1)
+
+View(exclude_sd)
+
+d = d[!(d$id %in% exclude_sd$id),]
+View(d)
+
+
+#Participants who take more than 2.5 sds than mean completion time are excluded
+
+exp_time_d = d %>%
+  mutate(Mean=mean(Answer.time_in_minutes),SD=sd(Answer.time_in_minutes)) %>%
+  mutate(Ulimit=Mean+2.5*SD,Llimit=Mean-2.5*SD) %>%
+  mutate(slow=ifelse(Answer.time_in_minutes>Ulimit,"1","0")) %>%
+  mutate(fast=ifelse(Answer.time_in_minutes<Llimit,"1","0")) %>%
+  select(workerid,id,Answer.time_in_minutes,slow,fast,Mean,SD,Llimit,Ulimit) %>%
+  filter(slow==1 | fast == 1)
+
+#View(exp_time_d)
+
+d = d[!(d$workerid %in% exp_time_d$workerid),]
+
+# All Conditions RT for control vs critical
+d %>%
+  filter(Trial_Type == "control" | Trial_Type == "critical") %>%
+  group_by(Trial_Type) %>%
+  summarize(MeanRT = mean(Response_Time), CI.Low = ci.low(Response_Time), CI.High = ci.high(Response_Time)) %>%
+  mutate(YMin = MeanRT - CI.Low, YMax = MeanRT + CI.High) %>%
+  ggplot(aes(x =Trial_Type, y=MeanRT,)) +
+  geom_bar(stat="identity")  +
+  xlab("Prime Condition") +
+  ylab("Raw RT") +
+  geom_errorbar(aes(ymin=YMin,ymax=YMax),width=.25) 
+
+
+# Split Conditions RT for control vs critical
+d %>%
+  filter(Trial_Type == "control" | Trial_Type == "critical") %>%
+  mutate(talker_identity = ifelse(List=='1_GE' | List == '2_GE','GE','Other')) %>%
+  group_by(talker_identity, Trial_Type) %>%
+  summarize(MeanRT = mean(Response_Time), CI.Low = ci.low(Response_Time), CI.High = ci.high(Response_Time)) %>%
+  mutate(YMin = MeanRT - CI.Low, YMax = MeanRT + CI.High) %>%
+  ggplot(aes(x =Trial_Type, y=MeanRT,)) +
+  geom_bar(stat="identity")  +
+  xlab("Prime Condition") +
+  ylab("Raw RT") +
+  geom_errorbar(aes(ymin=YMin,ymax=YMax),width=.25) +
+  facet_wrap(~talker_identity)
+
+
+# Raw RT Density Plot
+d %>%
+  filter(Trial_Type == "control" | Trial_Type == "critical") %>%
+  mutate(talker_condition = ifelse(List=='1_GE' | List == '2_GE','GE','Other')) %>%
+  group_by(talker_condition, Trial_Type) %>%
+  ggplot(aes(x=Response_Time,fill=talker_condition)) +
+  geom_density(alpha=.5) +
+  xlab("Raw RT") +
+  ylab("Density")
+
+
+# Log RT Density Plot
+ggplot(critical_rt, aes(x=log(Response_Time),fill=talker_identity)) +
+  geom_density(alpha=.5) +
+  xlab("Log RT") +
+  ylab("Density")
+
+
+# The prime_condition variable/ semantic relatedness variable will be mean centered for ease of interpretation (+.5 for semantically related targets and -.5 for semantically unrelated targets as oppose to 1 for semantically related targets and 0 for semantically unrelated targets)
+
+# THIS IS THE MODEL TO RUN WITH MULTIPLE TALKER CONDITIONS
+# RT ~ talker_condition * prime_condition + 
+#(1+prime_condition|subject) + 
+ # (1+prime_condition+talker_condition|item)
+
+new_data <- d %>%
+  filter(Trial_Type == "control" | Trial_Type == "critical") %>%
+  mutate(Trial_Type = as.factor(Trial_Type)) %>%
+  mutate(centered_trial_type = as.numeric(Trial_Type) - mean(as.numeric(Trial_Type))) %>%
+  mutate(RT = log(Response_Time)) %>%
+  mutate(talker_condition = ifelse(List=='1_GE' | List == '2_GE','GE','Other'))
+
+#View(new_data)
+#table(new_data$Trial_Type)
+
+lmer(RT ~ talker_condition*Trial_Type + (1+Trial_Type|workerid) + (1+Trial_Type+talker_condition|Target),data = new_data)
+
+#this is the one for just one talker condition
+lmer(RT ~ Trial_Type + (1+Trial_Type|workerid) + (1+Trial_Type|Target),data = new_data)
+
+
+
+
+
 
 # limit dataset to only target trials
 d = d %>% 

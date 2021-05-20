@@ -1,0 +1,183 @@
+"current_region","gender","first_language","heritage_country","workerid","education","asses","exposure","race","comments","parent_languages","other_regions","age","other_languages","speaker_cond"
+"Dallas, TX","Male","English","",0,"Graduated college","Yes","Daily","Hispanic or Latinx, 
+","","Spanish","San Francisco, CA, Mexico City",36,"Spanish","2_CE"
+"UNITED STATE","","ENGLISH","",1,"Graduated college","","Weekly","White or Caucasian, 
+","GOOD STUDY","ENGLISH","ALABAMA",31,"ENGLISH","2_CE"
+"detroit, mi","Male","english","usa",2,"Hold a higher degree","Yes","Yearly","White or Caucasian, 
+","Context helps a lot in determining what people say.","english","none",49,"none","2_CE"
+"Lamar, SC","Female","English","USA",3,"Graduated college","Yes","Prefer not to say","White or Caucasian, 
+","no","English","",34,"","2_CE"
+"PROCIOUS","Female","English","USA",4,"Graduated high school","Yes","Monthly","Native American or Alaskan Native, 
+","","English","West Virginia",42,"French","2_CE"
+"Petoskey MI","Male","English","USA",5,"Graduated college","Yes","Yearly","White or Caucasian, 
+","","English","",44,"","2_CE"
+"Fort Myers, FL","Female","English","England",6,"Graduated college","Yes","Yearly","White or Caucasian, 
+","","English","Charlotte, NC",31,"","2_CE"
+"MOUNT VERNON WA","Male","ENGLISH","USA",7,"Graduated college","Yes","Prefer not to say","White or Caucasian, 
+","","ENGLISH","",47,"","2_CE"
+"STAMFORD","Female","English","USA",8,"Graduated college","Yes","Prefer not to say","White or Caucasian, 
+","Good","English","Connecticut",25,"English","2_CE"
+"Richmond, Virginia","Male","English","United States",9,"","Yes","Daily","White or Caucasian, 
+","","English","",31,"","2_CE"
+"Brooklyn, NY","Male","Chinese","China",10,"Graduated college","Yes","Prefer not to say"," Asian or Pacific Islander, 
+","","Chinese","",28,"English","2_CE"
+"Spartanburg, SC","Female","English","USA",11,"Graduated college","Yes","Monthly","White or Caucasian, 
+","none","English","Pittsburgh, PA Lexington, KY",45,"","2_CE"
+"california","","English","califorina",12,"Hold a higher degree","","Prefer not to say","White or Caucasian, 
+","nil","english","usa",NA,"hini","2_CE"
+"Birmingham, AL","Male","English","Italy, Germany",13,"Graduated college","Yes","Daily","White or Caucasian, 
+","This was more challenging than I expected. Words stopped sounding like words after a while!","English","",33,"","2_CE"
+"Norwalk,Connecticut","","English","United States",14,"","","Yearly","White or Caucasian, 
+","nice study","English","none",NA,"none","2_CE"
+"Napa, CA","Female","English","United States",15,"Graduated college","Yes","Monthly","White or Caucasian, 
+","None","English","",42,"","2_CE"
+"Rockville, MD","Male","English","USA",16,"Hold a higher degree","Yes","Daily","White or Caucasian, 
+","Some of the words sounded like english words based on the pronuniciation.","English","",45,"","2_CE"
+"DAVISBURG","","english","na",17,"Graduated college","","Prefer not to say","[]","","english","MI",45,"","2_CE"
+"stamford","Female","english","USA",18,"Graduated college","Yes","Prefer not to say","White or Caucasian, 
+","nice","English","United states",25,"no","2_CE"
+"Port St Lucie","Male","English","Europe",19,"Graduated college","Yes","Daily","White or Caucasian, 
+","thank you!","English","New York City",41,"none","2_CE"
+"miami, fl","Male","english","usa",20,"Graduated college","Yes","Daily","Black or African American, 
+","","english","",34,"","2_CE"
+"millinocket, maine","","english","us",21,"Hold a higher degree","","Yearly","White or Caucasian, 
+","","english","",NA,"","2_CE"
+"Portland,Oregon","Female","English","United States",22,"Graduated college","Yes","Monthly","White or Caucasian, 
+","No negative comments","English","",40,"","2_CE"
+"WATERTOWN,NEWYORK","Male","ENGLISH","AMERICA",23,"Graduated college","Yes","Prefer not to say","White or Caucasian, 
+","IT IS INTERESTING I ENJOY THE TASK.","ENGLISH","FLORIDA",40,"N/A","2_CE"
+"Houston, Texas","Male","English","Pakistan",24,"Graduated college","Yes","Weekly"," Asian or Pacific Islander, 
+","","Urdu","",32,"","2_CE"
+"mansfisco","Female","English","usa",25,"Hold a higher degree","Yes","Yearly","Black or African American, 
+","the experiment is very nice","English","ohio",37,"no","2_CE"
+"Lexington, KY","Female","English","United States",26,"Some college","Yes","Monthly","White or Caucasian, 
+","","English","Nicholasville, KY",39,"None","2_CE"
+"Medford, NJ","Female","English","Germany, Ireland ",27,"Graduated college","Yes","Daily","White or Caucasian, 
+","None","English","",38,"","2_CE"
+"fort worth, texas","Male","english","usa",28,"Some college","Yes","Monthly","White or Caucasian, 
+","","english","",53,"","2_CE"
+"Rome, GA","Female","English","USA",29,"Graduated high school","Yes","Yearly","White or Caucasian, 
+","","English","",34,"","2_CE"
+"cedar grove, New Jersey","Female","english","USA",30,"Graduated college","Yes","Monthly","White or Caucasian, 
+","","english","",38,"","2_CE"
+"New Haven CT","Male","English","USA",31,"Graduated college","Yes","Daily","Black or African American, 
+","","English ","NY",30,"none","2_CE"
+"Oklahoma City, OK","Female","English","United States",32,"Some college","Yes","Monthly","White or Caucasian, 
+","","English","",23,"","2_CE"
+"Tempe,Arizona","Male","English","American",33,"Graduated college","Yes","Daily","White or Caucasian, 
+","","English","",32,"","2_CE"
+"des plaines illinios","Female","english","no",34,"Graduated high school","Yes","Monthly","White or Caucasian, 
+","","english","",35,"","2_CE"
+"AZ","Female","English","USA",35,"Graduated college","Yes","Prefer not to say","Native American or Alaskan Native, 
+","good","English","-",57,"-","2_CE"
+"New York","Male","English","Trinidad and Tobago",36,"Graduated high school","Yes","Prefer not to say","Black or African American, 
+","","English","New York",39,"N/A","2_CE"
+"Canonsburg, PA","Female","English","American",37,"Some college","Yes","Monthly","White or Caucasian, 
+","At one point I sneezed and before I could press a button, it continued on, which I didn't think was going to happen.","English","Johnstown, PA",37,"b/a","2_CE"
+"Bristol, TN","Male","english","Ger",38,"Graduated college","Yes","Daily","White or Caucasian, 
+","","english","too many",46,"n/a","2_CE"
+"fairfax, virginia","Female","english","usa",39,"Graduated college","Yes","Yearly"," Asian or Pacific Islander, 
+","","english","",34,"","2_CE"
+"Macon, GA","Female","English","United States",40,"Graduated college","Yes","Yearly","White or Caucasian, 
+","Thank you.","English","Gainesville, FL",58,"","2_CE"
+"New Jersey","Male","English","USA",41,"","Yes","Daily","[]","","English","California ",66,"None","2_CE"
+"Greenville, MI","Male","English","USA",42,"","Yes","Monthly","White or Caucasian, 
+","","English","",41,"","2_CE"
+"St. Petersburg, Florida","Female","English","Germany, USA",43,"Graduated college","Yes","Monthly","White or Caucasian, 
+","","English, German","New Haven, Conn.",65,"German","2_CE"
+"missouri","Male","english","usa",44,"Hold a higher degree","","Daily","Black or African American, 
+","good","english","florida",25,"chenis","2_CE"
+"Texas","Male","english","USA",45,"Graduated college","Yes","Daily","White or Caucasian, 
+Hispanic or Latinx, 
+","Thank you ","spanish","none",33,"spanish","2_CE"
+"Las vegas, Nevada","Male","english","US",46,"Graduated college","Yes","Weekly","White or Caucasian, 
+","","English","",36,"","2_CE"
+"SYRACUSE,UTAH","Male","ENGLISH","USA",47,"Graduated college","Yes","Prefer not to say","White or Caucasian, 
+","IT WAS AN AMAZING TASK TO DO.","ENGLISH","NEWYORK",42,"N/A","2_CE"
+"Rapid City, SD","Female","English","",48,"Some college","Yes","Monthly","White or Caucasian, 
+","Thank you.","English","N/A",40,"N/A","1_CE"
+"MA","Female","English","European",49,"","Yes","Monthly","White or Caucasian, 
+","","English","",29,"","1_CE"
+"Charlotte, NC","Male","English","United States",50,"Some college","Yes","Yearly","Black or African American, 
+","","English","Brooklyn, NY",36,"N/A","1_CE"
+"Colebrook, Connecticut","Female","English","Italy, Norway, Scotland, America (Pequot)",51,"Graduated high school","","Monthly","White or Caucasian, 
+","","English","Stamford, CT, Morris, CT, North Canaan, CT",49,"French","1_CE"
+"Chicago, IL","Male","English","USA",52,"Graduated college","Yes","Weekly","White or Caucasian, 
+","","English","n/a",33,"n/a","1_CE"
+"oneill nebraska","Female","english","United States",53,"","","Yearly","White or Caucasian, 
+","everything went great","english","texas, virginia, florida",48,"na","1_CE"
+"Pittsburgh, PA","Female","English","Ireland, England",54,"Graduated college","Yes","Monthly","White or Caucasian, 
+","","English","Odessa, TX; Burlington, VT; Denver, CO",43,"none","1_CE"
+"us ny","Female","english","us",55,"Some college","Yes","Prefer not to say","White or Caucasian, 
+","","english","",23,"","1_CE"
+"Norristown PA","Male","ENG","USA",56,"Graduated college","Yes","Yearly","White or Caucasian, 
+","","ENG","Albany NY",38,NA,"1_CE"
+"Dallas,TX","Male","English","Scotland",57,"Graduated college","Yes","Daily","White or Caucasian, 
+","everything worked fine and was easy to understand","English","Sacramento,CA",34,"","1_CE"
+"Dallas, Texas","Female","English","Italian",58,"Graduated college","Yes","Daily","White or Caucasian, 
+","Thank you","English","none",39,"none","1_CE"
+"New City, New York","","English","Italian",59,"Graduated college","","Weekly","White or Caucasian, 
+","everything loaded properly, no errors","English","",28,"","1_CE"
+"Jacksonville, Fl","Male","English","US",60,"Graduated college","Yes","Daily","White or Caucasian, 
+","Thank you.","English","n/a",30,"n/a","1_CE"
+"Roswell, GA","Female","English","United States",61,"Some college","Yes","Yearly","White or Caucasian, 
+","it was difficult to think of adjectives for the speakers","English","Harrisburg, PA",54,"n/a","1_CE"
+"phoenix, AZ","Male","english","usa",62,"Graduated high school","Yes","Prefer not to say","White or Caucasian, 
+","","english","",29,"","1_CE"
+"Chicago, IL","Male","English","Russia, USA",63,"Graduated college","Yes","Weekly","White or Caucasian, 
+Native American or Alaskan Native, 
+","","English","",34,"","1_CE"
+"Daytona Beach, Florida","Female","English","England/UK",64,"Some college","Yes","Weekly","White or Caucasian, 
+","Thank you for the opportunity to participate","English","Columbus, Georgia",65,"N/A","1_CE"
+"Fairfield Bay, AR","Male","English","USA",65,"Hold a higher degree","Yes","Weekly","White or Caucasian, 
+","","English","",53,"","1_CE"
+"AZ","Male","English","US",66,"Graduated college","Yes","Daily","White or Caucasian, 
+","","English","N/A",33,"","1_CE"
+"Waterford, MI","Male","English","Czech Republic, England",67,"Graduated college","Yes","Monthly","White or Caucasian, 
+","","English","Tempe, AZ",53,"","1_CE"
+"Hindman, KY","Male","English","USA",68,"Some college","Yes","Yearly","White or Caucasian, 
+","","English","n/a",31,"n/a","1_CE"
+"Miami, FL","Male","English","United States",69,"Graduated college","Yes","Weekly","White or Caucasian, 
+","Thank you for allowing me to participate!","English","",33,"","1_CE"
+"Eugene Oregon","Female","english","USA",70,"Graduated college","Yes","Weekly","[]","I have lived in dozens of towns in 3 states","english","california georgia",57,"none","1_CE"
+"dever","Male","english","colorado",71,"Graduated college","","Prefer not to say","White or Caucasian, 
+","","english","usa",40,"NO","1_CE"
+"Bloomington, IL","Female","English","United State",72,"Graduated college","Yes","Weekly","White or Caucasian, 
+","No comments, thank you.","English","Michigan",28,"none","1_CE"
+"waldorf, maryland","Female","english","united states",73,"Some college","Yes","Monthly","White or Caucasian, 
+","none","english","na",25,"na","1_CE"
+"Los Angeles, CA","Male","English","USA",74,"Graduated college","Yes","Monthly","White or Caucasian, 
+","None","English","Phoenix, AZ",45,"None","1_CE"
+"USA","Female","ENGLISH","USA",75,"Graduated college","Yes","Yearly","White or Caucasian, 
+","","ENGLISH","",46,"","1_CE"
+"Randolph, NJ","Male","English","Ireland, Italy",76,"Graduated college","Yes","Monthly","White or Caucasian, 
+","no comments","English","none",40,"none","1_CE"
+"Wyoming","Female","English","USA",77,"Graduated college","Yes","Prefer not to say","White or Caucasian, 
+","interesting","English","lingle",51,"None","1_CE"
+"colorado","Male","english","america",78,"Graduated college","Yes","Prefer not to say","White or Caucasian, 
+","","english","colorado",35,"","1_CE"
+"Edgewater, FL","Male","English","United States",79,"Graduated high school","Yes","Monthly","White or Caucasian, 
+","I appreciate the opportunity.","English","",29,"","1_CE"
+"Lancaster, OH","Male","English","USA",80,"Graduated college","Yes","Weekly","White or Caucasian, 
+","","English","",35,"","1_CE"
+"Salem, OR","Male","English","USA",81,"Graduated college","Yes","Weekly","White or Caucasian, 
+","If this is the final page, I am not sure if the experiment worked correctly, because I only answered a handful of questions so far.","English","Portland, OR",33,"","1_CE"
+"Ellicott City, Maryland","Male","English","United States",82,"Graduated college","Yes","Yearly","White or Caucasian, 
+","Please use a longer timer in future HITs, preferably at least 1 hour and ideally longer given the length of this task.","English","None",27,"None","1_CE"
+"orlando,fl","Male","eng","guyana",83,"Some college","Yes","Yearly"," Asian or Pacific Islander, 
+","","eng","nyc,ny",42,"n/a","1_CE"
+"Henderson, NV","Male","English","United States",84,"Graduated high school","Yes","Yearly","White or Caucasian, 
+","This was a tough one, my right hand got tired and some sounds were so close to real words i wasn't sure.  Fun. good luck with your research!","English","Kapolei, HI",35,"Japanese","1_CE"
+"Dallas, TX","Male","English","England",85,"Graduated college","Yes","Daily","White or Caucasian, 
+","","English","",38,"","1_CE"
+"Crossville, TN","Male","English","United States",86,"Graduated high school","Yes","Weekly","White or Caucasian, 
+","Some of those words sounded like they could actually be words and some real words at times sounded like they weren't really. It was interesting.","English","Ocala, FL Buffalo, NY",45,"German spanish french italian","1_CE"
+"Cleveland, OH","Male","English","India",87,"Graduated college","Yes","Yearly"," Asian or Pacific Islander, 
+","","English","",38,"","1_CE"
+"Hollywood, FL","Male","English","United States",88,"Graduated college","Yes","Weekly","White or Caucasian, 
+","","English","",29,"","1_CE"
+"Las Vegas, NV","Female","English","USA",89,"Hold a higher degree","Yes","Weekly","[]","none","English","none",53,"none","1_CE"
+"Des Moines","","English","USA",90,"Graduated college","","Prefer not to say","White or Caucasian, 
+","","English","Washington",36,"English","1_CE"
+"Hickory, NC","Female","English","United States of America",91,"Graduated college","Yes","Weekly","White or Caucasian, 
+","","English","Utica, NY, Chicago, IL",44,"","1_CE"

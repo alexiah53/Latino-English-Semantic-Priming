@@ -1,0 +1,385 @@
+---
+title: "Latino English Semantic Priming"
+output:
+  rmarkdown::github_document
+  # pdf_document: default
+  # html_document:
+  #   df_print: paged
+---
+
+```{r message=FALSE, warning=FALSE, include=FALSE}
+#Loading everything
+library(tidyverse)
+library(lme4)
+library(lmerTest)
+library(formattable)
+source("helpers.R")
+
+#removes gray boxes from plots
+theme_set(theme_bw())
+
+# color-blind-friendly palette
+cbPalette <- c("#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7") 
+
+# load the main data
+d = read_csv("../data/CE_merged.csv") 
+# load information about contextual features and merge into dataset
+subject_info = read_csv("../data/CEsubj_merged.csv")
+
+d = d %>%
+  left_join(subject_info, by=c("workerid"))
+
+d = d %>%
+  mutate(id = row_number())
+```
+
+## Exclusions
+### Native Language  
+Excluding English L2
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+lang_exclude = subject_info %>% 
+  select(workerid, first_language) %>% 
+  filter(str_detect(first_language,regex("english", ignore_case=TRUE),negate=TRUE)) %>%
+    filter(str_detect(first_language,regex("ENG", ignore_case=TRUE),negate=TRUE)) %>%
+    filter(str_detect(first_language,regex("eng", ignore_case=TRUE),negate=TRUE)) %>%
+  select(workerid, first_language) 
+#lang_exclude
+language_exclusions = table(lang_exclude)
+
+d = d[!(d$workerid %in% lang_exclude$workerid),]
+```
+
+### Accuracy 
+Excluding participants with accuracy rates lower than 90%
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+accuracy_d = d %>%
+  filter(Trial_Type != "filler") %>%
+  mutate(correct=ifelse(Response==Target_Word_Type,1,0)) %>% 
+  filter(!is.na(correct)) %>%
+  group_by(workerid) %>%
+  summarise(Mean=mean(correct),CILow=ci.low(correct),CIHigh=ci.high(correct)) %>%
+  ungroup() %>%
+  mutate(YMin=Mean-CILow,YMax=Mean+CIHigh) %>%
+  mutate(Participant_Accuracy=ifelse(Mean<0.90,"Participants with Low Accuracy - Excluded","Participants with High Accuracy - Included"))
+#View(accuracy_d)
+
+h=0.90
+ggplot(accuracy_d, aes(x=reorder(workerid, Mean), y=Mean, fill=Participant_Accuracy)) +
+  geom_bar(stat="identity") +
+  geom_hline(yintercept=h) +
+  geom_text(aes(0, h, label=h, vjust=-1, hjust=-0.3)) +
+  scale_fill_manual(values = cbPalette) +
+  xlab("Worker ID") +
+  theme(legend.title = element_blank())
+
+exclude = accuracy_d %>%
+  filter(Participant_Accuracy=="Participants with Low Accuracy - Excluded")
+#exclude
+d = d[!(d$workerid %in% exclude$workerid),]
+#View(d)
+```
+
+### Duration
+Excluding participants who take more than 2.5 SDs from mean completion time
+
+Average Time Taken to Complete Experiment:
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+mean(d$Answer.time_in_minutes)
+```
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+exp_time_d = d %>%
+  mutate(Mean=mean(Answer.time_in_minutes),SD=sd(Answer.time_in_minutes)) %>%
+  mutate(Ulimit=Mean+2.5*SD,Llimit=Mean-2.5*SD) %>%
+  mutate(slow=ifelse(Answer.time_in_minutes>Ulimit,"1","0")) %>%
+  mutate(fast=ifelse(Answer.time_in_minutes<Llimit,"1","0")) %>%
+  select(workerid,id,Answer.time_in_minutes,slow,fast,Mean,SD,Llimit,Ulimit) %>%
+  filter(slow==1 | fast == 1)
+
+#exp_time_d
+#View(exp_time_d)
+
+d %>%
+  mutate(Exclusions = ifelse(d$workerid %in% exp_time_d$workerid, 'Participant Excluded','Participant Included')) %>%
+  ggplot(aes(x=Answer.time_in_minutes, fill=Exclusions)) +
+  geom_histogram() +
+  xlab("Total Experiment Time")
+```
+
+### Individual Responses
+Excluding individual responses that are faster than 500ms or more than 3 SDs from mean RT
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+d_trials = d %>%
+  filter(!is.na(Trial_Type))
+exclude_sd = d_trials %>%
+  mutate(Mean=mean(Response_Time),SD=sd(Response_Time),count=n()) %>%
+  mutate(Ulimit=Mean+3*SD,Llimit=Mean-3*SD) %>%
+  mutate(slow=ifelse(Response_Time>Ulimit,"1","0")) %>%
+  mutate(fast=ifelse(Response_Time<Llimit,"1","0")) %>%
+  # excludes individual responses <500ms
+  mutate(toofast=ifelse(Response_Time<500, "1", "0")) %>%
+  select(workerid,id,Response_Time,slow,fast,toofast,Mean,SD,Llimit,Ulimit) %>%
+  filter(slow==1 | fast == 1 | toofast == 1)
+#exclude_sd
+#View(exclude_sd)
+d = d[!(d$id %in% exclude_sd$id),]
+#View(d)
+nrow(exclude_sd)
+```
+
+Excluding Incorrect Individual Responses
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+exclude_trials = d_trials %>%
+  mutate(correct=ifelse(Response==Target_Word_Type,1,0)) %>% 
+  filter(correct==0)
+#exclude_trials
+nrow(exclude_trials)
+d = d[!(d$id %in% exclude_trials$id),]
+```
+
+## Plots
+### Raw RT Histogram
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+d %>%
+  filter(Trial_Type == "control" | Trial_Type == "critical") %>%
+  mutate(talker_condition = ifelse(List=='1_GE' | List == '2_GE','GE', ifelse(List=='1_CE' | List == '2_CE','CE', ifelse(List=='1_ME' | List == '2_ME','ME', NA)))) %>%
+  group_by(talker_condition, Trial_Type) %>%
+  ggplot(aes(x=Response_Time,fill=talker_condition)) +
+  geom_density(alpha=.5) +
+  xlab("Raw RT") +
+  ylab("Density") +
+  labs(fill = "Talker Condition")
+```
+
+### Log Transformed RT Histogram
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+d %>%
+  filter(Trial_Type == "control" | Trial_Type == "critical") %>%
+  mutate(talker_condition = ifelse(List=='1_GE' | List == '2_GE','GE', ifelse(List=='1_CE' | List == '2_CE','CE', ifelse(List=='1_ME' | List == '2_ME','ME', NA)))) %>%
+  group_by(talker_condition, Trial_Type) %>%
+  ggplot(aes(x=log(Response_Time),fill=talker_condition)) +
+  geom_density(alpha=.5) +
+  xlab("Log Transformed RT") +
+  ylab("Density") +
+  labs(fill = "Talker Condition")
+```
+
+### All Conditions RT Bar Plot
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+d %>%
+  filter(!is.na(Trial_Type)) %>%
+  filter(Trial_Type != "filler") %>%
+  mutate(Trial_Type = fct_recode(Trial_Type, "Semantically Unrelated \n Target" = "control", "Semantically Related \n Target" = "critical")) %>%
+  group_by(Trial_Type) %>%
+  summarize(MeanRT = mean(Response_Time), CI.Low = ci.low(Response_Time), CI.High = ci.high(Response_Time)) %>%
+  mutate(YMin = MeanRT - CI.Low, YMax = MeanRT + CI.High) %>%
+  ggplot(aes(x =Trial_Type, y=MeanRT, fill = Trial_Type)) +
+  geom_bar(stat="identity")  +
+  xlab("Prime Condition") +
+  ylab("Mean RT (ms)") +
+  scale_fill_manual(values = cbPalette) +
+  geom_errorbar(aes(ymin=YMin,ymax=YMax),width=.25) + 
+  theme(legend.position="None")
+
+  #ggsave(file="../graphs/all_conditions_rt_barplot.png",width=5,height=4)
+```
+
+### Split Condition RT Bar Plot
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+# lists are collapsed into conditions
+d %>%
+  filter(Trial_Type == "control" | Trial_Type == "critical") %>%
+    mutate(Trial_Type = fct_recode(Trial_Type, "Semantically Unrelated \n Target" = "control", "Semantically Related \n Target" = "critical")) %>%
+    mutate(talker_condition = ifelse(List=='1_GE' | List == '2_GE','GE', ifelse(List=='1_CE' | List == '2_CE','CE', ifelse(List=='1_ME' | List == '2_ME','ME', NA)))) %>%
+  group_by(talker_condition, Trial_Type) %>%
+  summarize(MeanRT = mean(Response_Time), CI.Low = ci.low(Response_Time), CI.High = ci.high(Response_Time)) %>%
+  mutate(YMin = MeanRT - CI.Low, YMax = MeanRT + CI.High) %>%
+  ggplot(aes(x =Trial_Type, y=MeanRT, fill = Trial_Type)) +
+  geom_bar(stat="identity")  + 
+  xlab("Prime Condition") +
+  ylab("Mean RT (ms)") +
+  scale_fill_manual(values = cbPalette) +
+  geom_errorbar(aes(ymin=YMin,ymax=YMax),width=.25) +
+  facet_wrap(~talker_condition) + 
+  theme(legend.position="None") 
+  #ggsave(file="../graphs/split_conditions_rt_barplot.png",width=7,height=4)
+```
+
+### All Conditions - Comparing Counterbalanced Lists
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+d %>%
+  filter(!is.na(Trial_Type)) %>%
+  filter(Trial_Type != "filler") %>%
+  mutate(comparison=ifelse(Trial_Type=="control" & List=="1_CE", "List 2 Criticals vs. List 1 Controls", ifelse(Trial_Type=="critical" & List=="1_CE", "List 1 Criticals vs. List 2 Controls", ifelse(Trial_Type=="control" & List=="2_CE", "List 1 Criticals vs. List 2 Controls", ifelse(Trial_Type=="critical" & List=="2_CE", "List 2 Criticals vs. List 1 Controls", NA))))) %>%
+mutate(Trial_Type = fct_recode(Trial_Type, "Semantically Unrelated \n Target" = "control", "Semantically Related \n Target" = "critical")) %>%
+  group_by(Trial_Type, comparison) %>%
+  summarize(MeanRT = mean(Response_Time), CI.Low = ci.low(Response_Time), CI.High = ci.high(Response_Time)) %>%
+  mutate(YMin = MeanRT - CI.Low, YMax = MeanRT + CI.High) %>%
+  ggplot(aes(x =Trial_Type, y=MeanRT, fill = Trial_Type)) +
+  geom_bar(stat="identity")  +
+  xlab("Prime Condition") +
+  ylab("Mean RT (ms)") +
+  scale_fill_manual(values = cbPalette) +
+  geom_errorbar(aes(ymin=YMin,ymax=YMax),width=.25) +
+  facet_wrap(~comparison) +
+  theme(legend.position="None")
+
+  #ggsave(file="../graphs/all_conditions_rt_barplot.png",width=5,height=4)
+```
+
+Response Times for Individual Targets - Semantically Related vs. Semantically Unrelated
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+# lists are collapsed into conditions
+agr = d %>%
+  filter(Trial_Type == "control" | Trial_Type == "critical") %>%
+    mutate(Trial_Type = fct_recode(Trial_Type, "Semantically Unrelated \n Target" = "control", "Semantically Related \n Target" = "critical")) %>%
+    mutate(talker_condition = ifelse(List=='1_GE' | List == '2_GE','GE', ifelse(List=='1_CE' | List == '2_CE','CE', ifelse(List=='1_ME' | List == '2_ME','ME', NA)))) %>%
+  group_by(Trial_Type, Target) %>%
+  summarize(MeanRT = mean(Response_Time), CI.Low = ci.low(Response_Time), CI.High = ci.high(Response_Time)) %>%
+  mutate(YMin = MeanRT - CI.Low, YMax = MeanRT + CI.High) 
+
+p = ggplot(agr, aes(x =Trial_Type, y=MeanRT, fill = Trial_Type)) +
+  geom_bar(stat="identity")  + 
+  xlab("Prime Condition") +
+  ylab("Mean RT (ms)") +
+  scale_fill_manual(values = cbPalette) +
+  geom_errorbar(aes(ymin=YMin,ymax=YMax),width=.25) +
+  facet_wrap(~Target) + 
+  theme(legend.position="None")
+p
+  #ggsave(p, file="target_means.png",width=10,height=20)
+```
+
+### RT Bar Plot by Exposure to Hispanic/Latinx Population
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+# lists are collapsed into conditions
+d %>%
+  filter(Trial_Type == "control" | Trial_Type == "critical") %>%
+    mutate(Trial_Type = fct_recode(Trial_Type, "Semantically Unrelated \n Target" = "control", "Semantically Related \n Target" = "critical")) %>%
+    mutate(talker_condition = ifelse(List=='1_GE' | List == '2_GE','GE', ifelse(List=='1_CE' | List == '2_CE','CE', ifelse(List=='1_ME' | List == '2_ME','ME', NA)))) %>%
+  group_by(talker_condition, Trial_Type, exposure) %>%
+  summarize(MeanRT = mean(Response_Time), CI.Low = ci.low(Response_Time), CI.High = ci.high(Response_Time)) %>%
+  mutate(YMin = MeanRT - CI.Low, YMax = MeanRT + CI.High) %>%
+  ggplot(aes(x =Trial_Type, y=MeanRT, fill = Trial_Type)) +
+  geom_bar(stat="identity")  + 
+  xlab("Prime Condition") +
+  ylab("Mean RT (ms)") +
+  scale_fill_manual(values = cbPalette) +
+  geom_errorbar(aes(ymin=YMin,ymax=YMax),width=.25) +
+  facet_wrap(~exposure) + 
+  theme(legend.position="None") 
+  #ggsave(file="../graphs/split_conditions_rt_barplot.png",width=7,height=4)
+```
+
+## Additional Responses
+### Analyzing Reactions to Voices
+Miami Cuban American English Speaker 1
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+
+words = c("second generation", "accented", "accent", "hispanic", "brown", "ethnic", "foreign", "black", "african american", "latino", "not born in the usa")
+
+speaker_1_reactions = d %>%
+  filter(!is.na(speaker_1_reaction_5)) %>%
+  filter(!is.na(speaker_1_reaction_4)) %>%
+  filter(!is.na(speaker_1_reaction_3)) %>%
+  filter(!is.na(speaker_1_reaction_2)) %>%
+  filter(!is.na(speaker_1_reaction_1)) %>%
+  select(speaker_1_reaction_5, speaker_1_reaction_4, speaker_1_reaction_3, speaker_1_reaction_2, speaker_1_reaction_1)
+
+speaker_1_reactions_long = speaker_1_reactions %>%
+  pivot_longer(everything(), names_to = "field", values_to = "responses") %>%
+  mutate(responses=tolower(responses)) %>%
+  group_by(responses) %>%
+  summarize(count=n()) %>%
+  mutate(responses=fct_reorder(responses, count)) %>%
+  mutate(marked_word=case_when(responses %in% words ~ "marked",
+                               TRUE ~ "unmarked"))
+
+ggplot(speaker_1_reactions_long, aes(x=responses, y=count, fill=marked_word)) +
+  geom_bar(stat="identity") +
+  coord_flip() +
+  scale_fill_manual(values=cbPalette)
+#ggsave(file="speaker_1_reactions.png",width=7,height=13)
+```
+
+Miami Cuban American English Speaker 2
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+speaker_2_reactions = d %>%
+  filter(!is.na(speaker_2_reaction_5)) %>%
+  filter(!is.na(speaker_2_reaction_4)) %>%
+  filter(!is.na(speaker_2_reaction_3)) %>%
+  filter(!is.na(speaker_2_reaction_2)) %>%
+  filter(!is.na(speaker_2_reaction_1)) %>%
+  select(speaker_2_reaction_5, speaker_2_reaction_4, speaker_2_reaction_3, speaker_2_reaction_2, speaker_2_reaction_1)
+
+speaker_2_reactions_long = speaker_2_reactions %>%
+  pivot_longer(everything(), names_to = "field", values_to = "responses") %>%
+  mutate(responses=tolower(responses)) %>%
+  group_by(responses) %>%
+  summarize(count=n()) %>%
+  mutate(responses=fct_reorder(responses, count)) %>%
+  mutate(marked_word=case_when(responses %in% words ~ "marked",
+                               TRUE ~ "unmarked")) %>%
+  mutate(wordlength=nchar(as.character(responses))) %>%
+  filter(wordlength < 20)
+
+ggplot(speaker_2_reactions_long, aes(x=responses, y=count, fill=marked_word)) +
+  geom_bar(stat="identity") +
+  coord_flip() +
+  scale_fill_manual(values=cbPalette) +
+  labs(fill="Reactions")
+#ggsave(file="speaker_2_reactions.png",width=7,height=13)
+  
+```
+
+
+## Models
+### Linear Mixed Model for Northeastern White American Talker Condition
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+# Trial type is centered around 0
+# GE_data <- d %>%
+#   filter(Trial_Type == "control" | Trial_Type == "critical") %>%
+#   mutate(Trial_Type = as.factor(Trial_Type)) %>%
+#   mutate(centered_trial_type = as.numeric(Trial_Type) - mean(as.numeric(Trial_Type))) %>%
+#   mutate(RT = log(Response_Time)) %>%
+#   mutate(talker_condition = ifelse(List=='1_GE' | List == '2_GE','GE','Other'))
+# lmer(RT ~ Trial_Type + (1+Trial_Type|workerid) + (1+Trial_Type|Target),data = GE_data)
+```
+
+### Linear Mixed Model for Miami Cuban American Talker Condition
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+# Trial type is centered around 0
+CE_data <- d %>%
+  filter(Trial_Type == "control" | Trial_Type == "critical") %>%
+  mutate(Trial_Type = as.factor(Trial_Type)) %>%
+  mutate(centered_trial_type = as.numeric(Trial_Type) - mean(as.numeric(Trial_Type))) %>%
+  mutate(RT = log(Response_Time)) %>%
+  mutate(talker_condition = ifelse(List=='1_CE' | List == '2_CE','CE','Other'))
+model = lmer(RT ~ centered_trial_type + (1+centered_trial_type|workerid) + (1+centered_trial_type|Target),data = CE_data)
+summary(model)
+```
+
+### Linear Mixed Model for LA Mexican American Talker Condition
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+# Trial type is centered around 0
+# ME_data <- d %>%
+#   filter(Trial_Type == "control" | Trial_Type == "critical") %>%
+#   mutate(Trial_Type = as.factor(Trial_Type)) %>%
+#   mutate(centered_trial_type = as.numeric(Trial_Type) - mean(as.numeric(Trial_Type))) %>%
+#   mutate(RT = log(Response_Time)) %>%
+#   mutate(talker_condition = ifelse(List=='1_ME' | List == '2_ME','ME','Other'))
+# lmer(RT ~ Trial_Type + (1+Trial_Type|workerid) + (1+Trial_Type|Target),data = ME_data)
+```
+
+### Linear Mixed Model for All Talker Conditions
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+# all_data <- d %>%
+#   filter(Trial_Type == "control" | Trial_Type == "critical") %>%
+#   mutate(Trial_Type = as.factor(Trial_Type)) %>%
+#   mutate(centered_trial_type = as.numeric(Trial_Type) - mean(as.numeric(Trial_Type))) %>%
+#   mutate(RT = log(Response_Time)) %>%
+#   mutate(talker_condition = ifelse(List=='1_GE' | List == '2_GE','GE', ifelse(List=='1_CE' | List == '2_CE','CE', ifelse(List=='1_ME' | List == '2_ME','ME', NA))))
+# #View(all_data)
+# 
+# lmer(RT ~ talker_condition*centered_trial_type + (1+centered_trial_type|workerid) + (1+centered_trial_type+talker_condition|Target),data = all_data)
+```
