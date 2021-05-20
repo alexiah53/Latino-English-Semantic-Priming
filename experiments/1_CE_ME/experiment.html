@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<!-- 1_CE_ME -->
+<html>
+  <head>
+    <title>
+      Language Experiment
+    </title><!--JS-->
+    <!-- external general utilities -->
+    <script src="shared/js/jquery-1.11.1.min.js"></script>
+    <script src="shared/full-projects/jquery-ui/jquery-ui.min.js"></script>
+    <script src="shared/js/underscore-min.js"></script>
+	<!-- mturk stuff
+		<script src="shared/js/mmturkey.js"></script>
+	<script src="shared/js/uniqueturker.js"></script> -->
+	<!-- utilities to submit data to proliferate -->
+	<script src="https://proliferate.alps.science/static/js/proliferate.js"></script>
+    
+    <!-- experiment logic -->
+    <script src="shared/js/exp-V2.js"></script>
+    <script src="shared/js/stream-V2.js"></script>
+
+    <!-- general utilities -->
+    <script src="shared/js/browserCheck.js"></script>
+    <script src="shared/js/utils.js"></script>
+    <link href="shared/full-projects/jquery-ui/jquery-ui.min.css" rel="stylesheet" type="text/css">
+    <link href="shared/css/cocolab-style.css" rel="stylesheet" type="text/css">
+    <link href="css/local-style.css" rel="stylesheet" type="text/css">
+
+    <!-- experiment file -->
+    <script src="js/experiment.js"></script>
+
+    <!-- stimulus file -->
+    <!-- <script src="js/stimuli.js"></script> -->
+	<script src="js/stimuli.js"></script>
+	
+	<!-- unique turker -->  
+
+	    <!-- <script type="text/JavaScript">
+
+	      $(document).ready(function(){
+
+	      var ut_id = "26e23328d90bbbc4fe942008e3cf9805";
+
+	      var ut_response = UTWorkerLimitReached(ut_id);
+
+	      console.log("Unique turker response" +  ut_response);
+
+	      if (ut_response) {
+
+	        $(".slide").hide();
+
+	        $("body").html("You have already completed the maximum number of HITs allowed by this requester. Please click 'Return HIT' to avoid any impact on your approval rating.");
+
+	    }});
+
+	    </script> -->
+	
+  </head>
+
+  <body onload="init()">
+    <noscript>This task requires JavaScript.</noscript>
+    
+    <!-- initial slide -->
+    <div class="slide" id="i0">
+		  <p class="center">
+        You will listen to some word pairs. One speaker will say the first word in the pair and another speaker will say the second word in the pair.<br>
+        <br>  <strong> Your task is to decide whether the second word in the pair is a real word or a made up word. </strong><br>
+        <br>
+        The experiment will take approximately 20 minutes.
+      </p><button id="start_button" type="button">Start experiment</button>
+      <p class="left legal">
+        <strong><br>
+        <br>
+        <br>
+        LEGAL INFORMATION</strong>:<br>
+		Nonmedical Human Participants Waiver of Documentation
+<br>
+		STUDY TITLE: The Perception of Latino Varieties of English.
+		Protocol Director: Alexia Hernandez
+<br>		DESCRIPTION: You are invited to participate in a research study.  Its general purpose is to understand how people recognize words and perceive auditory stimuli.  We are interested in how people communicate across language varieties and how acoustic properties of speech are used and stored by speakers.  You will be asked to listen to lists of words or word pairs and make simple decisions about them.
+<br>		RISKS AND BENEFITS: There are no known risks, costs, or discomforts in this study and this judgment is based on a large body of experience with the same or similar procedures with people of similar ages, sex, origins, etc.  We cannot and do not guarantee or promise that you will receive any benefits from this study. You will help us to understand how people recognize and perceive auditory stimuli. 
+<br>		TIME INVOLVEMENT: Your participation in this experiment will take less than one hour.
+<br>		PAYMENTS: You will receive approximately $15/hr for your participation. 
+<br>		SUBJECT'S RIGHTS: If you have read this form and have decided to participate in this project, please understand your participation is voluntary and you have the right to withdraw your consent or discontinue participation at any time without penalty or loss of benefits to which you are otherwise entitled. You have the right to refuse to answer particular questions. Your individual privacy will be maintained in all published and written data resulting from the study.
+<br>		CONTACT INFORMATION: 
+		Questions, Concerns, or Complaints: If you have any questions, concerns or complaints about this research study, its procedures, risks and benefits, you should ask the Protocol Director, Alexia Hernandez at (802) 377-7923. 
+
+		Independent Contact: If you are not satisfied with how this study is being conducted, or if you have any concerns, complaints, or general questions about the research or your rights as a participant, please contact the Stanford Institutional Review Board (IRB) to speak to someone independent of the research team at (650)-723-2480 or toll free at 1-866-680-2906. You can also write to the Stanford IRB, Stanford University, Stanford, CA 94305-5401 or email irbnonmed@stanford.edu.
+		
+<br>		WAIVER OF DOCUMENTATION:
+		If you agree to participate in this research, please continue on to the study. 
+
+<br>		IRB approval date: 4/29/21
+		Expiration date: (Does not expire) 
+        
+      </p>
+    </div>
+	
+	<!-- sound test slide -->
+	<div class="slide" id="sound_test">
+		<div class="text-center">
+			<br><br><br>
+			Press the play button to hear what word to type in the box. Once you type the word in the box below, you can continue.
+			<br><br>
+			<audio id="soundtest" controls src='soundtest.wav'> </audio>
+			<br><br>
+			<input type="text" class="sound_test">
+			<br><br>
+			In the task, the audio will play automatically and you'll only hear each word once so listen carefully!
+			<br><br>
+			<button id="soundtest_OK" onclick="_s.soundtest_OK()"> Continue </button>
+			
+  	      <div class="err">
+  	        <br>
+  	        <p>
+  	         Please listen to the audio and type in the word indicated.
+  	        </p>
+  	      </div>
+	</div>
+</div>
+
+    <!-- practice instructions slide -->
+    <div class="slide" id="practice_instructions">
+      <p id="instruct-text" class="center">
+        You will now start two short practice trials.<br><br> You will hear a real word followed by another word. <br><br> Sometimes the second word in the pair will be a REAL word and sometimes the second word in the pair will be a made up word (a PSEUDO word). <br><br>Your task is to decide whether the second word in the pair is a real word (like RUG) or a pseudo-word (like WUG). <br><br> Place your left index finder on the S key. Place your right index finger on the L key.  <br><br> <strong> Press the S key if the second word is made up. Press the L key if the second word is a real word.</strong> <br><br> <img src="keyboard_example.png" alt="keyboard_example" width="500" height="300">
+      </p>
+      <div class="center">
+        <button class="continueButton" onclick="_s.button()">Continue</button>
+      </div>
+    </div>
+	
+	    <!-- practice trial 1-->
+	    <div class="slide" id="practice_trial_1">
+	<div id = "stimuli">
+	
+			<br><br><br><br><br><br><br><br><br><br><br><br><br>
+			<table class="center">
+				<tr>
+					<td id="pseudo_text_ex1">
+						S = PSEUDO
+					</td>
+					<td>
+						&emsp; 
+					</td>
+					<td>
+						&emsp; 
+					</td>
+					<td>
+						&emsp; 
+					</td>
+					<td>
+						&emsp; 
+					</td>
+					<td>
+						&emsp; 
+					</td>
+					<td>
+						&emsp; 
+					</td>
+					<td id="real_text_ex1">
+						L = REAL
+					</td>
+				</tr>
+			</table>
+		  </div>
+		
+	   <audio id="prime_stim"> 
+		   <source id="wav_src" src="" type="audio/wav"> Your browser does not support the audio element. 
+	   </audio>
+   
+	   <audio id="target_stim"> 
+		   <source id="wav_src" src="" type="audio/wav"> Your browser does not support the audio element. 
+	   </audio>
+	      <div class="err">
+	        <br>
+	        <p>
+	         Actually, NURSE is a real word so try again. 
+	        </p>
+	      </div>
+		  
+	      <div class="correct">
+	        <br>
+	        <p>
+	         Great, NURSE is a real word. 
+	        </p>
+	      </div>
+		  
+	 	 </div>
+		
+		
+		    <!-- practice trial 2 -->
+		    <div class="slide" id="practice_trial_2">
+		<div id = "stimuli">
+	
+			<br><br><br><br><br><br><br><br><br><br><br><br><br>
+			<table class="center">
+				<tr>
+					<td id="pseudo_text_ex2">
+						S = PSEUDO
+					</td>
+					<td>
+						&emsp; 
+					</td>
+					<td>
+						&emsp; 
+					</td>
+					<td>
+						&emsp; 
+					</td>
+					<td>
+						&emsp; 
+					</td>
+					<td>
+						&emsp; 
+					</td>
+					<td>
+						&emsp; 
+					</td>
+					<td id="real_text_ex2">
+						L = REAL
+					</td>
+				</tr>
+			</table>
+		
+		   <audio id="prime_stim"> 
+			   <source id="wav_src" src="" type="audio/wav"> Your browser does not support the audio element. 
+		   </audio>
+   
+		   <audio id="target_stim"> 
+			   <source id="wav_src" src="" type="audio/wav"> Your browser does not support the audio element. 
+		   </audio>
+     
+		      <div class="err">
+		        <br>
+		        <p>
+		         Remember you're only judging the second word in the pair. WUG is a pseudo word so try again. 
+		        </p>
+		      </div>
+		  
+		      <div class="correct">
+		        <br>
+		        <p>
+		         Great, WUG is a pseudo word. 
+		        </p>
+		      </div>
+			  
+		 	 </div>
+			 </div>
+	
+    <!-- main instructions slide -->
+    <div class="slide" id="startExp">
+      <br>
+      <br>
+      <p id="instruct-text" class="center">
+        Great! Now we can start the real experiment. You will listen to 320 word pairs. <br><br> Sometimes the second word in the pair will be a REAL word and sometimes the second word in the pair will be a made up word, which we call PSEUDO words. <br><br>Your task is to decide whether the second word in the pair is a real word (like RUG) or a pseudo-word (like WUG). <br><br> Place your left index finder on the S key. Place your right index finger on the L key.  <br><br> <strong> Press the S key if the second word is made up. Press the L key if the second word is a real word.</strong> <br><br> <img src="keyboard_example.png" alt="keyboard_example" width="500" height="300">
+      </p>
+      <div class="center">
+        <button class="continueButton" onclick="_s.button()">Continue</button>
+      </div>
+    </div>
+
+    <!-- trial slide -->
+    <div class="slide" id="trial">
+<div id = "stimuli">
+	
+		<br><br><br><br><br><br><br><br><br><br><br><br><br>
+		<table class="center">
+			<tr>
+				<td id="pseudo_text">
+					S = PSEUDO
+				</td>
+				<td>
+					&emsp; 
+				</td>
+				<td>
+					&emsp; 
+				</td>
+				<td>
+					&emsp; 
+				</td>
+				<td>
+					&emsp; 
+				</td>
+				<td>
+					&emsp; 
+				</td>
+				<td>
+					&emsp; 
+				</td>
+				<td id="real_text">
+					L = REAL
+				</td>
+			</tr>
+		</table>
+		
+   <audio id="prime_stim"> 
+	   <source id="wav_src" src="" type="audio/wav"> Your browser does not support the audio element. 
+   </audio>
+   
+   <audio id="target_stim"> 
+	   <source id="wav_src" src="" type="audio/wav"> Your browser does not support the audio element. 
+   </audio>
+ 	 </div>
+	  </div>
+  
+	
+	    <!-- follow up slide -->
+	<div class="slide" id="follow_up"
+        <div class="center">
+			
+						<br>
+						You may have noticed you heard two different speakers during this task, one who said the first word in every pair and another who said the second word in every pair. <br><br>Please listen to each speaker saying the same sentence and list five adjectives that you'd use to describe the speakers.
+			<br>
+			<br>
+			<audio id="speaker_sentence_1" controls src='speaker_sentence_1.wav'> </audio>
+			<br>
+			<p class="center">
+			        <p>
+			          Five adjectives that describe this speaker: 
+					  <br>
+					  <input type="text" id="speaker_1_reaction_1"> 
+					  <br>
+					  <input type="text" id="speaker_1_reaction_2">
+					  <br>
+					  <input type="text" id="speaker_1_reaction_3">
+					  <br>
+					  <input type="text" id="speaker_1_reaction_4">
+					  <br>
+					  <input type="text" id="speaker_1_reaction_5">
+			        </p>
+			<audio id="speaker_sentence_2" controls src='speaker_sentence_2.wav'> </audio>
+			<br>
+			<p class="center">
+			        <p>
+			          Five adjectives that describe this speaker:  
+					  <br>
+					  <input type="text" id="speaker_2_reaction_1"> 
+					  <br>
+					  <input type="text" id="speaker_2_reaction_2">
+					  <br>
+					  <input type="text" id="speaker_2_reaction_3">
+					  <br>
+					  <input type="text" id="speaker_2_reaction_4">
+					  <br>
+					  <input type="text" id="speaker_2_reaction_5">
+			        </p>
+			
+          <button class="continueButton" onclick="_s.button_follow_up()">Continue</button>
+		  
+  	      <div class="err">
+  	        <p>
+  	         Please submit an adjective in every box.
+  	        </p>
+  	      </div>
+		  
+        </div>
+	</div>
+
+    <!-- subject information slide -->
+    <div class="slide" id="subj_info">
+      <div class="long_form">
+        <div class="subj_info_title">
+		   Questionnaire Section
+        </div>
+        <!-- <p class="info">
+          Answering these questions is optional, but will help us understand your answers.
+        </p> -->
+        <p>
+          Did you understand the task?
+        </p><label>
+			<input type="radio" name="assess" value="Yes">Yes</label> <label>
+				<input type="radio" name="assess" value="No">No</label> <label>
+				<input type="radio" name="assess" value="Confused">I was confused</label>
+        <p>
+          Gender: <select id="gender">
+            <option value="">
+            </option>
+            <option value="Male">
+              Male
+            </option>
+            <option value="Female">
+              Female
+            </option>
+            <option value="Other">
+              Other
+            </option>
+            <option value="Prefer not to say">
+              Prefer not to say
+            </option>
+          </select>
+        </p>
+        <p>
+          Age: <input type="text" id="age">
+        </p>
+        <p>
+          Level of Education: <select id="education">
+            <option value="">
+            </option>
+            <option value="Some high school">
+              Some high school
+            </option>
+            <option value="Graduated high school">
+              Graduated high school
+            </option>
+            <option value="Some college">
+              Some college
+            </option>
+            <option value="Graduated college">
+              Graduated college
+            </option>
+            <option value="Hold a higher degree">
+              Hold a higher degree
+            </option>
+            <option value="Prefer not to say">
+              Prefer not to say
+            </option>
+          </select>
+        </p>
+		
+		<p> *Race/Ethnicity: <br>
+		<div class="race">    
+		    <span>
+		    <input id="White or Caucasian" name = "race" type="checkbox" value="White or Caucasian"/>
+		    <label for="race">White or Caucasian</label>
+		    </span> 
+			<br>
+		    <span>
+		    <input id="Black or African American" name = "race" type="checkbox" value="Black or African American"/>
+		    <label for="race">Black or African American</label>
+		    </span>    
+			<br>
+		    <span>
+		    <input id="Hispanic or Latinx" name = "race" type="checkbox" value="Hispanic or Latinx"/>
+		    <label for="race">Hispanic or Latina/o</label>
+		    </span>
+			<br>
+		    <span>
+		    <input id="Native American or Alaskan Native" name = "race" type="checkbox" value="Native American or Alaskan Native"/>
+		    <label for="race">Native American or Alaskan Native</label>
+		    </span>
+			<br>
+		    <span>
+		    <input id=" Asian or Pacific Islander" name = "race" type="checkbox" value=" Asian or Pacific Islander"/>
+		    <label for="race"> Asian or Pacific Islander</label>
+		    </span>
+			<br>
+		    <span>
+		    <input id="Prefer not to say" name = "race" type="checkbox" value="Prefer not to say"/>
+		    <label for="race">Prefer not to say</label>
+		    </span>
+		</div>
+		</p>
+		
+        <p>
+          *Heritage Countries (ex. Cuba, Mexico): <input type="text" id="heritage_country">
+        </p>
+		
+        <p>
+          *Current City, State: <input type="text" id="current_region">
+        </p>
+        <p>
+          Other Cities, States Lived In: <input type="text" id="other_regions">
+        </p>		
+        <p>
+          *Native Language: <input type="text" id="first_language">
+        </p>
+    <p>
+      Other Language(s) Spoken: <input type="text" id="other_languages">
+    </p>		
+    <p>
+      *Parents' Native Language(s): <input type="text" id="parent_languages">
+    </p>
+    <p>
+      *Exposure to Hispanic/ Latina/o Population: <select id="exposure">
+        <option value="">
+        </option>
+        <option value="Daily">
+          On a daily basis
+        </option>
+        <option value="Weekly">
+          On a weekly basis
+        </option>
+        <option value="Monthly">
+          On a monthly basis
+        </option>
+        <option value="Yearly">
+          On a yearly basis
+        </option>
+        <option value="Prefer not to say">
+          Prefer not to say
+        </option>
+      </select>
+    </p>	
+        <p>
+          Please leave any comments you have about this experiment here:
+        </p>
+        <textarea id="comments" rows="3" cols="50"></textarea><br>
+        <button onclick="_s.submit()">Submit</button>
+		
+	      <div class="err">
+	        <p>
+	         Please answer every required question.
+	        </p>
+	      </div>
+		
+      </div>
+    </div>
+
+    <!-- final slide -->
+    <div id="thanks" class="slide js">
+      <p class="big">
+        Thanks for your time!
+		Please email alexiah@stanford.edu to request your $5 Amazon Gift Card.
+      </p>
+    </div>
+
+    <!-- progress bar -->
+    <div class="progress">
+      <span>Progress:</span>
+      <div class="bar-wrapper">
+        <div class="bar" style="width: 0%"></div>
+      </div>
+    </div>
+  </body>
+</html>
