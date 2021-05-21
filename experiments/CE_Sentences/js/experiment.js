@@ -37,8 +37,55 @@ function make_slides(f) {
        start: function() {
  		  exp.allow_key_press = 0;
  		  console.log("exp.allow_key_press", exp.allow_key_press)
- 		  $(".err").hide();
-       },
+ 		  $(".err").hide();  
+		  
+		  $("#words_accentedness_speaker1").hide();
+		  $(".words_race_speaker1").hide();
+
+		  $("#words_speaker_1_reaction_1").hide();
+		  $("#words_speaker_1_reaction_2").hide();
+		  $("#words_speaker_1_reaction_3").hide();
+		  $("#words_speaker_1_reaction_4").hide();
+		  $("#words_speaker_1_reaction_5").hide();
+
+		  $("#words_accentedness_speaker2").hide();
+		  $(".words_race_speaker2").hide();
+
+		  $("#words_speaker_2_reaction_1").hide();
+		  $("#words_speaker_2_reaction_2").hide();
+		  $("#words_speaker_2_reaction_3").hide();
+		  $("#words_speaker_2_reaction_4").hide();
+		  $("#words_speaker_2_reaction_5").hide();
+		
+		var words_race_speaker1_aud = document.getElementById("speaker_1_1D_words");  	
+		words_race_speaker1_aud.onended = function() {
+			
+			  $("#words_accentedness_speaker1").show();
+			  $(".words_race_speaker1").show();
+
+			  $("#words_speaker_1_reaction_1").show();
+			  $("#words_speaker_1_reaction_2").show();
+			  $("#words_speaker_1_reaction_3").show();
+			  $("#words_speaker_1_reaction_4").show();
+			  $("#words_speaker_1_reaction_5").show();
+
+		  }
+		  
+  		var words_race_speaker2_aud = document.getElementById("speaker_2_1D_words");  	
+  		words_race_speaker2_aud.onended = function() {
+
+
+		  $("#words_accentedness_speaker2").show();
+		  $(".words_race_speaker2").show();
+
+		  $("#words_speaker_2_reaction_1").show();
+		  $("#words_speaker_2_reaction_2").show();
+		  $("#words_speaker_2_reaction_3").show();
+		  $("#words_speaker_2_reaction_4").show();
+		  $("#words_speaker_2_reaction_5").show();
+	  }
+	  
+       },	   
 
        // handle click on "Continue" button
        button_follow_up: function() {
@@ -47,18 +94,18 @@ function make_slides(f) {
  		  var check_words_race2 = document.querySelectorAll('[name="words_race_speaker2"]:checked');
 
 
- 		  if  (!$("#speaker_1_reaction_1").val() |
- 			  !$("#speaker_1_reaction_2").val() |
- 			  !$("#speaker_1_reaction_3").val() |
- 		  	  !$("#speaker_1_reaction_4").val() |
- 			  !$("#speaker_1_reaction_5").val() |
- 			  !$("#speaker_2_reaction_1").val() |
- 			  !$("#speaker_2_reaction_2").val() |
- 			  !$("#speaker_2_reaction_3").val() |
- 		  	  !$("#speaker_2_reaction_4").val() |
- 		 	  !$("#speaker_2_reaction_5").val() |
- 			  !$("#accentedness_speaker1").val() |
- 		  !$("#accentedness_speaker2").val() |
+ 		  if  (!$("#words_speaker_1_reaction_1").val() |
+ 			  !$("#words_speaker_1_reaction_2").val() |
+ 			  !$("#words_speaker_1_reaction_3").val() |
+ 		  	  !$("#words_speaker_1_reaction_4").val() |
+ 			  !$("#words_speaker_1_reaction_5").val() |
+ 			  !$("#words_speaker_2_reaction_1").val() |
+ 			  !$("#words_speaker_2_reaction_2").val() |
+ 			  !$("#words_speaker_2_reaction_3").val() |
+ 		  	  !$("#words_speaker_2_reaction_4").val() |
+ 		 	  !$("#words_speaker_2_reaction_5").val() |
+ 			  !$("#words_accentedness_speaker1").val() |
+ 		  !$("#words_accentedness_speaker2").val() |
  			  check_words_race1.length < 1 |
  		  check_words_race2.length < 1 ) {
 
@@ -98,18 +145,18 @@ function make_slides(f) {
        log_responses: function() {
          exp.data_trials.push({
       	  	
- 			speaker_1_accentedness: $("#accentedness_speaker1").val(),
- 			speaker_2_accentedness:$("#accentedness_speaker2").val(),
- 			speaker_1_reaction_1:$("#speaker_1_reaction_1").val(),
- 			speaker_1_reaction_2:$("#speaker_1_reaction_2").val(),
- 			speaker_1_reaction_3:$("#speaker_1_reaction_3").val(),
- 			speaker_1_reaction_4:$("#speaker_1_reaction_4").val(),
- 			speaker_1_reaction_5:$("#speaker_1_reaction_5").val(),
- 			speaker_2_reaction_1:$("#speaker_2_reaction_1").val(),
- 			speaker_2_reaction_2:$("#speaker_2_reaction_2").val(),
-   			speaker_2_reaction_3:$("#speaker_2_reaction_3").val(),
- 			speaker_2_reaction_4:$("#speaker_2_reaction_4").val(),
- 			speaker_2_reaction_5:$("#speaker_2_reaction_5").val(),
+ 			words_speaker_1_accentedness: $("#words_accentedness_speaker1").val(),
+ 			words_speaker_2_accentedness:$("#words_accentedness_speaker2").val(),
+ 			words_speaker_1_reaction_1:$("#words_speaker_1_reaction_1").val(),
+ 			words_speaker_1_reaction_2:$("#words_speaker_1_reaction_2").val(),
+ 			words_speaker_1_reaction_3:$("#words_speaker_1_reaction_3").val(),
+ 			words_speaker_1_reaction_4:$("#words_speaker_1_reaction_4").val(),
+ 			words_speaker_1_reaction_5:$("#words_speaker_1_reaction_5").val(),
+ 			words_speaker_2_reaction_1:$("#words_speaker_2_reaction_1").val(),
+ 			words_speaker_2_reaction_2:$("#words_speaker_2_reaction_2").val(),
+   			words_speaker_2_reaction_3:$("#words_speaker_2_reaction_3").val(),
+ 			words_speaker_2_reaction_4:$("#words_speaker_2_reaction_4").val(),
+ 			words_speaker_2_reaction_5:$("#words_speaker_2_reaction_5").val(),
  			speaker_1_race_words: exp.words_race_speaker1_list,
  			speaker_2_race_words: exp.words_race_speaker2_list
 			
@@ -127,6 +174,51 @@ function make_slides(f) {
 		  exp.allow_key_press = 0;
 		  console.log("exp.allow_key_press", exp.allow_key_press)
 		  $(".err").hide();
+		  
+		  $("#sentences_accentedness_speaker1").hide();
+		  $(".sentences_race_speaker1").hide();
+
+		  $("#sentences_speaker_1_reaction_1").hide();
+		  $("#sentences_speaker_1_reaction_2").hide();
+		  $("#sentences_speaker_1_reaction_3").hide();
+		  $("#sentences_speaker_1_reaction_4").hide();
+		  $("#sentences_speaker_1_reaction_5").hide();
+
+		  $("#sentences_accentedness_speaker2").hide();
+		  $(".sentences_race_speaker2").hide();
+
+		  $("#sentences_speaker_2_reaction_1").hide();
+		  $("#sentences_speaker_2_reaction_2").hide();
+		  $("#sentences_speaker_2_reaction_3").hide();
+		  $("#sentences_speaker_2_reaction_4").hide();
+		  $("#sentences_speaker_2_reaction_5").hide();
+		
+		var words_race_speaker1_aud = document.getElementById("speaker_sentence_1");  	
+		words_race_speaker1_aud.onended = function() {
+			
+			  $("#sentences_accentedness_speaker1").show();
+			  $(".sentences_race_speaker1").show();
+
+			  $("#sentences_speaker_1_reaction_1").show();
+			  $("#sentences_speaker_1_reaction_2").show();
+			  $("#sentences_speaker_1_reaction_3").show();
+			  $("#sentences_speaker_1_reaction_4").show();
+			  $("#sentences_speaker_1_reaction_5").show();
+
+		  }
+		  
+  		var words_race_speaker2_aud = document.getElementById("speaker_sentence_2");  	
+  		words_race_speaker2_aud.onended = function() {
+
+		  $("#sentences_accentedness_speaker2").show();
+		  $(".sentences_race_speaker2").show();
+
+		  $("#sentences_speaker_2_reaction_1").show();
+		  $("#sentences_speaker_2_reaction_2").show();
+		  $("#sentences_speaker_2_reaction_3").show();
+		  $("#sentences_speaker_2_reaction_4").show();
+		  $("#sentences_speaker_2_reaction_5").show();
+	  }
       },
 
       // handle click on "Continue" button
@@ -136,18 +228,18 @@ function make_slides(f) {
 		  var check_senteces_race2 = document.querySelectorAll('[name="sentences_race_speaker2"]:checked');
 
 
-		  if  (!$("#speaker_1_reaction_1").val() |
-			  !$("#speaker_1_reaction_2").val() |
-			  !$("#speaker_1_reaction_3").val() |
-		  	  !$("#speaker_1_reaction_4").val() |
-			  !$("#speaker_1_reaction_5").val() |
-			  !$("#speaker_2_reaction_1").val() |
-			  !$("#speaker_2_reaction_2").val() |
-			  !$("#speaker_2_reaction_3").val() |
-		  	  !$("#speaker_2_reaction_4").val() |
-		 	  !$("#speaker_2_reaction_5").val() |
+		  if  (!$("#sentences_speaker_1_reaction_1").val() |
+			  !$("#sentences_speaker_1_reaction_2").val() |
+			  !$("#sentences_speaker_1_reaction_3").val() |
+		  	  !$("#sentences_speaker_1_reaction_4").val() |
+			  !$("#sentences_speaker_1_reaction_5").val() |
+			  !$("#sentences_speaker_2_reaction_1").val() |
+			  !$("#sentences_speaker_2_reaction_2").val() |
+			  !$("#sentences_speaker_2_reaction_3").val() |
+		  	  !$("#sentences_speaker_2_reaction_4").val() |
+		 	  !$("#sentences_speaker_2_reaction_5").val() |
 			  !$("#accentedness_speaker1").val() |
-		  !$("#accentedness_speaker2").val() |
+		  !$("#sentences_accentedness_speaker2").val() |
 			  check_senteces_race1.length < 1 |
 		  check_senteces_race2.length < 1 ) {
 
@@ -187,18 +279,18 @@ function make_slides(f) {
       log_responses: function() {
         exp.data_trials.push({
       	  	
-			speaker_1_accentedness: $("#accentedness_speaker1").val(),
-			speaker_2_accentedness:$("#accentedness_speaker2").val(),
-			speaker_1_reaction_1:$("#speaker_1_reaction_1").val(),
-			speaker_1_reaction_2:$("#speaker_1_reaction_2").val(),
-			speaker_1_reaction_3:$("#speaker_1_reaction_3").val(),
-			speaker_1_reaction_4:$("#speaker_1_reaction_4").val(),
-			speaker_1_reaction_5:$("#speaker_1_reaction_5").val(),
-			speaker_2_reaction_1:$("#speaker_2_reaction_1").val(),
-			speaker_2_reaction_2:$("#speaker_2_reaction_2").val(),
-  			speaker_2_reaction_3:$("#speaker_2_reaction_3").val(),
-			speaker_2_reaction_4:$("#speaker_2_reaction_4").val(),
-			speaker_2_reaction_5:$("#speaker_2_reaction_5").val(),
+			sentences_speaker_1_accentedness: $("#sentences_accentedness_speaker1").val(),
+			sentences_speaker_2_accentedness:$("#sentences_accentedness_speaker2").val(),
+			sentences_speaker_1_reaction_1:$("#sentences_speaker_1_reaction_1").val(),
+			sentences_speaker_1_reaction_2:$("#sentences_speaker_1_reaction_2").val(),
+			sentences_speaker_1_reaction_3:$("#sentences_speaker_1_reaction_3").val(),
+			sentences_speaker_1_reaction_4:$("#sentences_speaker_1_reaction_4").val(),
+			sentences_speaker_1_reaction_5:$("#sentences_speaker_1_reaction_5").val(),
+			sentences_speaker_2_reaction_1:$("#sentences_speaker_2_reaction_1").val(),
+			sentences_speaker_2_reaction_2:$("#sentences_speaker_2_reaction_2").val(),
+  			sentences_speaker_2_reaction_3:$("#sentences_speaker_2_reaction_3").val(),
+			sentences_speaker_2_reaction_4:$("#sentences_speaker_2_reaction_4").val(),
+			sentences_speaker_2_reaction_5:$("#sentences_speaker_2_reaction_5").val(),
 			speaker_1_race_sentences: exp.senteces_race_speaker1_list,
 			speaker_2_race_sentences: exp.senteces_race_speaker2_list
 			

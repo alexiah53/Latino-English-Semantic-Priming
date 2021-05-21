@@ -118,14 +118,16 @@
 	<div class="slide" id="words"
         <div class="center">
 			
-		 <br><br>Please listen to each speaker saying the same 6 words and answer the questions below.
+		 <br><br>Please listen to each speaker saying the same six words and answer the questions below.
+		 <br><br>
+		 You won't be prompted to supply your responses until you've listened to the audio. 
 			<br><br>
 			Speaker 1:
 			<br><br>
 			<audio id="speaker_1_1D_words" controls src='speaker_1_1D_words.wav'> </audio>
 			<br>
 		    <p>
-		      Speaker accentedness: <select id="accentedness_speaker1">
+		      Speaker accentedness: <select id="words_accentedness_speaker1"> <br>
 		        <option value="">
 		        </option>
 		        <option value="Not">
@@ -143,19 +145,6 @@
 		      </select>
 		    </p>
 			<p class="center">
-			        <p>
-			          Five adjectives that describe this speaker: 
-					  <br>
-					  <input type="text" id="speaker_1_reaction_1"> 
-					  <br>
-					  <input type="text" id="speaker_1_reaction_2">
-					  <br>
-					  <input type="text" id="speaker_1_reaction_3">
-					  <br>
-					  <input type="text" id="speaker_1_reaction_4">
-					  <br>
-					  <input type="text" id="speaker_1_reaction_5">
-			        </p>
 			
 			<p> Race/ethnicity of this speaker: <br>
 			<div class="words_race_speaker1">    
@@ -186,12 +175,26 @@
 				<br>
 			</div>
 			</p>
+	        <p>
+	          Five adjectives that describe this speaker: 
+			  <br>
+			  <input type="text" id="words_speaker_1_reaction_1"> 
+			  <br>
+			  <input type="text" id="words_speaker_1_reaction_2">
+			  <br>
+			  <input type="text" id="words_speaker_1_reaction_3">
+			  <br>
+			  <input type="text" id="words_speaker_1_reaction_4">
+			  <br>
+			  <input type="text" id="words_speaker_1_reaction_5">
+	        </p>
+			
 			Speaker 2:
 			<br><br>
 			<audio id="speaker_2_1D_words" controls src='speaker_2_1D_words.wav'> </audio>
 			<br>	
 		    <p>
-		      Speaker accentedness: <select id="accentedness_speaker2">
+		      Speaker accentedness: <select id="words_accentedness_speaker2"> <br>
 		        <option value="">
 		        </option>
 		        <option value="Not">
@@ -208,20 +211,6 @@
 		        </option>
 		      </select>
 		    </p>
-			<p class="center">
-			        <p>
-			          Five adjectives that describe this speaker:  
-					  <br>
-					  <input type="text" id="speaker_2_reaction_1"> 
-					  <br>
-					  <input type="text" id="speaker_2_reaction_2">
-					  <br>
-					  <input type="text" id="speaker_2_reaction_3">
-					  <br>
-					  <input type="text" id="speaker_2_reaction_4">
-					  <br>
-					  <input type="text" id="speaker_2_reaction_5">
-			        </p>
 					
 					<p> Race/ethnicity of this speaker: <br>
 					<div class="words_race_speaker2">    
@@ -251,7 +240,20 @@
 					    </span>
 					</div>
 					</p>
-					
+					<p class="center">
+					        <p>
+					          Five adjectives that describe this speaker:  
+							  <br>
+							  <input type="text" id="words_speaker_2_reaction_1"> 
+							  <br>
+							  <input type="text" id="words_speaker_2_reaction_2">
+							  <br>
+							  <input type="text" id="words_speaker_2_reaction_3">
+							  <br>
+							  <input type="text" id="words_speaker_2_reaction_4">
+							  <br>
+							  <input type="text" id="words_speaker_2_reaction_5">
+					        </p>
 			
           <button class="continueButton" onclick="_s.button_follow_up()">Continue</button>
 		  
@@ -269,13 +271,15 @@
         <div class="center">
 			
 		 <br><br>Please listen to each speaker saying the same sentence and answer the questions below.
+		 <br><br>
+		 You won't be prompted supply responses until you've listened to the audio.
 			<br><br>
 			Speaker 1:
 			<br><br>
 			<audio id="speaker_sentence_1" controls src='speaker_sentence_1.wav'> </audio>
 			<br>
 		    <p>
-		      Speaker accentedness: <select id="accentedness_speaker1">
+		      Speaker accentedness: <select id="sentences_accentedness_speaker1">
 		        <option value="">
 		        </option>
 		        <option value="Not">
@@ -292,20 +296,6 @@
 		        </option>
 		      </select>
 		    </p>
-			<p class="center">
-			        <p>
-			          Five adjectives that describe this speaker: 
-					  <br>
-					  <input type="text" id="speaker_1_reaction_1"> 
-					  <br>
-					  <input type="text" id="speaker_1_reaction_2">
-					  <br>
-					  <input type="text" id="speaker_1_reaction_3">
-					  <br>
-					  <input type="text" id="speaker_1_reaction_4">
-					  <br>
-					  <input type="text" id="speaker_1_reaction_5">
-			        </p>
 			
 			<p> Race/ethnicity of this speaker: <br>
 			<div class="sentences_race_speaker1">    
@@ -336,12 +326,27 @@
 				<br>
 			</div>
 			</p>
+			<p class="center">
+			        <p>
+			          Five adjectives that describe this speaker: 
+					  <br>
+					  <input type="text" id="sentences_speaker_1_reaction_1"> 
+					  <br>
+					  <input type="text" id="sentences_speaker_1_reaction_2">
+					  <br>
+					  <input type="text" id="sentences_speaker_1_reaction_3">
+					  <br>
+					  <input type="text" id="sentences_speaker_1_reaction_4">
+					  <br>
+					  <input type="text" id="sentences_speaker_1_reaction_5">
+			        </p>
+			
 			Speaker 2:
 			<br><br>
 			<audio id="speaker_sentence_2" controls src='speaker_sentence_2.wav'> </audio>
 			<br>	
 		    <p>
-		      Speaker accentedness: <select id="accentedness_speaker2">
+		      Speaker accentedness: <select id="sentences_accentedness_speaker2">
 		        <option value="">
 		        </option>
 		        <option value="Not">
@@ -358,20 +363,6 @@
 		        </option>
 		      </select>
 		    </p>
-			<p class="center">
-			        <p>
-			          Five adjectives that describe this speaker:  
-					  <br>
-					  <input type="text" id="speaker_2_reaction_1"> 
-					  <br>
-					  <input type="text" id="speaker_2_reaction_2">
-					  <br>
-					  <input type="text" id="speaker_2_reaction_3">
-					  <br>
-					  <input type="text" id="speaker_2_reaction_4">
-					  <br>
-					  <input type="text" id="speaker_2_reaction_5">
-			        </p>
 					
 					<p> Race/ethnicity of this speaker: <br>
 					<div class="sentences_race_speaker2">    
@@ -402,6 +393,20 @@
 					</div>
 					</p>
 					
+					<p class="center">
+					        <p>
+					          Five adjectives that describe this speaker:  
+							  <br>
+							  <input type="text" id="sentences_speaker_2_reaction_1"> 
+							  <br>
+							  <input type="text" id="sentences_speaker_2_reaction_2">
+							  <br>
+							  <input type="text" id="sentences_speaker_2_reaction_3">
+							  <br>
+							  <input type="text" id="sentences_speaker_2_reaction_4">
+							  <br>
+							  <input type="text" id="sentences_speaker_2_reaction_5">
+					        </p>
 			
           <button class="continueButton" onclick="_s.button_follow_up()">Continue</button>
 		  

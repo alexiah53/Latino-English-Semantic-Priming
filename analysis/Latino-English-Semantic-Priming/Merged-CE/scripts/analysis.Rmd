@@ -43,9 +43,7 @@ lang_exclude = subject_info %>%
     filter(str_detect(first_language,regex("ENG", ignore_case=TRUE),negate=TRUE)) %>%
     filter(str_detect(first_language,regex("eng", ignore_case=TRUE),negate=TRUE)) %>%
   select(workerid, first_language) 
-#lang_exclude
-language_exclusions = table(lang_exclude)
-
+nrow(lang_exclude)
 d = d[!(d$workerid %in% lang_exclude$workerid),]
 ```
 
@@ -205,29 +203,19 @@ d %>%
   #ggsave(file="../graphs/split_conditions_rt_barplot.png",width=7,height=4)
 ```
 
-### All Conditions - Comparing Counterbalanced Lists
+### RTs by Trial Number
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
-d %>%
-  filter(!is.na(Trial_Type)) %>%
-  filter(Trial_Type != "filler") %>%
-  mutate(comparison=ifelse(Trial_Type=="control" & List=="1_CE", "List 2 Criticals vs. List 1 Controls", ifelse(Trial_Type=="critical" & List=="1_CE", "List 1 Criticals vs. List 2 Controls", ifelse(Trial_Type=="control" & List=="2_CE", "List 1 Criticals vs. List 2 Controls", ifelse(Trial_Type=="critical" & List=="2_CE", "List 2 Criticals vs. List 1 Controls", NA))))) %>%
-mutate(Trial_Type = fct_recode(Trial_Type, "Semantically Unrelated \n Target" = "control", "Semantically Related \n Target" = "critical")) %>%
-  group_by(Trial_Type, comparison) %>%
-  summarize(MeanRT = mean(Response_Time), CI.Low = ci.low(Response_Time), CI.High = ci.high(Response_Time)) %>%
-  mutate(YMin = MeanRT - CI.Low, YMax = MeanRT + CI.High) %>%
-  ggplot(aes(x =Trial_Type, y=MeanRT, fill = Trial_Type)) +
-  geom_bar(stat="identity")  +
-  xlab("Prime Condition") +
-  ylab("Mean RT (ms)") +
-  scale_fill_manual(values = cbPalette) +
-  geom_errorbar(aes(ymin=YMin,ymax=YMax),width=.25) +
-  facet_wrap(~comparison) +
-  theme(legend.position="None")
+d %>% 
+  filter(Trial_Type == "control" | Trial_Type == "critical") %>%
+    mutate(Trial_Type = fct_recode(Trial_Type, "Semantically Unrelated \n Target" = "control", "Semantically Related \n Target" = "critical")) %>%
+  ggplot(aes(x = slide_number_in_experiment, y = Response_Time, 
+             color = Trial_Type)) +
+  geom_smooth() +
+  labs(x = "Trial Number", y = "Raw RT")
 
-  #ggsave(file="../graphs/all_conditions_rt_barplot.png",width=5,height=4)
 ```
 
-Response Times for Individual Targets - Semantically Related vs. Semantically Unrelated
+### RTs for Individual Targets
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 # lists are collapsed into conditions
 agr = d %>%

@@ -7,6 +7,8 @@ Latino English Semantic Priming
 
 Excluding English L2
 
+    ## [1] 1
+
 ### Accuracy
 
 Excluding participants with accuracy rates lower than 90%
@@ -52,12 +54,12 @@ Excluding Incorrect Individual Responses
 
 ![](analysis_files/figure-gfm/unnamed-chunk-11-1.png)<!-- -->
 
-### All Conditions - Comparing Counterbalanced Lists
+### Response Times by Trial Number
 
 ![](analysis_files/figure-gfm/unnamed-chunk-12-1.png)<!-- -->
 
-Response Times for Individual Targets - Semantically Related
-vs. Semantically Unrelated
+### Response Times for Individual Targets - Semantically Related vs. Semantically Unrelated
+
 ![](analysis_files/figure-gfm/unnamed-chunk-13-1.png)<!-- -->
 
 ### RT Bar Plot by Exposure to Hispanic/Latinx Population

@@ -175,3 +175,7 @@ td:nth-child(9) {
 	margin-bottom: 10px; 
 	padding-top: '20px' 
 }
+
+​.hidden {
+    display: none;
+}​
