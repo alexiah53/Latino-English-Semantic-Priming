@@ -224,8 +224,8 @@ function make_slides(f) {
       // handle click on "Continue" button
       button_follow_up: function() {
 		  
-		  var check_senteces_race1 = document.querySelectorAll('[name="sentences_race_speaker1"]:checked');
-		  var check_senteces_race2 = document.querySelectorAll('[name="sentences_race_speaker2"]:checked');
+		  var check_sentences_race1 = document.querySelectorAll('[name="sentences_race_speaker1"]:checked');
+		  var check_sentences_race2 = document.querySelectorAll('[name="sentences_race_speaker2"]:checked');
 
 
 		  if  (!$("#sentences_speaker_1_reaction_1").val() |
@@ -238,10 +238,10 @@ function make_slides(f) {
 			  !$("#sentences_speaker_2_reaction_3").val() |
 		  	  !$("#sentences_speaker_2_reaction_4").val() |
 		 	  !$("#sentences_speaker_2_reaction_5").val() |
-			  !$("#accentedness_speaker1").val() |
+			  !$("#sentences_accentedness_speaker1").val() |
 		  !$("#sentences_accentedness_speaker2").val() |
-			  check_senteces_race1.length < 1 |
-		  check_senteces_race2.length < 1 ) {
+			  check_sentences_race1.length < 1 |
+		  check_sentences_race2.length < 1 ) {
 
 		  	$(".err").show();
 		}
@@ -254,19 +254,19 @@ function make_slides(f) {
 	  
 			else {
 				
-				var senteces_race_speaker1 = document.querySelectorAll('[name="sentences_race_speaker1"]:checked');
-				exp.senteces_race_speaker1_list = [];
-				for (var i = 0; i < senteces_race_speaker1.length; i++) {
-					if (senteces_race_speaker1[i].type=="checkbox" && senteces_race_speaker1[i].checked == true){
-						exp.senteces_race_speaker1_list += senteces_race_speaker1[i].value+", \n";
+				var sentences_race_speaker1 = document.querySelectorAll('[name="sentences_race_speaker1"]:checked');
+				exp.sentences_race_speaker1_list = [];
+				for (var i = 0; i < sentences_race_speaker1.length; i++) {
+					if (sentences_race_speaker1[i].type=="checkbox" && sentences_race_speaker1[i].checked == true){
+						exp.sentences_race_speaker1_list += sentences_race_speaker1[i].value+", \n";
 					}
 				}
 					
-				var senteces_race_speaker2 = document.querySelectorAll('[name="sentences_race_speaker2"]:checked');
+				var sentences_race_speaker2 = document.querySelectorAll('[name="sentences_race_speaker2"]:checked');
 				exp.sentences_race_speaker2_list = [];
-				for (var i = 0; i < senteces_race_speaker2.length; i++) {
-					if (senteces_race_speaker2[i].type=="checkbox" && senteces_race_speaker2[i].checked == true){
-							exp.senteces_race_speaker2_list += senteces_race_speaker2[i].value+", \n";
+				for (var i = 0; i < sentences_race_speaker2.length; i++) {
+					if (sentences_race_speaker2[i].type=="checkbox" && sentences_race_speaker2[i].checked == true){
+							exp.sentences_race_speaker2_list += sentences_race_speaker2[i].value+", \n";
 						}		
 				}
 				this.log_responses();
@@ -291,8 +291,8 @@ function make_slides(f) {
   			sentences_speaker_2_reaction_3:$("#sentences_speaker_2_reaction_3").val(),
 			sentences_speaker_2_reaction_4:$("#sentences_speaker_2_reaction_4").val(),
 			sentences_speaker_2_reaction_5:$("#sentences_speaker_2_reaction_5").val(),
-			speaker_1_race_sentences: exp.senteces_race_speaker1_list,
-			speaker_2_race_sentences: exp.senteces_race_speaker2_list
+			speaker_1_race_sentences: exp.sentences_race_speaker1_list,
+			speaker_2_race_sentences: exp.sentences_race_speaker2_list
 			
         });
   	  }
