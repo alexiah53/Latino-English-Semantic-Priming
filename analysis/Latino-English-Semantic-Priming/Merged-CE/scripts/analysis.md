@@ -21,60 +21,62 @@ time
 
 Average Time Taken to Complete Experiment:
 
-    ## [1] 23.94633
+    ## [1] 24.24018
 
 ![](analysis_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
+
+    ## [1] 66
 
 ### Individual Responses
 
 Excluding individual responses that are faster than 500ms or more than 3
 SDs from mean RT
 
-    ## [1] 420
+    ## [1] 445
 
 Excluding Incorrect Individual Responses
 
-    ## [1] 2128
+    ## [1] 2318
 
 ## Plots
 
 ### Raw RT Histogram
 
-![](analysis_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
+![](analysis_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->
 
 ### Log Transformed RT Histogram
 
-![](analysis_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->
+![](analysis_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->
 
 ### All Conditions RT Bar Plot
 
-![](analysis_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->
+![](analysis_files/figure-gfm/unnamed-chunk-11-1.png)<!-- -->
 
 ### Split Condition RT Bar Plot
 
-![](analysis_files/figure-gfm/unnamed-chunk-11-1.png)<!-- -->
-
-### Response Times by Trial Number
-
 ![](analysis_files/figure-gfm/unnamed-chunk-12-1.png)<!-- -->
 
-### Response Times for Individual Targets - Semantically Related vs. Semantically Unrelated
+### RTs by Trial Number
 
 ![](analysis_files/figure-gfm/unnamed-chunk-13-1.png)<!-- -->
 
-### RT Bar Plot by Exposure to Hispanic/Latinx Population
+### RTs for Individual Targets
 
 ![](analysis_files/figure-gfm/unnamed-chunk-14-1.png)<!-- -->
+
+### RT Bar Plot by Exposure to Hispanic/Latinx Population
+
+![](analysis_files/figure-gfm/unnamed-chunk-15-1.png)<!-- -->
 
 ## Additional Responses
 
 ### Analyzing Reactions to Voices
 
 Miami Cuban American English Speaker 1
-![](analysis_files/figure-gfm/unnamed-chunk-15-1.png)<!-- -->
+![](analysis_files/figure-gfm/unnamed-chunk-16-1.png)<!-- -->
 
 Miami Cuban American English Speaker 2
-![](analysis_files/figure-gfm/unnamed-chunk-16-1.png)<!-- -->
+![](analysis_files/figure-gfm/unnamed-chunk-17-1.png)<!-- -->
 
 ## Models
 
@@ -88,31 +90,31 @@ Miami Cuban American English Speaker 2
     ##     (1 + centered_trial_type | Target)
     ##    Data: CE_data
     ## 
-    ## REML criterion at convergence: -2887.6
+    ## REML criterion at convergence: -2948.8
     ## 
     ## Scaled residuals: 
     ##     Min      1Q  Median      3Q     Max 
-    ## -4.2475 -0.6005 -0.1450  0.4289  4.9428 
+    ## -4.1932 -0.6068 -0.1444  0.4275  4.9296 
     ## 
     ## Random effects:
     ##  Groups   Name                Variance Std.Dev. Corr
-    ##  Target   (Intercept)         0.004956 0.07040      
-    ##           centered_trial_type 0.002759 0.05252  0.07
-    ##  workerid (Intercept)         0.011702 0.10818      
-    ##           centered_trial_type 0.001106 0.03325  0.54
-    ##  Residual                     0.028068 0.16754      
-    ## Number of obs: 4617, groups:  Target, 80; workerid, 60
+    ##  Target   (Intercept)         0.004881 0.06986      
+    ##           centered_trial_type 0.002881 0.05367  0.00
+    ##  workerid (Intercept)         0.011113 0.10542      
+    ##           centered_trial_type 0.001052 0.03244  0.54
+    ##  Residual                     0.028903 0.17001      
+    ## Number of obs: 4915, groups:  Target, 80; workerid, 64
     ## 
     ## Fixed effects:
-    ##                      Estimate Std. Error        df t value Pr(>|t|)    
-    ## (Intercept)          6.869912   0.016225 92.972707 423.428  < 2e-16 ***
-    ## centered_trial_type -0.069373   0.008828 78.048168  -7.859 1.76e-11 ***
+    ##                       Estimate Std. Error         df t value Pr(>|t|)    
+    ## (Intercept)           6.870894   0.015516 101.854278 442.814  < 2e-16 ***
+    ## centered_trial_type  -0.069216   0.008765  80.233294  -7.897 1.27e-11 ***
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
     ## Correlation of Fixed Effects:
     ##             (Intr)
-    ## cntrd_trl_t 0.249
+    ## cntrd_trl_t 0.212
 
 ### Linear Mixed Model for LA Mexican American Talker Condition
 

@@ -12,7 +12,7 @@ output:
 library(tidyverse)
 library(lme4)
 library(lmerTest)
-library(formattable)
+# library(formattable)
 source("helpers.R")
 
 #removes gray boxes from plots
@@ -22,9 +22,9 @@ theme_set(theme_bw())
 cbPalette <- c("#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7") 
 
 # load the main data
-d = read_csv("../data/CE_merged.csv") 
+d = read_csv("debug_merge.csv") 
 # load information about contextual features and merge into dataset
-subject_info = read_csv("../data/CEsubj_merged.csv")
+subject_info = read_csv("CE_merged_subject_info_new.csv")
 
 d = d %>%
   left_join(subject_info, by=c("workerid"))
@@ -102,6 +102,12 @@ d %>%
   ggplot(aes(x=Answer.time_in_minutes, fill=Exclusions)) +
   geom_histogram() +
   xlab("Total Experiment Time")
+```
+### Number of Participants Remaining
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+participants = unique(d$workerid)
+l = length(participants)
+l
 ```
 
 ### Individual Responses

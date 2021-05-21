@@ -23,7 +23,7 @@ if (n_args > 1 || n_args %% 2 != 0) {
     }
   }
   
-  write.csv(d, file="CEsubj_merged.csv", row.names = FALSE)
+  write.csv(d, file="CE_merged_subject_info_new.csv", row.names = FALSE)
   write.csv(d, file="", row.names = FALSE)
   
 } else {

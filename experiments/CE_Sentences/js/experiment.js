@@ -45,8 +45,6 @@ function make_slides(f) {
 		  $("#words_speaker_1_reaction_1").hide();
 		  $("#words_speaker_1_reaction_2").hide();
 		  $("#words_speaker_1_reaction_3").hide();
-		  $("#words_speaker_1_reaction_4").hide();
-		  $("#words_speaker_1_reaction_5").hide();
 
 		  $("#words_accentedness_speaker2").hide();
 		  $(".words_race_speaker2").hide();
@@ -54,8 +52,6 @@ function make_slides(f) {
 		  $("#words_speaker_2_reaction_1").hide();
 		  $("#words_speaker_2_reaction_2").hide();
 		  $("#words_speaker_2_reaction_3").hide();
-		  $("#words_speaker_2_reaction_4").hide();
-		  $("#words_speaker_2_reaction_5").hide();
 		
 		var words_race_speaker1_aud = document.getElementById("speaker_1_1D_words");  	
 		words_race_speaker1_aud.onended = function() {
@@ -66,8 +62,6 @@ function make_slides(f) {
 			  $("#words_speaker_1_reaction_1").show();
 			  $("#words_speaker_1_reaction_2").show();
 			  $("#words_speaker_1_reaction_3").show();
-			  $("#words_speaker_1_reaction_4").show();
-			  $("#words_speaker_1_reaction_5").show();
 
 		  }
 		  
@@ -81,8 +75,6 @@ function make_slides(f) {
 		  $("#words_speaker_2_reaction_1").show();
 		  $("#words_speaker_2_reaction_2").show();
 		  $("#words_speaker_2_reaction_3").show();
-		  $("#words_speaker_2_reaction_4").show();
-		  $("#words_speaker_2_reaction_5").show();
 	  }
 	  
        },	   
@@ -97,13 +89,9 @@ function make_slides(f) {
  		  if  (!$("#words_speaker_1_reaction_1").val() |
  			  !$("#words_speaker_1_reaction_2").val() |
  			  !$("#words_speaker_1_reaction_3").val() |
- 		  	  !$("#words_speaker_1_reaction_4").val() |
- 			  !$("#words_speaker_1_reaction_5").val() |
  			  !$("#words_speaker_2_reaction_1").val() |
  			  !$("#words_speaker_2_reaction_2").val() |
  			  !$("#words_speaker_2_reaction_3").val() |
- 		  	  !$("#words_speaker_2_reaction_4").val() |
- 		 	  !$("#words_speaker_2_reaction_5").val() |
  			  !$("#words_accentedness_speaker1").val() |
  		  !$("#words_accentedness_speaker2").val() |
  			  check_words_race1.length < 1 |
@@ -150,13 +138,9 @@ function make_slides(f) {
  			words_speaker_1_reaction_1:$("#words_speaker_1_reaction_1").val(),
  			words_speaker_1_reaction_2:$("#words_speaker_1_reaction_2").val(),
  			words_speaker_1_reaction_3:$("#words_speaker_1_reaction_3").val(),
- 			words_speaker_1_reaction_4:$("#words_speaker_1_reaction_4").val(),
- 			words_speaker_1_reaction_5:$("#words_speaker_1_reaction_5").val(),
  			words_speaker_2_reaction_1:$("#words_speaker_2_reaction_1").val(),
  			words_speaker_2_reaction_2:$("#words_speaker_2_reaction_2").val(),
    			words_speaker_2_reaction_3:$("#words_speaker_2_reaction_3").val(),
- 			words_speaker_2_reaction_4:$("#words_speaker_2_reaction_4").val(),
- 			words_speaker_2_reaction_5:$("#words_speaker_2_reaction_5").val(),
  			speaker_1_race_words: exp.words_race_speaker1_list,
  			speaker_2_race_words: exp.words_race_speaker2_list
 			
@@ -181,8 +165,6 @@ function make_slides(f) {
 		  $("#sentences_speaker_1_reaction_1").hide();
 		  $("#sentences_speaker_1_reaction_2").hide();
 		  $("#sentences_speaker_1_reaction_3").hide();
-		  $("#sentences_speaker_1_reaction_4").hide();
-		  $("#sentences_speaker_1_reaction_5").hide();
 
 		  $("#sentences_accentedness_speaker2").hide();
 		  $(".sentences_race_speaker2").hide();
@@ -190,8 +172,6 @@ function make_slides(f) {
 		  $("#sentences_speaker_2_reaction_1").hide();
 		  $("#sentences_speaker_2_reaction_2").hide();
 		  $("#sentences_speaker_2_reaction_3").hide();
-		  $("#sentences_speaker_2_reaction_4").hide();
-		  $("#sentences_speaker_2_reaction_5").hide();
 		
 		var words_race_speaker1_aud = document.getElementById("speaker_sentence_1");  	
 		words_race_speaker1_aud.onended = function() {
@@ -202,8 +182,6 @@ function make_slides(f) {
 			  $("#sentences_speaker_1_reaction_1").show();
 			  $("#sentences_speaker_1_reaction_2").show();
 			  $("#sentences_speaker_1_reaction_3").show();
-			  $("#sentences_speaker_1_reaction_4").show();
-			  $("#sentences_speaker_1_reaction_5").show();
 
 		  }
 		  
@@ -216,8 +194,6 @@ function make_slides(f) {
 		  $("#sentences_speaker_2_reaction_1").show();
 		  $("#sentences_speaker_2_reaction_2").show();
 		  $("#sentences_speaker_2_reaction_3").show();
-		  $("#sentences_speaker_2_reaction_4").show();
-		  $("#sentences_speaker_2_reaction_5").show();
 	  }
       },
 
@@ -231,13 +207,9 @@ function make_slides(f) {
 		  if  (!$("#sentences_speaker_1_reaction_1").val() |
 			  !$("#sentences_speaker_1_reaction_2").val() |
 			  !$("#sentences_speaker_1_reaction_3").val() |
-		  	  !$("#sentences_speaker_1_reaction_4").val() |
-			  !$("#sentences_speaker_1_reaction_5").val() |
 			  !$("#sentences_speaker_2_reaction_1").val() |
 			  !$("#sentences_speaker_2_reaction_2").val() |
 			  !$("#sentences_speaker_2_reaction_3").val() |
-		  	  !$("#sentences_speaker_2_reaction_4").val() |
-		 	  !$("#sentences_speaker_2_reaction_5").val() |
 			  !$("#sentences_accentedness_speaker1").val() |
 		  !$("#sentences_accentedness_speaker2").val() |
 			  check_sentences_race1.length < 1 |
@@ -284,13 +256,9 @@ function make_slides(f) {
 			sentences_speaker_1_reaction_1:$("#sentences_speaker_1_reaction_1").val(),
 			sentences_speaker_1_reaction_2:$("#sentences_speaker_1_reaction_2").val(),
 			sentences_speaker_1_reaction_3:$("#sentences_speaker_1_reaction_3").val(),
-			sentences_speaker_1_reaction_4:$("#sentences_speaker_1_reaction_4").val(),
-			sentences_speaker_1_reaction_5:$("#sentences_speaker_1_reaction_5").val(),
 			sentences_speaker_2_reaction_1:$("#sentences_speaker_2_reaction_1").val(),
 			sentences_speaker_2_reaction_2:$("#sentences_speaker_2_reaction_2").val(),
   			sentences_speaker_2_reaction_3:$("#sentences_speaker_2_reaction_3").val(),
-			sentences_speaker_2_reaction_4:$("#sentences_speaker_2_reaction_4").val(),
-			sentences_speaker_2_reaction_5:$("#sentences_speaker_2_reaction_5").val(),
 			speaker_1_race_sentences: exp.sentences_race_speaker1_list,
 			speaker_2_race_sentences: exp.sentences_race_speaker2_list
 			

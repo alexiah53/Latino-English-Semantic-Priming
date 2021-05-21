@@ -151,3 +151,27 @@ td:nth-child(9) {
 	margin-bottom: 10px; 
 	padding-top: '20px' 
 }
+
+.words_race_speaker1 { display: inline-block; 
+	text-align: left; 
+	margin-bottom: 10px; 
+	padding-top: '20px' 
+}
+
+.words_race_speaker2 { display: inline-block; 
+	text-align: left; 
+	margin-bottom: 10px; 
+	padding-top: '20px' 
+}
+
+.sentences_race_speaker1 { display: inline-block; 
+	text-align: left; 
+	margin-bottom: 10px; 
+	padding-top: '20px' 
+}
+
+.sentences_race_speaker2 { display: inline-block; 
+	text-align: left; 
+	margin-bottom: 10px; 
+	padding-top: '20px' 
+}
