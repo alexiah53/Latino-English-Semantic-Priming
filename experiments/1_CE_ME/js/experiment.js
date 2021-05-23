@@ -647,7 +647,8 @@ prime_aud.onended = function() {
 		  !$("#current_region").val() |
 		  !$("#first_language").val() |
 		  !$("#parent_languages").val() |
-	  	  !$("#exposure").val()) {
+	  	  !$("#exposure").val() |
+	  	!$("#english_acquisition_age").val()) {
 
 	  	$(".err").show();
 	}
@@ -679,6 +680,7 @@ prime_aud.onended = function() {
 		other_regions: $("#other_regions").val(),
 		first_language: $("#first_language").val(),
 		other_languages: $("#other_languages").val(),
+		english_acquisition_age: $("#english_acquisition_age").val(),
 		parent_languages: $("#parent_languages").val(),
 		exposure: $("#exposure").val(),
 		email: $("#email").val()
