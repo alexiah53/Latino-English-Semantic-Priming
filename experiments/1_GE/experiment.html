@@ -302,9 +302,9 @@
   
 	
 	    <!-- follow up slide -->
-	<div class="slide" id="follow_up"
+	<!-- <div class="slide" id="follow_up"
         <div class="center">
-			
+
 						<br>
 						You may have noticed you heard two different speakers during this task, one who said the first word in every pair and another who said the second word in every pair. <br><br>Please listen to each speaker saying the same sentence and list five adjectives that you'd use to describe the speakers.
 			<br>
@@ -313,9 +313,9 @@
 			<br>
 			<p class="center">
 			        <p>
-			          Five adjectives that describe this speaker: 
+			          Five adjectives that describe this speaker:
 					  <br>
-					  <input type="text" id="speaker_1_reaction_1"> 
+					  <input type="text" id="speaker_1_reaction_1">
 					  <br>
 					  <input type="text" id="speaker_1_reaction_2">
 					  <br>
@@ -329,9 +329,9 @@
 			<br>
 			<p class="center">
 			        <p>
-			          Five adjectives that describe this speaker:  
+			          Five adjectives that describe this speaker:
 					  <br>
-					  <input type="text" id="speaker_2_reaction_1"> 
+					  <input type="text" id="speaker_2_reaction_1">
 					  <br>
 					  <input type="text" id="speaker_2_reaction_2">
 					  <br>
@@ -341,17 +341,310 @@
 					  <br>
 					  <input type="text" id="speaker_2_reaction_5">
 			        </p>
-			
+
           <button class="continueButton" onclick="_s.button_follow_up()">Continue</button>
-		  
+
   	      <div class="err">
   	        <p>
   	         Please submit an adjective in every box.
   	        </p>
   	      </div>
-		  
+
         </div>
-	</div>
+	</div> -->
+		
+		
+		    <!-- words slide -->
+		<div class="slide" id="words"
+	        <div class="center">
+			<br>
+			You may have noticed you heard two different speakers during this task, one who said the first word in every pair and another who said the second word in every pair.
+			 <br><br>Please listen to each speaker saying the same six words and answer the questions below.
+			 <br><br>
+			 You won't be prompted to supply your responses until you've listened to the audio. 
+				<br><br>
+				Speaker 1:
+				<br><br>
+				<audio id="speaker_1_2A_words" controls src='speaker_1_2A_words.wav'> </audio>
+				<br>
+			    <p>
+			      Speaker accentedness: <select id="words_accentedness_speaker1"> <br>
+			        <option value="">
+			        </option>
+			        <option value="Not">
+			          Not accented
+			        </option>
+			        <option value="Mildly">
+			          Mildly accented
+			        </option>
+			        <option value="Fairly">
+			          Fairly accented
+			        </option>
+			        <option value="Very">
+			          Very accented
+			        </option>
+			      </select>
+			    </p>
+				<p class="center">
+			
+				<p> Race/ethnicity of this speaker: <br>
+				<div class="words_race_speaker1">    
+				    <span>
+				    <input id="White or Caucasian" name = "words_race_speaker1" type="checkbox" value="White or Caucasian"/>
+				    <label for="race">White or Caucasian</label>
+				    </span> 
+					<br>
+				    <span>
+				    <input id="Black or African American" name = "words_race_speaker1" type="checkbox" value="Black or African American"/>
+				    <label for="race">Black or African American</label>
+				    </span>    
+					<br>
+				    <span>
+				    <input id="Hispanic or Latinx" name = "words_race_speaker1" type="checkbox" value="Hispanic or Latinx"/>
+				    <label for="race">Hispanic or Latina/o</label>
+				    </span>
+					<br>
+				    <span>
+				    <input id="Native American or Alaskan Native" name = "words_race_speaker1" type="checkbox" value="Native American or Alaskan Native"/>
+				    <label for="race">Native American or Alaskan Native</label>
+				    </span>
+					<br>
+				    <span>
+				    <input id=" Asian or Pacific Islander" name = "words_race_speaker1" type="checkbox" value=" Asian or Pacific Islander"/>
+				    <label for="race"> Asian or Pacific Islander</label>
+				    </span>
+					<br>
+				</div>
+				</p>
+		        <p>
+		          Three adjectives that describe this speaker: 
+				  <br>
+				  <input type="text" id="words_speaker_1_reaction_1"> 
+				  <br>
+				  <input type="text" id="words_speaker_1_reaction_2">
+				  <br>
+				  <input type="text" id="words_speaker_1_reaction_3">
+		        </p>
+			
+				Speaker 2:
+				<br><br>
+				<audio id="speaker_2_2A_words" controls src='speaker_2_2A_words.wav'> </audio>
+				<br>	
+			    <p>
+			      Speaker accentedness: <select id="words_accentedness_speaker2"> <br>
+			        <option value="">
+			        </option>
+			        <option value="Not">
+			          Not accented
+			        </option>
+			        <option value="Mildly">
+			          Mildly accented
+			        </option>
+			        <option value="Fairly">
+			          Fairly accented
+			        </option>
+			        <option value="Very">
+			          Very accented
+			        </option>
+			      </select>
+			    </p>
+					
+						<p> Race/ethnicity of this speaker: <br>
+						<div class="words_race_speaker2">    
+						    <span>
+						    <input id="White or Caucasian" name = "words_race_speaker2" type="checkbox" value="White or Caucasian"/>
+						    <label for="race">White or Caucasian</label>
+						    </span> 
+							<br>
+						    <span>
+						    <input id="Black or African American" name = "words_race_speaker2" type="checkbox" value="Black or African American"/>
+						    <label for="race">Black or African American</label>
+						    </span>    
+							<br>
+						    <span>
+						    <input id="Hispanic or Latinx" name = "words_race_speaker2" type="checkbox" value="Hispanic or Latinx"/>
+						    <label for="race">Hispanic or Latina/o</label>
+						    </span>
+							<br>
+						    <span>
+						    <input id="Native American or Alaskan Native" name = "words_race_speaker2" type="checkbox" value="Native American or Alaskan Native"/>
+						    <label for="race">Native American or Alaskan Native</label>
+						    </span>
+							<br>
+						    <span>
+						    <input id=" Asian or Pacific Islander" name = "words_race_speaker2" type="checkbox" value=" Asian or Pacific Islander"/>
+						    <label for="race"> Asian or Pacific Islander</label>
+						    </span>
+						</div>
+						</p>
+						<p class="center">
+						        <p>
+						          Three adjectives that describe this speaker:  
+								  <br>
+								  <input type="text" id="words_speaker_2_reaction_1"> 
+								  <br>
+								  <input type="text" id="words_speaker_2_reaction_2">
+								  <br>
+								  <input type="text" id="words_speaker_2_reaction_3">
+								  <br>
+						        </p>
+			
+	          <button class="continueButton" onclick="_s.button_follow_up()">Continue</button>
+		  
+	  	      <div class="err">
+	  	        <p>
+	  	         Please answer every question.
+	  	        </p>
+	  	      </div>
+		  
+	        </div>
+		</div>
+		
+		    <!-- sentences slide -->
+		<div class="slide" id="sentences"
+	        <div class="center">
+			
+			 <br><br>Please listen to each speaker saying the same sentence and answer the questions below.
+			 <br><br>
+			 You won't be prompted supply responses until you've listened to the audio.
+				<br><br>
+				Speaker 1:
+				<br><br>
+				<audio id="speaker_sentence_1" controls src='speaker_sentence_1.wav'> </audio>
+				<br>
+			    <p>
+			      Speaker accentedness: <select id="sentences_accentedness_speaker1">
+			        <option value="">
+			        </option>
+			        <option value="Not">
+			          Not accented
+			        </option>
+			        <option value="Mildly">
+			          Mildly accented
+			        </option>
+			        <option value="Fairly">
+			          Fairly accented
+			        </option>
+			        <option value="Very">
+			          Very accented
+			        </option>
+			      </select>
+			    </p>
+			
+				<p> Race/ethnicity of this speaker: <br>
+				<div class="sentences_race_speaker1">    
+				    <span>
+				    <input id="White or Caucasian" name = "sentences_race_speaker1" type="checkbox" value="White or Caucasian"/>
+				    <label for="race">White or Caucasian</label>
+				    </span> 
+					<br>
+				    <span>
+				    <input id="Black or African American" name = "sentences_race_speaker1" type="checkbox" value="Black or African American"/>
+				    <label for="race">Black or African American</label>
+				    </span>    
+					<br>
+				    <span>
+				    <input id="Hispanic or Latinx" name = "sentences_race_speaker1" type="checkbox" value="Hispanic or Latinx"/>
+				    <label for="race">Hispanic or Latina/o</label>
+				    </span>
+					<br>
+				    <span>
+				    <input id="Native American or Alaskan Native" name = "sentences_race_speaker1" type="checkbox" value="Native American or Alaskan Native"/>
+				    <label for="race">Native American or Alaskan Native</label>
+				    </span>
+					<br>
+				    <span>
+				    <input id=" Asian or Pacific Islander" name = "sentences_race_speaker1" type="checkbox" value=" Asian or Pacific Islander"/>
+				    <label for="race"> Asian or Pacific Islander</label>
+				    </span>
+					<br>
+				</div>
+				</p>
+				<p class="center">
+				        <p>
+				          Three adjectives that describe this speaker: 
+						  <br>
+						  <input type="text" id="sentences_speaker_1_reaction_1"> 
+						  <br>
+						  <input type="text" id="sentences_speaker_1_reaction_2">
+						  <br>
+						  <input type="text" id="sentences_speaker_1_reaction_3">
+				        </p>
+			
+				Speaker 2:
+				<br><br>
+				<audio id="speaker_sentence_2" controls src='speaker_sentence_2.wav'> </audio>
+				<br>	
+			    <p>
+			      Speaker accentedness: <select id="sentences_accentedness_speaker2">
+			        <option value="">
+			        </option>
+			        <option value="Not">
+			          Not accented
+			        </option>
+			        <option value="Mildly">
+			          Mildly accented
+			        </option>
+			        <option value="Fairly">
+			          Fairly accented
+			        </option>
+			        <option value="Very">
+			          Very accented
+			        </option>
+			      </select>
+			    </p>
+					
+						<p> Race/ethnicity of this speaker: <br>
+						<div class="sentences_race_speaker2">    
+						    <span>
+						    <input id="White or Caucasian" name = "sentences_race_speaker2" type="checkbox" value="White or Caucasian"/>
+						    <label for="race">White or Caucasian</label>
+						    </span> 
+							<br>
+						    <span>
+						    <input id="Black or African American" name = "sentences_race_speaker2" type="checkbox" value="Black or African American"/>
+						    <label for="race">Black or African American</label>
+						    </span>    
+							<br>
+						    <span>
+						    <input id="Hispanic or Latinx" name = "sentences_race_speaker2" type="checkbox" value="Hispanic or Latinx"/>
+						    <label for="race">Hispanic or Latina/o</label>
+						    </span>
+							<br>
+						    <span>
+						    <input id="Native American or Alaskan Native" name = "sentences_race_speaker2" type="checkbox" value="Native American or Alaskan Native"/>
+						    <label for="race">Native American or Alaskan Native</label>
+						    </span>
+							<br>
+						    <span>
+						    <input id=" Asian or Pacific Islander" name = "sentences_race_speaker2" type="checkbox" value=" Asian or Pacific Islander"/>
+						    <label for="race"> Asian or Pacific Islander</label>
+						    </span>
+						</div>
+						</p>
+					
+						<p class="center">
+						        <p>
+						          Three adjectives that describe this speaker:  
+								  <br>
+								  <input type="text" id="sentences_speaker_2_reaction_1"> 
+								  <br>
+								  <input type="text" id="sentences_speaker_2_reaction_2">
+								  <br>
+								  <input type="text" id="sentences_speaker_2_reaction_3">
+						        </p>
+			
+	          <button class="continueButton" onclick="_s.button_follow_up()">Continue</button>
+		  
+	  	      <div class="err">
+	  	        <p>
+	  	         Please answer every question.
+	  	        </p>
+	  	      </div>
+		  
+	        </div>
+		</div>
+		
 
     <!-- subject information slide -->
     <div class="slide" id="subj_info">
